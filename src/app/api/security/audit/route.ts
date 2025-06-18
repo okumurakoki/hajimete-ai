@@ -13,7 +13,7 @@ export async function GET(req: NextRequest) {
     }
 
     // Check admin access
-    const isAdmin = await AccessControl.isAdmin(userId)
+    const isAdmin = await AccessControl.isAdmin()
     if (!isAdmin) {
       return NextResponse.json(
         { error: 'Admin access required' },
@@ -22,10 +22,8 @@ export async function GET(req: NextRequest) {
     }
 
     const { searchParams } = new URL(req.url)
-    const { page, limit } = InputValidator.validatePaginationParams(
-      searchParams.get('page') || undefined,
-      searchParams.get('limit') || undefined
-    )
+    const page = parseInt(searchParams.get('page') || '1')
+    const limit = parseInt(searchParams.get('limit') || '10')
     const action = searchParams.get('action')
     const resourceType = searchParams.get('resourceType')
     const userId_filter = searchParams.get('userId')
@@ -108,9 +106,9 @@ export async function POST(req: NextRequest) {
     const auditLog = {
       id: 'mock-audit-log-id',
       userId,
-      action: InputValidator.sanitizeString(action, 100),
-      resourceType: resourceType ? InputValidator.sanitizeString(resourceType, 50) : null,
-      resourceId: resourceId ? InputValidator.sanitizeString(resourceId, 100) : null,
+      action: InputValidator.sanitizeInput(action),
+      resourceType: resourceType ? InputValidator.sanitizeInput(resourceType) : null,
+      resourceId: resourceId ? InputValidator.sanitizeInput(resourceId) : null,
       details: details || {},
       ipAddress: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || '127.0.0.1',
       userAgent: req.headers.get('user-agent') || null,

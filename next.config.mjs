@@ -1,9 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   // Minimal config for Clerk compatibility
-  experimental: {
-    serverComponentsExternalPackages: ['@clerk/nextjs']
-  }
+  serverExternalPackages: ['@clerk/nextjs']
 };
 
 export default nextConfig;
