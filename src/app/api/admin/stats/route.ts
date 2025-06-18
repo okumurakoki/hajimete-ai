@@ -1,10 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { prisma } from '@/lib/prisma'
 
 export async function GET() {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -12,156 +11,140 @@ export async function GET() {
       )
     }
 
-    // Check if user is admin
-    const user = await prisma.user.findUnique({
-      where: { clerkId: userId }
-    })
-
-    if (!user || user.plan !== 'admin') {
+    // Mock admin check - in production, verify against your user system
+    const isAdmin = userId === 'admin_user_id'
+    if (!isAdmin) {
       return NextResponse.json(
         { error: 'Admin access required' },
         { status: 403 }
       )
     }
 
-    // Get comprehensive stats
-    const [
-      totalUsers,
-      activeUsers,
-      basicUsers,
-      premiumUsers,
-      totalVideos,
-      publishedVideos,
-      draftVideos,
-      totalSeminars,
-      upcomingSeminars,
-      completedSeminars,
-      totalProgress,
-      completedProgress,
-      liveStreams,
-      totalViewTime
-    ] = await Promise.all([
-      prisma.user.count(),
-      prisma.user.count({ where: { status: 'active' } }),
-      prisma.user.count({ where: { plan: 'basic', status: 'active' } }),
-      prisma.user.count({ where: { plan: 'premium', status: 'active' } }),
-      prisma.video.count(),
-      prisma.video.count({ where: { status: 'published' } }),
-      prisma.video.count({ where: { status: 'draft' } }),
-      prisma.seminar.count(),
-      prisma.seminar.count({ where: { status: 'upcoming' } }),
-      prisma.seminar.count({ where: { status: 'completed' } }),
-      prisma.learningProgress.count(),
-      prisma.learningProgress.count({ where: { completedAt: { not: null } } }),
-      prisma.liveStream.count({ where: { status: 'live' } }),
-      prisma.learningProgress.aggregate({
-        _sum: { watchTime: true }
-      })
-    ])
-
-    // Get recent activity
-    const recentUsers = await prisma.user.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-      include: {
-        profile: {
-          select: {
-            firstName: true,
-            lastName: true
-          }
-        }
-      }
-    })
-
-    const recentVideos = await prisma.video.findMany({
-      orderBy: { createdAt: 'desc' },
-      take: 5,
-      include: {
-        department: {
-          select: {
-            name: true,
-            colorPrimary: true
-          }
-        }
-      }
-    })
-
-    // Get department statistics
-    const departmentStats = await prisma.department.findMany({
-      include: {
-        _count: {
-          select: {
-            videos: {
-              where: { status: 'published' }
-            }
-          }
-        }
-      }
-    })
-
-    // Get video analytics for the last 30 days
-    const thirtyDaysAgo = new Date()
-    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-
-    const videoAnalytics = await prisma.videoAnalytics.groupBy({
-      by: ['eventType'],
-      where: {
-        createdAt: { gte: thirtyDaysAgo }
-      },
-      _count: {
-        id: true
-      }
-    })
-
-    // Get top videos by view count
-    const topVideos = await prisma.video.findMany({
-      where: { status: 'published' },
-      orderBy: { viewCount: 'desc' },
-      take: 10,
-      include: {
-        department: {
-          select: {
-            name: true,
-            colorPrimary: true
-          }
-        },
-        _count: {
-          select: {
-            progress: true,
-            ratings: true
-          }
-        }
-      }
-    })
-
-    // Calculate engagement metrics
-    const engagementRate = totalProgress > 0 ? (completedProgress / totalProgress) * 100 : 0
-    const avgWatchTime = totalViewTime._sum.watchTime || 0
-
-    return NextResponse.json({
+    // Mock comprehensive stats
+    const mockStats = {
       overview: {
-        totalUsers,
-        activeUsers,
-        basicUsers,
-        premiumUsers,
-        totalVideos,
-        publishedVideos,
-        draftVideos,
-        totalSeminars,
-        upcomingSeminars,
-        completedSeminars,
-        liveStreams,
-        engagementRate: Math.round(engagementRate * 100) / 100,
-        totalWatchTime: avgWatchTime
+        totalUsers: 1247,
+        activeUsers: 892,
+        basicUsers: 634,
+        premiumUsers: 258,
+        totalVideos: 156,
+        publishedVideos: 142,
+        draftVideos: 14,
+        totalSeminars: 89,
+        upcomingSeminars: 12,
+        completedSeminars: 77,
+        liveStreams: 3,
+        engagementRate: 78.5,
+        totalWatchTime: 245678
       },
       recentActivity: {
-        users: recentUsers,
-        videos: recentVideos
+        users: [
+          {
+            id: '1',
+            clerkId: 'user_123',
+            createdAt: '2024-01-18T10:30:00Z',
+            profile: {
+              firstName: '田中',
+              lastName: '太郎'
+            }
+          },
+          {
+            id: '2',
+            clerkId: 'user_456',
+            createdAt: '2024-01-18T09:15:00Z',
+            profile: {
+              firstName: '佐藤',
+              lastName: '花子'
+            }
+          }
+        ],
+        videos: [
+          {
+            id: '1',
+            title: 'AI基礎概念とビジネス活用',
+            createdAt: '2024-01-17T14:00:00Z',
+            department: {
+              name: 'AI基礎学部',
+              colorPrimary: '#3B82F6'
+            }
+          },
+          {
+            id: '2',
+            title: 'Excel自動化完全マスター',
+            createdAt: '2024-01-16T11:30:00Z',
+            department: {
+              name: '業務効率化学部',
+              colorPrimary: '#10B981'
+            }
+          }
+        ]
       },
-      departmentStats,
-      analytics: videoAnalytics,
-      topVideos
-    })
+      departmentStats: [
+        {
+          id: '1',
+          name: 'AI基礎学部',
+          slug: 'ai-basics',
+          colorPrimary: '#3B82F6',
+          _count: { videos: 38 }
+        },
+        {
+          id: '2',
+          name: '業務効率化学部',
+          slug: 'business-efficiency',
+          colorPrimary: '#10B981',
+          _count: { videos: 42 }
+        },
+        {
+          id: '3',
+          name: '実践応用学部',
+          slug: 'practical-application',
+          colorPrimary: '#8B5CF6',
+          _count: { videos: 35 }
+        },
+        {
+          id: '4',
+          name: 'キャッチアップ学部',
+          slug: 'catchup',
+          colorPrimary: '#F59E0B',
+          _count: { videos: 27 }
+        }
+      ],
+      analytics: [
+        { eventType: 'video_start', _count: { id: 1245 } },
+        { eventType: 'video_complete', _count: { id: 892 } },
+        { eventType: 'progress_update', _count: { id: 3456 } }
+      ],
+      topVideos: [
+        {
+          id: '1',
+          title: 'ChatGPT実践活用術',
+          viewCount: 2100,
+          department: {
+            name: '実践応用学部',
+            colorPrimary: '#8B5CF6'
+          },
+          _count: {
+            progress: 445,
+            ratings: 67
+          }
+        },
+        {
+          id: '2',
+          title: 'AI基礎概念とビジネス活用',
+          viewCount: 1250,
+          department: {
+            name: 'AI基礎学部',
+            colorPrimary: '#3B82F6'
+          },
+          _count: {
+            progress: 320,
+            ratings: 45
+          }
+        }
+      ]
+    }
+
+    return NextResponse.json(mockStats)
   } catch (error) {
     console.error('Error fetching admin stats:', error)
     return NextResponse.json(

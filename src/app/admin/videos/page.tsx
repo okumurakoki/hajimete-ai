@@ -1,7 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+// Disable static generation for admin pages
+export const dynamic = 'force-dynamic'
 import AdminLayout from '@/components/AdminLayout'
+import VideoUpload from '@/components/VideoUpload'
 import { 
   AdminVideo, 
   generateMockAdminVideos,
@@ -114,6 +118,19 @@ export default function AdminVideos() {
             新しい動画
           </button>
         </div>
+
+        {/* 動画アップロード機能 */}
+        <VideoUpload 
+          onUploadComplete={(data) => {
+            console.log('Upload completed:', data)
+            // 必要に応じて動画リストを更新
+            // fetchVideos() // 実装時に追加
+          }}
+          onUploadError={(error) => {
+            console.error('Upload error:', error)
+            alert(`アップロードエラー: ${error}`)
+          }}
+        />
 
         {/* Stats */}
         <div className="grid grid-cols-1 md:grid-cols-4 gap-4">

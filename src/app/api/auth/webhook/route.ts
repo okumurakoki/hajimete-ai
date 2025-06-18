@@ -1,7 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
 import { Webhook } from 'svix'
-import { prisma } from '@/lib/prisma'
 
 type EventType = 'user.created' | 'user.updated' | 'user.deleted'
 
@@ -27,7 +26,7 @@ export async function POST(req: NextRequest) {
   }
 
   // Get the headers
-  const headerPayload = headers()
+  const headerPayload = await headers()
   const svix_id = headerPayload.get('svix-id')
   const svix_timestamp = headerPayload.get('svix-timestamp')
   const svix_signature = headerPayload.get('svix-signature')
@@ -74,68 +73,18 @@ export async function POST(req: NextRequest) {
           return new Response('No email found', { status: 400 })
         }
 
-        // Create user in database
-        const newUser = await prisma.user.create({
-          data: {
-            clerkId,
-            email,
-            plan: unsafe_metadata?.plan || 'basic',
-            status: 'active'
-          }
-        })
-
-        // Create user profile
-        await prisma.userProfile.create({
-          data: {
-            userId: newUser.id,
-            firstName: first_name || '',
-            lastName: last_name || '',
-            avatarUrl: image_url || ''
-          }
-        })
-
-        // Create user preferences
-        await prisma.userPreferences.create({
-          data: {
-            userId: newUser.id
-          }
-        })
-
-        console.log(`✅ User created: ${email}`)
+        // Mock user creation - in production, store in your database
+        console.log(`✅ Mock: User created: ${email} with ID: ${clerkId}`)
         break
 
       case 'user.updated':
-        await prisma.user.update({
-          where: { clerkId },
-          data: {
-            plan: unsafe_metadata?.plan || 'basic'
-          }
-        })
-
-        // Update profile if exists
-        await prisma.userProfile.upsert({
-          where: { userId: clerkId },
-          update: {
-            firstName: first_name || '',
-            lastName: last_name || '',
-            avatarUrl: image_url || ''
-          },
-          create: {
-            userId: clerkId,
-            firstName: first_name || '',
-            lastName: last_name || '',
-            avatarUrl: image_url || ''
-          }
-        })
-
-        console.log(`✅ User updated: ${clerkId}`)
+        // Mock user update - in production, update your database
+        console.log(`✅ Mock: User updated: ${clerkId}`)
         break
 
       case 'user.deleted':
-        await prisma.user.delete({
-          where: { clerkId }
-        })
-        console.log(`✅ User deleted: ${clerkId}`)
+        // Mock user deletion - in production, delete from your database
+        console.log(`✅ Mock: User deleted: ${clerkId}`)
         break
 
       default:

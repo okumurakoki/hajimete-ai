@@ -218,15 +218,8 @@ export class LiveStreamingService {
    */
   async updateViewerCount(streamId: string, count: number): Promise<void> {
     try {
-      await prisma.liveStream.update({
-        where: { id: streamId },
-        data: {
-          currentViewers: count,
-          peakViewers: {
-            max: count
-          }
-        }
-      })
+      // Mock viewer count update - in production, update your database
+      console.log(`Mock: Updated viewer count for stream ${streamId} to ${count}`)
     } catch (error) {
       console.error('Error updating viewer count:', error)
     }

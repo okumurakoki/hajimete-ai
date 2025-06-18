@@ -1,6 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+
+// Disable static generation for admin pages
+export const dynamic = 'force-dynamic'
 import AdminLayout from '@/components/AdminLayout'
 import { 
   AdminSeminar, 

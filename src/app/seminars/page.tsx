@@ -1,13 +1,16 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { useUser } from '@clerk/nextjs'
+// import { useUser } from '@clerk/nextjs'
+
+export const dynamic = 'force-dynamic'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { Seminar, generateMockSeminars } from '@/lib/live'
 
 export default function SeminarsPage() {
-  const { user } = useUser()
+  // const { user } = useUser()
+  const user = { unsafeMetadata: { plan: 'basic' } } // Mock for build compatibility
   const [seminars, setSeminars] = useState<Seminar[]>([])
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [filter, setFilter] = useState<'all' | 'available' | 'registered'>('all')

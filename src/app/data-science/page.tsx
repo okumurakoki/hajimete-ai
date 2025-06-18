@@ -5,7 +5,7 @@ import DepartmentLayout from '@/components/DepartmentLayout'
 import { VideoContent } from '@/lib/departments'
 
 export default function DataSciencePage() {
-  const department = getDepartmentBySlug('data-science')!
+  const department = getDepartmentBySlug('practical-application')!
 
   const videos: VideoContent[] = [
     {

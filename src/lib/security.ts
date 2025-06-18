@@ -19,7 +19,7 @@ const rateLimitStore = new Map<string, { count: number; resetTime: number }>()
  * Rate limiting middleware
  */
 export function rateLimit(req: NextRequest, userPlan?: string): { allowed: boolean; remaining: number } {
-  const ip = req.ip || req.headers.get('x-forwarded-for') || 'unknown'
+  const ip = req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown'
   const key = `rate_limit:${ip}`
   const now = Date.now()
   
@@ -204,7 +204,7 @@ export class AuditLogger {
           resourceType,
           resourceId,
           details: details || {},
-          ipAddress: req?.ip || req?.headers.get('x-forwarded-for') || null,
+          ipAddress: req?.headers.get('x-forwarded-for') || req?.headers.get('x-real-ip') || null,
           userAgent: req?.headers.get('user-agent') || null
         }
       })
@@ -218,11 +218,11 @@ export class AuditLogger {
   }
 
   static async logAdminAction(userId: string, action: string, details?: any, req?: NextRequest) {
-    await this.log(userId, `admin:${action}`, 'admin', null, details, req)
+    await this.log(userId, `admin:${action}`, 'admin', undefined, details, req)
   }
 
   static async logPaymentEvent(userId: string, action: string, details?: any) {
-    await this.log(userId, `payment:${action}`, 'payment', null, details)
+    await this.log(userId, `payment:${action}`, 'payment', undefined, details)
   }
 }
 
@@ -309,7 +309,7 @@ export class SessionSecurity {
         create: {
           userId,
           sessionId,
-          ipAddress: req.ip || req.headers.get('x-forwarded-for') || null,
+          ipAddress: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || null,
           userAgent,
           deviceType,
           browser,
@@ -379,7 +379,7 @@ export async function withSecurity(
 ): Promise<Response> {
   try {
     // Get user info
-    const { userId } = auth()
+    const { userId } = await auth()
     const userPlan = userId ? await getUserPlan(userId) : undefined
 
     // Rate limiting

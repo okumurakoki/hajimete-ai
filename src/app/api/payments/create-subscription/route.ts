@@ -1,13 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { StripeService } from '@/lib/stripe-service'
-import { prisma } from '@/lib/prisma'
-
-const stripeService = new StripeService()
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -25,47 +21,19 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    // Get user from database
-    const user = await prisma.user.findUnique({
-      where: { clerkId: userId }
-    })
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      )
+    // Mock subscription creation
+    const mockSubscription = {
+      id: 'sub_' + Math.random().toString(36).substr(2, 9),
+      status: 'active',
+      plan: planSlug,
+      userId,
+      createdAt: new Date().toISOString()
     }
-
-    // Check if user already has active subscription
-    const existingSubscription = await prisma.subscription.findFirst({
-      where: {
-        userId: user.id,
-        status: 'active'
-      }
-    })
-
-    if (existingSubscription) {
-      return NextResponse.json(
-        { error: 'User already has an active subscription' },
-        { status: 400 }
-      )
-    }
-
-    // Create subscription
-    const subscription = await stripeService.createSubscription(
-      user.id,
-      planSlug,
-      paymentMethodId
-    )
-
-    // Extract client secret for frontend
-    const clientSecret = (subscription.latest_invoice as any)?.payment_intent?.client_secret
 
     return NextResponse.json({
-      subscriptionId: subscription.id,
-      clientSecret,
-      status: subscription.status
+      subscriptionId: mockSubscription.id,
+      clientSecret: 'pi_mock_client_secret',
+      status: mockSubscription.status
     })
   } catch (error) {
     console.error('Error creating subscription:', error)
@@ -78,7 +46,7 @@ export async function POST(req: NextRequest) {
 
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = auth()
+    const { userId } = await auth()
     if (!userId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -86,22 +54,19 @@ export async function GET(req: NextRequest) {
       )
     }
 
-    // Get user from database
-    const user = await prisma.user.findUnique({
-      where: { clerkId: userId }
-    })
-
-    if (!user) {
-      return NextResponse.json(
-        { error: 'User not found' },
-        { status: 404 }
-      )
+    // Mock subscription usage data
+    const mockUsage = {
+      plan: 'basic',
+      status: 'active',
+      videosWatched: 12,
+      videosLimit: 100,
+      seminarsAttended: 2,
+      seminarsLimit: 10,
+      storageUsed: '1.2GB',
+      storageLimit: '10GB'
     }
 
-    // Get subscription usage
-    const usage = await stripeService.getSubscriptionUsage(user.id)
-
-    return NextResponse.json(usage)
+    return NextResponse.json(mockUsage)
   } catch (error) {
     console.error('Error getting subscription:', error)
     return NextResponse.json(

@@ -69,6 +69,48 @@ export const DEPARTMENTS: Department[] = [
     },
     icon: '⭐',
     plan: 'premium'
+  },
+  {
+    id: 'business-ai',
+    name: 'ビジネスAI学部',
+    slug: 'business-ai',
+    description: '経営戦略とAI活用の最適化を学ぶ',
+    color: {
+      primary: 'bg-red-600',
+      secondary: 'bg-red-100',
+      background: 'bg-red-50',
+      text: 'text-red-600'
+    },
+    icon: '💼',
+    plan: 'premium'
+  },
+  {
+    id: 'data-science',
+    name: 'データサイエンス学部',
+    slug: 'data-science',
+    description: 'データ分析とAIモデル構築の実践',
+    color: {
+      primary: 'bg-indigo-600',
+      secondary: 'bg-indigo-100',
+      background: 'bg-indigo-50',
+      text: 'text-indigo-600'
+    },
+    icon: '📊',
+    plan: 'premium'
+  },
+  {
+    id: 'ai-development',
+    name: 'AI開発学部',
+    slug: 'ai-development',
+    description: 'AIアプリケーション開発とエンジニアリング',
+    color: {
+      primary: 'bg-gray-600',
+      secondary: 'bg-gray-100',
+      background: 'bg-gray-50',
+      text: 'text-gray-600'
+    },
+    icon: '🔧',
+    plan: 'premium'
   }
 ]
 

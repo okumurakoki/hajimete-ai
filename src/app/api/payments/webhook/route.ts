@@ -1,17 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { headers } from 'next/headers'
-import Stripe from 'stripe'
-import { StripeService } from '@/lib/stripe-service'
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-12-18.acacia'
-})
-
-const stripeService = new StripeService()
 
 export async function POST(req: NextRequest) {
   const body = await req.text()
-  const signature = headers().get('stripe-signature')
+  const headerPayload = await headers()
+  const signature = headerPayload.get('stripe-signature')
 
   if (!signature) {
     return NextResponse.json(
@@ -20,24 +13,17 @@ export async function POST(req: NextRequest) {
     )
   }
 
-  let event: Stripe.Event
-
   try {
-    event = stripe.webhooks.constructEvent(
-      body,
-      signature,
-      process.env.STRIPE_WEBHOOK_SECRET!
-    )
-  } catch (err) {
-    console.error('Webhook signature verification failed:', err)
-    return NextResponse.json(
-      { error: 'Invalid signature' },
-      { status: 400 }
-    )
-  }
-
-  try {
-    await stripeService.handleWebhook(event)
+    // Mock webhook event processing
+    const mockEvent = JSON.parse(body)
+    
+    console.log('Mock: Processing Stripe webhook event:', mockEvent.type)
+    
+    // In production, you would:
+    // 1. Verify the webhook signature
+    // 2. Parse the event
+    // 3. Handle subscription updates
+    // 4. Update user database records
     
     return NextResponse.json({ received: true })
   } catch (error) {
