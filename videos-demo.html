@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめて.AI - 動画機能デモ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-600">はじめて.AI</div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">プレミアム</span>
+                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">田</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="videoList" class="container mx-auto px-4 py-8">
+        <!-- Page Header -->
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">動画一覧</h1>
+            <p class="text-gray-600">
+                豊富なAI学習コンテンツからあなたに最適な動画を見つけましょう。
+                プレミアムプランですべての動画をご視聴いただけます。
+            </p>
+        </div>
+
+        <!-- Stats -->
+        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
+            <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                <div class="text-2xl font-bold text-blue-600">8</div>
+                <div class="text-sm text-gray-600">総動画数</div>
+            </div>
+            <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                <div class="text-2xl font-bold text-green-600">3</div>
+                <div class="text-sm text-gray-600">無料動画</div>
+            </div>
+            <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                <div class="text-2xl font-bold text-purple-600">5</div>
+                <div class="text-sm text-gray-600">プレミアム動画</div>
+            </div>
+            <div class="bg-white rounded-lg p-4 text-center shadow-sm">
+                <div class="text-2xl font-bold text-orange-600">4</div>
+                <div class="text-sm text-gray-600">新着動画</div>
+            </div>
+        </div>
+
+        <!-- Search and Filters -->
+        <div class="bg-white rounded-lg shadow-sm p-6 mb-8">
+            <!-- Search Bar -->
+            <div class="mb-6">
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="動画を検索..."
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg text-sm focus:ring-blue-500 focus:border-blue-500"
+                    oninput="filterVideos()"
+                />
+            </div>
+
+            <!-- Filters -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">学部</label>
+                    <select id="departmentFilter" onchange="filterVideos()" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">すべての学部</option>
+                        <option value="AI基礎学部">AI基礎学部</option>
+                        <option value="業務効率化学部">業務効率化学部</option>
+                        <option value="データサイエンス学部">データサイエンス学部</option>
+                        <option value="AI開発学部">AI開発学部</option>
+                        <option value="ビジネスAI学部">ビジネスAI学部</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">レベル</label>
+                    <select id="levelFilter" onchange="filterVideos()" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">すべてのレベル</option>
+                        <option value="beginner">初級</option>
+                        <option value="intermediate">中級</option>
+                        <option value="advanced">上級</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">カテゴリ</label>
+                    <select id="categoryFilter" onchange="filterVideos()" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="all">すべてのカテゴリ</option>
+                        <option value="tutorial">チュートリアル</option>
+                        <option value="lecture">講義</option>
+                        <option value="workshop">ワークショップ</option>
+                        <option value="webinar">ウェビナー</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">並び順</label>
+                    <select id="sortFilter" onchange="filterVideos()" class="w-full border border-gray-300 rounded-md px-3 py-2 text-sm focus:ring-blue-500 focus:border-blue-500">
+                        <option value="newest">新着順</option>
+                        <option value="popular">人気順</option>
+                        <option value="duration">再生時間順</option>
+                        <option value="title">タイトル順</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Additional Filters -->
+            <div class="flex items-center gap-4">
+                <label class="flex items-center">
+                    <input type="checkbox" id="premiumFilter" onchange="filterVideos()" class="rounded border-gray-300 text-blue-600 focus:ring-blue-500" />
+                    <span class="ml-2 text-sm text-gray-700">プレミアム動画のみ</span>
+                </label>
+
+                <div class="ml-auto text-sm text-gray-600">
+                    <span id="resultCount">8</span>件の動画が見つかりました
+                </div>
+            </div>
+        </div>
+
+        <!-- Video Grid -->
+        <div id="videoGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Videos will be populated by JavaScript -->
+        </div>
+    </div>
+
+    <!-- Video Detail Page -->
+    <div id="videoDetail" class="hidden container mx-auto px-4 py-6">
+        <button onclick="backToList()" class="text-blue-600 hover:text-blue-700 mb-4 flex items-center">
+            ← 動画一覧に戻る
+        </button>
+
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Main Video Area -->
+            <div class="lg:col-span-3">
+                <!-- Video Player -->
+                <div class="bg-black rounded-lg overflow-hidden shadow-lg mb-6">
+                    <div class="relative aspect-video">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <div class="text-6xl mb-4">🎬</div>
+                                <h3 class="text-2xl font-bold mb-2">Vimeoプレイヤー</h3>
+                                <p class="text-gray-300 mb-4">実際の実装では、ここにVimeoプレイヤーが表示されます</p>
+                                <button class="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                                    再生開始
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Progress Bar -->
+                        <div class="absolute bottom-0 left-0 right-0 bg-black bg-opacity-50 p-4">
+                            <div class="w-full bg-gray-600 rounded-full h-1 mb-2">
+                                <div class="bg-blue-600 h-1 rounded-full" style="width: 35%"></div>
+                            </div>
+                            <div class="flex justify-between text-white text-sm">
+                                <span>15:45</span>
+                                <span id="videoDuration">45:30</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Video Info -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span id="videoLevel" class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">初級</span>
+                                <span id="videoPremium" class="px-2 py-1 bg-purple-100 text-purple-800 rounded text-xs font-medium hidden">プレミアム</span>
+                                <span id="videoNew" class="px-2 py-1 bg-green-100 text-green-800 rounded text-xs font-medium">NEW</span>
+                            </div>
+                            
+                            <h1 id="videoTitle" class="text-2xl font-bold text-gray-900 mb-3">
+                                ChatGPT完全入門 - 基本的な使い方から応用まで
+                            </h1>
+                            
+                            <div class="flex items-center gap-4 text-sm text-gray-600 mb-4">
+                                <span id="videoInstructor">👨‍🏫 田中 AI太郎</span>
+                                <span id="videoDepartment">🏫 AI基礎学部</span>
+                                <span id="videoDurationDisplay">⏱️ 45:30</span>
+                                <span id="videoViews">👁️ 15,420回再生</span>
+                            </div>
+
+                            <p id="videoDescription" class="text-gray-700 mb-4">
+                                ChatGPTの基本機能から効果的なプロンプト作成まで、初心者向けに丁寧に解説します。実際の使用例を交えながら、日常業務での活用方法を学びましょう。
+                            </p>
+
+                            <!-- Tags -->
+                            <div id="videoTags" class="flex flex-wrap gap-2">
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#ChatGPT</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#基礎</span>
+                                <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#プロンプト</span>
+                            </div>
+                        </div>
+
+                        <div class="ml-6 text-center">
+                            <div class="text-2xl font-bold text-green-600">1,230</div>
+                            <div class="text-sm text-gray-600">いいね</div>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    <div class="flex gap-3">
+                        <button onclick="toggleFavorite()" id="favoriteBtn" class="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                            🤍 お気に入り
+                        </button>
+                        
+                        <button onclick="toggleWatchLater()" id="watchLaterBtn" class="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                            🕒 後で見る
+                        </button>
+
+                        <button class="flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors">
+                            📤 シェア
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Materials -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">教材・資料</h3>
+                    <div class="space-y-3">
+                        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="text-2xl">📄</div>
+                                <div>
+                                    <div class="font-medium text-gray-900">プロンプト集.pdf</div>
+                                    <div class="text-sm text-gray-500">PDFファイル</div>
+                                </div>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                ダウンロード
+                            </button>
+                        </div>
+                        <div class="flex items-center justify-between p-3 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center gap-3">
+                                <div class="text-2xl">📦</div>
+                                <div>
+                                    <div class="font-medium text-gray-900">練習用データ.zip</div>
+                                    <div class="text-sm text-gray-500">ZIPアーカイブ</div>
+                                </div>
+                            </div>
+                            <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">
+                                ダウンロード
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Chapters -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="text-lg font-semibold text-gray-900 mb-4">チャプター</h3>
+                    <div class="space-y-2">
+                        <div class="p-3 bg-blue-100 border border-blue-300 rounded-lg cursor-pointer">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-900">ChatGPTとは</div>
+                                    <div class="text-sm text-gray-500">0:00 - 5:00</div>
+                                </div>
+                                <div class="text-sm text-gray-500">5:00</div>
+                            </div>
+                        </div>
+                        <div class="p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-900">基本的な使い方</div>
+                                    <div class="text-sm text-gray-500">5:00 - 15:00</div>
+                                </div>
+                                <div class="text-sm text-gray-500">10:00</div>
+                            </div>
+                        </div>
+                        <div class="p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-900">プロンプトのコツ</div>
+                                    <div class="text-sm text-gray-500">15:00 - 30:00</div>
+                                </div>
+                                <div class="text-sm text-gray-500">15:00</div>
+                            </div>
+                        </div>
+                        <div class="p-3 border border-gray-200 rounded-lg cursor-pointer hover:bg-gray-50 transition-colors">
+                            <div class="flex items-center justify-between">
+                                <div class="flex-1">
+                                    <div class="font-medium text-gray-900">実践演習</div>
+                                    <div class="text-sm text-gray-500">30:00 - 45:30</div>
+                                </div>
+                                <div class="text-sm text-gray-500">15:30</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Related Videos -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-semibold text-gray-900 mb-4">関連動画</h3>
+                    <div class="space-y-4">
+                        <div class="flex gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer">
+                            <div class="relative w-24 h-16 bg-gray-200 rounded overflow-hidden flex-shrink-0">
+                                <div class="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                                    <div class="text-lg text-gray-500">🎬</div>
+                                </div>
+                                <div class="absolute bottom-1 right-1 bg-black bg-opacity-75 text-white px-1 py-0.5 rounded text-xs">
+                                    38:15
+                                </div>
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <h4 class="font-medium text-sm text-gray-900 line-clamp-2 mb-1">
+                                    Claude入門 - Anthropic製AIアシスタントの活用法
+                                </h4>
+                                <p class="text-xs text-gray-600 mb-1">佐藤 みらい</p>
+                                <div class="flex items-center gap-2 text-xs text-gray-500">
+                                    <span>8,750回再生</span>
+                                    <span class="bg-green-100 text-green-800 px-1 py-0.5 rounded">NEW</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const videos = [
+            {
+                id: 'video-1',
+                title: 'ChatGPT完全入門 - 基本的な使い方から応用まで',
+                description: 'ChatGPTの基本機能から効果的なプロンプト作成まで、初心者向けに丁寧に解説します。',
+                instructor: '田中 AI太郎',
+                department: 'AI基礎学部',
+                duration: '45:30',
+                level: 'beginner',
+                category: 'tutorial',
+                isPremium: false,
+                isNew: true,
+                isPopular: true,
+                viewCount: 15420,
+                likeCount: 1230,
+                uploadDate: '2024-06-15',
+                tags: ['ChatGPT', '基礎', 'プロンプト']
+            },
+            {
+                id: 'video-2',
+                title: 'Excel×AI で業務効率10倍アップ！実践テクニック',
+                description: 'ExcelにAIを組み合わせて、データ分析や資料作成を劇的に効率化する方法を学びます。',
+                instructor: '中村 効率化',
+                department: '業務効率化学部',
+                duration: '42:30',
+                level: 'beginner',
+                category: 'workshop',
+                isPremium: false,
+                isNew: true,
+                isPopular: true,
+                viewCount: 18750,
+                likeCount: 1456,
+                uploadDate: '2024-06-16',
+                tags: ['Excel', 'データ分析', '効率化']
+            },
+            {
+                id: 'video-3',
+                title: 'Python×AI入門 - データ分析の第一歩',
+                description: 'PythonとAIライブラリを使った基本的なデータ分析手法を実践的に学びます。',
+                instructor: '博士 データ',
+                department: 'データサイエンス学部',
+                duration: '56:30',
+                level: 'beginner',
+                category: 'lecture',
+                isPremium: true,
+                isNew: true,
+                viewCount: 12450,
+                likeCount: 890,
+                uploadDate: '2024-06-15',
+                tags: ['Python', 'データ分析', 'pandas']
+            },
+            {
+                id: 'video-4',
+                title: 'ChatGPT API完全活用ガイド - アプリ開発入門',
+                description: 'OpenAI APIを使ったWebアプリケーション開発の基礎から応用まで。',
+                instructor: 'エンジニア API',
+                department: 'AI開発学部',
+                duration: '64:30',
+                level: 'intermediate',
+                category: 'workshop',
+                isPremium: true,
+                isPopular: true,
+                viewCount: 8450,
+                likeCount: 720,
+                uploadDate: '2024-06-15',
+                tags: ['ChatGPT API', 'Web開発', 'JavaScript']
+            },
+            {
+                id: 'video-5',
+                title: 'AI戦略策定ガイド - 経営者のためのAI導入論',
+                description: '企業におけるAI導入戦略の立案から実行まで、経営視点で解説。',
+                instructor: 'CEO ストラテジー',
+                department: 'ビジネスAI学部',
+                duration: '67:30',
+                level: 'intermediate',
+                category: 'lecture',
+                isPremium: true,
+                isFeatured: true,
+                viewCount: 9450,
+                likeCount: 654,
+                uploadDate: '2024-06-15',
+                tags: ['AI戦略', '経営', 'DX']
+            }
+        ];
+
+        let filteredVideos = [...videos];
+        let favoriteVideos = new Set();
+        let watchLaterVideos = new Set();
+
+        function renderVideos(videosToRender) {
+            const grid = document.getElementById('videoGrid');
+            grid.innerHTML = videosToRender.map(video => `
+                <div class="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div onclick="showVideoDetail('${video.id}')" class="cursor-pointer">
+                        <div class="relative aspect-video bg-gray-200 overflow-hidden">
+                            <div class="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                                <div class="text-4xl text-gray-500">🎬</div>
+                            </div>
+                            
+                            <div class="absolute bottom-2 right-2 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs">
+                                ${video.duration}
+                            </div>
+
+                            <div class="absolute top-2 left-2 flex gap-1">
+                                ${video.isNew ? '<span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">NEW</span>' : ''}
+                                ${video.isPopular ? '<span class="bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">人気</span>' : ''}
+                                ${video.isFeatured ? '<span class="bg-blue-500 text-white px-2 py-1 rounded text-xs font-medium">特集</span>' : ''}
+                            </div>
+
+                            ${video.isPremium ? '<div class="absolute top-2 right-2"><span class="bg-purple-600 text-white px-2 py-1 rounded text-xs font-medium">プレミアム</span></div>' : ''}
+                        </div>
+
+                        <div class="p-4">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="px-2 py-1 rounded text-xs font-medium ${getLevelColor(video.level)}">
+                                    ${getLevelLabel(video.level)}
+                                </span>
+                                <span class="px-2 py-1 bg-gray-100 text-gray-700 rounded text-xs">
+                                    ${getCategoryLabel(video.category)}
+                                </span>
+                            </div>
+
+                            <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 hover:text-blue-600 transition-colors">
+                                ${video.title}
+                            </h3>
+
+                            <p class="text-sm text-gray-600 mb-2">${video.instructor}</p>
+                            <p class="text-sm text-gray-500 mb-3 line-clamp-2">${video.description}</p>
+
+                            <div class="flex items-center justify-between text-xs text-gray-500">
+                                <div class="flex items-center gap-2">
+                                    <span>${video.viewCount.toLocaleString()}回再生</span>
+                                    <span>👍 ${video.likeCount}</span>
+                                </div>
+                                <span>${new Date(video.uploadDate).toLocaleDateString('ja-JP')}</span>
+                            </div>
+
+                            <div class="flex flex-wrap gap-1 mt-3">
+                                ${video.tags.slice(0, 3).map(tag => `<span class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-xs">#${tag}</span>`).join('')}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+
+            document.getElementById('resultCount').textContent = videosToRender.length;
+        }
+
+        function filterVideos() {
+            const searchQuery = document.getElementById('searchInput').value.toLowerCase();
+            const departmentFilter = document.getElementById('departmentFilter').value;
+            const levelFilter = document.getElementById('levelFilter').value;
+            const categoryFilter = document.getElementById('categoryFilter').value;
+            const sortFilter = document.getElementById('sortFilter').value;
+            const premiumFilter = document.getElementById('premiumFilter').checked;
+
+            let filtered = videos.filter(video => {
+                const matchesSearch = !searchQuery || 
+                    video.title.toLowerCase().includes(searchQuery) ||
+                    video.description.toLowerCase().includes(searchQuery) ||
+                    video.instructor.toLowerCase().includes(searchQuery);
+                
+                const matchesDepartment = departmentFilter === 'all' || video.department === departmentFilter;
+                const matchesLevel = levelFilter === 'all' || video.level === levelFilter;
+                const matchesCategory = categoryFilter === 'all' || video.category === categoryFilter;
+                const matchesPremium = !premiumFilter || video.isPremium;
+
+                return matchesSearch && matchesDepartment && matchesLevel && matchesCategory && matchesPremium;
+            });
+
+            // Sort
+            filtered.sort((a, b) => {
+                switch (sortFilter) {
+                    case 'popular': return b.viewCount - a.viewCount;
+                    case 'duration': return getDurationMinutes(a.duration) - getDurationMinutes(b.duration);
+                    case 'title': return a.title.localeCompare(b.title, 'ja');
+                    default: return new Date(b.uploadDate).getTime() - new Date(a.uploadDate).getTime();
+                }
+            });
+
+            filteredVideos = filtered;
+            renderVideos(filteredVideos);
+        }
+
+        function showVideoDetail(videoId) {
+            const video = videos.find(v => v.id === videoId);
+            if (!video) return;
+
+            // Update video detail page
+            document.getElementById('videoTitle').textContent = video.title;
+            document.getElementById('videoDescription').textContent = video.description;
+            document.getElementById('videoInstructor').innerHTML = `👨‍🏫 ${video.instructor}`;
+            document.getElementById('videoDepartment').innerHTML = `🏫 ${video.department}`;
+            document.getElementById('videoDurationDisplay').innerHTML = `⏱️ ${video.duration}`;
+            document.getElementById('videoDuration').textContent = video.duration;
+            document.getElementById('videoViews').innerHTML = `👁️ ${video.viewCount.toLocaleString()}回再生`;
+
+            const levelSpan = document.getElementById('videoLevel');
+            levelSpan.className = `px-2 py-1 rounded text-xs font-medium ${getLevelColor(video.level)}`;
+            levelSpan.textContent = getLevelLabel(video.level);
+
+            document.getElementById('videoPremium').style.display = video.isPremium ? 'inline' : 'none';
+            document.getElementById('videoNew').style.display = video.isNew ? 'inline' : 'none';
+
+            const tagsContainer = document.getElementById('videoTags');
+            tagsContainer.innerHTML = video.tags.map(tag => 
+                `<span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#${tag}</span>`
+            ).join('');
+
+            // Show detail page, hide list
+            document.getElementById('videoList').classList.add('hidden');
+            document.getElementById('videoDetail').classList.remove('hidden');
+        }
+
+        function backToList() {
+            document.getElementById('videoDetail').classList.add('hidden');
+            document.getElementById('videoList').classList.remove('hidden');
+        }
+
+        function toggleFavorite() {
+            const btn = document.getElementById('favoriteBtn');
+            const isFavorited = btn.innerHTML.includes('❤️');
+            
+            if (isFavorited) {
+                btn.innerHTML = '🤍 お気に入り';
+                btn.className = 'flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors';
+            } else {
+                btn.innerHTML = '❤️ お気に入り';
+                btn.className = 'flex items-center gap-2 px-4 py-2 bg-red-100 text-red-800 rounded-lg font-medium hover:bg-red-200 transition-colors';
+            }
+        }
+
+        function toggleWatchLater() {
+            const btn = document.getElementById('watchLaterBtn');
+            const isWatchLater = btn.innerHTML.includes('📝');
+            
+            if (isWatchLater) {
+                btn.innerHTML = '🕒 後で見る';
+                btn.className = 'flex items-center gap-2 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg font-medium hover:bg-gray-200 transition-colors';
+            } else {
+                btn.innerHTML = '📝 後で見る';
+                btn.className = 'flex items-center gap-2 px-4 py-2 bg-blue-100 text-blue-800 rounded-lg font-medium hover:bg-blue-200 transition-colors';
+            }
+        }
+
+        function getLevelColor(level) {
+            switch (level) {
+                case 'beginner': return 'bg-green-100 text-green-800';
+                case 'intermediate': return 'bg-yellow-100 text-yellow-800';
+                case 'advanced': return 'bg-red-100 text-red-800';
+                default: return 'bg-gray-100 text-gray-800';
+            }
+        }
+
+        function getLevelLabel(level) {
+            switch (level) {
+                case 'beginner': return '初級';
+                case 'intermediate': return '中級';
+                case 'advanced': return '上級';
+                default: return '初級';
+            }
+        }
+
+        function getCategoryLabel(category) {
+            switch (category) {
+                case 'tutorial': return 'チュートリアル';
+                case 'lecture': return '講義';
+                case 'workshop': return 'ワークショップ';
+                case 'webinar': return 'ウェビナー';
+                default: return 'チュートリアル';
+            }
+        }
+
+        function getDurationMinutes(duration) {
+            const parts = duration.split(':').map(Number);
+            return parts[0] * 60 + parts[1];
+        }
+
+        // Initialize
+        renderVideos(videos);
+    </script>
+</body>
+</html>

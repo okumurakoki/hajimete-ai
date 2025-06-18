@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめて.AI - ライブ配信システム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        .pulse { animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite; }
+        
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-600">はじめて.AI</div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">プレミアム</span>
+                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">田</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-6">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+            <!-- Main Video Area -->
+            <div class="lg:col-span-3">
+                <!-- Video Player -->
+                <div class="bg-black rounded-lg overflow-hidden shadow-lg mb-6">
+                    <div class="relative aspect-video">
+                        <!-- Mock Video Player -->
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-800 to-black flex items-center justify-center">
+                            <div class="text-center text-white">
+                                <div class="text-6xl mb-4">📡</div>
+                                <h3 class="text-2xl font-bold mb-2">ライブ配信中</h3>
+                                <p class="text-gray-300">ChatGPT最新機能解説 - GPT-4o完全ガイド</p>
+                            </div>
+                        </div>
+
+                        <!-- Live Indicator -->
+                        <div class="absolute top-4 left-4 flex items-center gap-2">
+                            <div class="bg-red-600 text-white px-3 py-1 rounded-full text-sm font-bold flex items-center gap-2">
+                                <div class="w-2 h-2 bg-white rounded-full pulse"></div>
+                                LIVE
+                            </div>
+                            <div class="bg-black bg-opacity-75 text-white px-3 py-1 rounded-full text-sm">
+                                <span id="viewerCount">387</span>人視聴中
+                            </div>
+                        </div>
+
+                        <!-- Play Controls Overlay -->
+                        <div class="absolute bottom-4 left-4 right-4">
+                            <div class="bg-black bg-opacity-50 rounded-lg p-3">
+                                <div class="flex items-center justify-between text-white">
+                                    <div class="flex items-center gap-4">
+                                        <button class="hover:text-red-400 transition-colors">
+                                            <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M8 5v14l11-7z"/>
+                                            </svg>
+                                        </button>
+                                        <span class="text-sm">42:15 / ライブ配信中</span>
+                                    </div>
+                                    <div class="flex items-center gap-2">
+                                        <button class="hover:text-gray-300 transition-colors">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M3 9v6h4l5 5V4L7 9H3zm7-.17v6.34L7.83 13H5v-2h2.83L10 8.83z"/>
+                                            </svg>
+                                        </button>
+                                        <button class="hover:text-gray-300 transition-colors">
+                                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                                <path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/>
+                                            </svg>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stream Info -->
+                <div class="bg-white rounded-lg shadow-md p-6 mb-6">
+                    <div class="flex items-start justify-between mb-4">
+                        <div class="flex-1">
+                            <h1 class="text-2xl font-bold text-gray-900 mb-2">
+                                【生放送】ChatGPT最新機能解説 - GPT-4o完全ガイド
+                            </h1>
+                            <div class="flex items-center gap-4 text-sm text-gray-600 mb-3">
+                                <span class="flex items-center gap-1">👨‍🏫 田中 AI太郎</span>
+                                <span class="flex items-center gap-1">🏫 AI基礎学部</span>
+                                <span class="flex items-center gap-1">⏱️ 60分</span>
+                            </div>
+                            <p class="text-gray-700">
+                                ChatGPTの最新機能GPT-4oについて、実際の使用例を交えながら詳しく解説します。
+                                リアルタイムでの質問も受け付けています。
+                            </p>
+                        </div>
+                        <div class="ml-4 text-center">
+                            <div class="text-2xl font-bold text-red-600" id="currentViewers">387</div>
+                            <div class="text-sm text-gray-600">視聴者数</div>
+                        </div>
+                    </div>
+
+                    <!-- Tags -->
+                    <div class="flex flex-wrap gap-2 mb-4">
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#ChatGPT</span>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#GPT-4o</span>
+                        <span class="px-3 py-1 bg-blue-100 text-blue-800 rounded-full text-sm">#最新機能</span>
+                    </div>
+
+                    <!-- Actions */}
+                    <div class="flex gap-3">
+                        <button class="bg-red-600 text-white px-6 py-2 rounded-lg font-medium">
+                            📺 視聴中
+                        </button>
+                        <button class="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                            📤 シェア
+                        </button>
+                        <button class="border border-gray-300 text-gray-700 px-6 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors">
+                            ❤️ いいね
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="lg:col-span-1">
+                <!-- Live Chat -->
+                <div class="bg-white rounded-lg shadow-md flex flex-col h-96 mb-6">
+                    <!-- Chat Header -->
+                    <div class="p-4 border-b bg-gray-50 rounded-t-lg">
+                        <div class="flex items-center justify-between">
+                            <h3 class="font-semibold text-gray-900">ライブチャット</h3>
+                            <div class="flex items-center gap-2">
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                                <span class="text-sm text-gray-600">接続中</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Messages Area -->
+                    <div class="flex-1 overflow-y-auto p-4 space-y-3 bg-gray-50" id="chatMessages">
+                        <!-- Messages will be populated by JavaScript -->
+                    </div>
+
+                    <!-- Message Input -->
+                    <div class="p-4 border-t bg-white rounded-b-lg">
+                        <div class="flex gap-2">
+                            <input
+                                type="text"
+                                id="messageInput"
+                                placeholder="メッセージを入力..."
+                                class="flex-1 px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
+                                maxlength="200"
+                                onkeypress="handleKeyPress(event)"
+                            />
+                            <button
+                                onclick="sendMessage()"
+                                class="bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-blue-700 transition-colors"
+                            >
+                                送信
+                            </button>
+                        </div>
+                        
+                        <!-- Quick Reactions -->
+                        <div class="flex gap-2 justify-center mt-3">
+                            <button onclick="sendReaction('👍')" class="text-xl hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">👍</button>
+                            <button onclick="sendReaction('👏')" class="text-xl hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">👏</button>
+                            <button onclick="sendReaction('🎉')" class="text-xl hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">🎉</button>
+                            <button onclick="sendReaction('💡')" class="text-xl hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">💡</button>
+                            <button onclick="sendReaction('❤️')" class="text-xl hover:bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center transition-colors">❤️</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Stream Schedule -->
+                <div class="bg-white rounded-lg shadow-md p-6">
+                    <h3 class="font-semibold text-gray-900 mb-4">配信スケジュール</h3>
+                    <div class="space-y-3">
+                        <div class="p-3 rounded-lg bg-blue-50 border border-blue-200">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-medium text-sm line-clamp-2">ChatGPT最新機能解説</h4>
+                                <div class="bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">LIVE</div>
+                            </div>
+                            <div class="text-xs text-gray-600">今すぐ - 20:00</div>
+                            <div class="text-xs text-gray-500 mt-1">👨‍🏫 田中 AI太郎</div>
+                        </div>
+
+                        <div class="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-medium text-sm line-clamp-2">AI開発実践ハンズオン</h4>
+                            </div>
+                            <div class="text-xs text-gray-600">2時間後 - 21:00</div>
+                            <div class="text-xs text-gray-500 mt-1">👨‍🏫 開発者 チェーン</div>
+                            <div class="mt-2">
+                                <span class="bg-purple-100 text-purple-800 px-2 py-1 rounded text-xs">プレミアム</span>
+                            </div>
+                        </div>
+
+                        <div class="p-3 rounded-lg hover:bg-gray-50 cursor-pointer">
+                            <div class="flex items-center justify-between mb-2">
+                                <h4 class="font-medium text-sm line-clamp-2">Excel×AI活用術</h4>
+                            </div>
+                            <div class="text-xs text-gray-600">明日 19:00</div>
+                            <div class="text-xs text-gray-500 mt-1">👨‍🏫 中村 効率化</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let viewerCount = 387;
+        let messages = [
+            { user: 'システム', message: 'ライブ配信が開始されました！', time: '19:30', type: 'system' },
+            { user: '田中太郎', message: 'こんにちは！楽しみにしていました', time: '19:32', type: 'message' },
+            { user: '佐藤花子', message: 'よろしくお願いします🙂', time: '19:35', type: 'message' },
+            { user: '山田次郎', message: 'ChatGPTの新機能について質問があります', time: '19:37', type: 'message' },
+            { user: '鈴木美咲', message: '音声クリアです！', time: '19:39', type: 'message' }
+        ];
+
+        function initializeChat() {
+            const chatContainer = document.getElementById('chatMessages');
+            chatContainer.innerHTML = messages.map(msg => {
+                if (msg.type === 'system') {
+                    return `
+                        <div class="w-full text-center">
+                            <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-xs">${msg.message}</span>
+                        </div>
+                    `;
+                } else if (msg.type === 'reaction') {
+                    return `
+                        <div class="w-full">
+                            <span class="text-2xl">${msg.message}</span>
+                        </div>
+                    `;
+                } else {
+                    return `
+                        <div class="flex gap-2">
+                            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center text-white text-sm font-medium flex-shrink-0">
+                                ${msg.user.charAt(0)}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 mb-1">
+                                    <span class="font-medium text-sm text-gray-900">${msg.user}</span>
+                                    <span class="text-xs text-gray-500">${msg.time}</span>
+                                </div>
+                                <div class="text-sm text-gray-700 break-words">${msg.message}</div>
+                            </div>
+                        </div>
+                    `;
+                }
+            }).join('');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            messages.push({
+                user: '田中太郎',
+                message: message,
+                time: timeStr,
+                type: 'message'
+            });
+
+            input.value = '';
+            initializeChat();
+
+            // Simulate other viewers' reactions
+            setTimeout(() => {
+                if (Math.random() > 0.7) {
+                    const reactions = ['👍', '👏', '🎉', '💡', '❤️'];
+                    const randomReaction = reactions[Math.floor(Math.random() * reactions.length)];
+                    messages.push({
+                        user: 'リスナー',
+                        message: randomReaction,
+                        time: timeStr,
+                        type: 'reaction'
+                    });
+                    initializeChat();
+                }
+            }, 1000 + Math.random() * 3000);
+        }
+
+        function sendReaction(emoji) {
+            const now = new Date();
+            const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+            
+            messages.push({
+                user: '田中太郎',
+                message: emoji,
+                time: timeStr,
+                type: 'reaction'
+            });
+
+            initializeChat();
+        }
+
+        function handleKeyPress(event) {
+            if (event.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        // Simulate viewer count changes
+        function updateViewerCount() {
+            viewerCount += Math.floor(Math.random() * 10) - 5;
+            if (viewerCount < 300) viewerCount = 300;
+            if (viewerCount > 500) viewerCount = 500;
+            
+            document.getElementById('viewerCount').textContent = viewerCount;
+            document.getElementById('currentViewers').textContent = viewerCount;
+        }
+
+        // Simulate random chat messages
+        function simulateChat() {
+            const randomMessages = [
+                'とても分かりやすい説明ですね！',
+                'GPT-4oすごいです',
+                '質問：この機能はいつから使えますか？',
+                'ありがとうございます！',
+                '参考になります',
+                '実際に試してみます',
+                'すばらしい！',
+                '次の配信も楽しみです'
+            ];
+
+            const randomUsers = ['佐藤さん', '田中さん', '山田さん', '鈴木さん', '高橋さん', 'AIファン', '初心者'];
+
+            if (Math.random() > 0.3) {
+                const now = new Date();
+                const timeStr = now.getHours().toString().padStart(2, '0') + ':' + now.getMinutes().toString().padStart(2, '0');
+                
+                messages.push({
+                    user: randomUsers[Math.floor(Math.random() * randomUsers.length)],
+                    message: randomMessages[Math.floor(Math.random() * randomMessages.length)],
+                    time: timeStr,
+                    type: 'message'
+                });
+
+                // Keep only last 20 messages
+                if (messages.length > 20) {
+                    messages = messages.slice(-20);
+                }
+
+                initializeChat();
+            }
+        }
+
+        // Initialize
+        initializeChat();
+
+        // Start simulations
+        setInterval(updateViewerCount, 5000);
+        setInterval(simulateChat, 8000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめて.AI - 認証システムデモ</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-600">はじめて.AI</div>
+                <div class="flex space-x-4">
+                    <button onclick="showSignIn()" class="text-gray-700 hover:text-blue-600 transition-colors">ログイン</button>
+                    <button onclick="showSignUp()" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">登録</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div id="home" class="container mx-auto px-4 py-16">
+        <div class="text-center">
+            <h1 class="text-5xl font-bold text-gray-900 mb-6">
+                はじめて<span class="text-blue-600">.AI</span>
+            </h1>
+            <p class="text-xl text-gray-600 mb-8">Schoo風認証システム実装完了！</p>
+            
+            <div class="bg-white p-8 rounded-lg shadow-md max-w-2xl mx-auto mb-8">
+                <h2 class="text-2xl font-bold mb-4">🎉 実装完了機能</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-left">
+                    <div>
+                        <h3 class="font-semibold text-green-600 mb-2">✅ 認証システム</h3>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• Schoo風ログインページ</li>
+                            <li>• 新規登録フロー</li>
+                            <li>• メール認証</li>
+                            <li>• プラン選択画面</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <h3 class="font-semibold text-green-600 mb-2">✅ アクセス制御</h3>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>• 学部別アクセス制御</li>
+                            <li>• プラン別権限管理</li>
+                            <li>• ダッシュボード統合</li>
+                            <li>• リアルタイム権限チェック</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+                <div class="bg-white p-6 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-2">ベーシックプラン</h3>
+                    <p class="text-3xl font-bold text-blue-600 mb-4">¥1,650<span class="text-sm text-gray-500">/月</span></p>
+                    <ul class="text-left text-sm text-gray-600 space-y-2 mb-4">
+                        <li>• AI基礎学部</li>
+                        <li>• 業務効率化学部</li>
+                        <li>• 基本セミナー参加</li>
+                    </ul>
+                    <button onclick="selectPlan('basic')" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                        ベーシックプランを選択
+                    </button>
+                </div>
+                
+                <div class="bg-white p-6 rounded-lg shadow-md border-2 border-purple-500">
+                    <div class="flex justify-center mb-2">
+                        <span class="bg-purple-500 text-white px-3 py-1 rounded-full text-xs">おすすめ</span>
+                    </div>
+                    <h3 class="text-lg font-semibold mb-2">プレミアムプラン</h3>
+                    <p class="text-3xl font-bold text-purple-600 mb-4">¥5,500<span class="text-sm text-gray-500">/月</span></p>
+                    <ul class="text-left text-sm text-gray-600 space-y-2 mb-4">
+                        <li>• 全5学部アクセス</li>
+                        <li>• ライブ配信視聴</li>
+                        <li>• プレミアムセミナー</li>
+                        <li>• 個別サポート</li>
+                    </ul>
+                    <button onclick="selectPlan('premium')" class="w-full bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
+                        プレミアムプランを選択
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sign In Modal -->
+    <div id="signInModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">ログイン</h2>
+                <button onclick="closeModals()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <form onsubmit="handleSignIn(event)">
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">メールアドレス</label>
+                    <input type="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="your@email.com">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">パスワード</label>
+                    <input type="password" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="パスワード">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                    ログイン
+                </button>
+            </form>
+            <p class="text-center text-sm text-gray-600 mt-4">
+                アカウントをお持ちでない方は
+                <button onclick="showSignUp()" class="text-blue-600 hover:text-blue-500">新規登録</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Sign Up Modal -->
+    <div id="signUpModal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+        <div class="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold">新規登録</h2>
+                <button onclick="closeModals()" class="text-gray-500 hover:text-gray-700">✕</button>
+            </div>
+            <form onsubmit="handleSignUp(event)">
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">姓</label>
+                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="田中">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-2">名</label>
+                        <input type="text" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="太郎">
+                    </div>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">メールアドレス</label>
+                    <input type="email" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="your@email.com">
+                </div>
+                <div class="mb-6">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">パスワード</label>
+                    <input type="password" required class="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500" placeholder="8文字以上">
+                </div>
+                <button type="submit" class="w-full bg-blue-600 text-white py-2 rounded-lg hover:bg-blue-700">
+                    アカウント作成
+                </button>
+            </form>
+            <p class="text-center text-sm text-gray-600 mt-4">
+                すでにアカウントをお持ちの方は
+                <button onclick="showSignIn()" class="text-blue-600 hover:text-blue-500">ログイン</button>
+            </p>
+        </div>
+    </div>
+
+    <!-- Dashboard (Demo) -->
+    <div id="dashboard" class="hidden container mx-auto px-4 py-8">
+        <div class="bg-white rounded-lg shadow-md p-8">
+            <div class="flex justify-between items-center mb-6">
+                <h1 class="text-3xl font-bold">ダッシュボード</h1>
+                <button onclick="logout()" class="text-red-600 hover:text-red-700">ログアウト</button>
+            </div>
+            
+            <div id="planInfo" class="bg-gradient-to-r from-blue-500 to-purple-600 rounded-lg p-6 text-white mb-8">
+                <h2 class="text-xl font-semibold mb-2">選択されたプラン</h2>
+                <p id="selectedPlan" class="opacity-90"></p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="font-semibold mb-2">アクセス可能な学部</h3>
+                    <div id="accessibleDepartments"></div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="font-semibold mb-2">学習進捗</h3>
+                    <p class="text-gray-600">今月: 12時間</p>
+                    <div class="w-full bg-gray-300 rounded-full h-2 mt-2">
+                        <div class="bg-blue-600 h-2 rounded-full" style="width: 75%"></div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-lg">
+                    <h3 class="font-semibold mb-2">次回セミナー</h3>
+                    <p class="text-gray-600">7月20日 19:00〜</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentUser = null;
+        let currentPlan = null;
+
+        function showSignIn() {
+            closeModals();
+            document.getElementById('signInModal').classList.remove('hidden');
+        }
+
+        function showSignUp() {
+            closeModals();
+            document.getElementById('signUpModal').classList.remove('hidden');
+        }
+
+        function closeModals() {
+            document.getElementById('signInModal').classList.add('hidden');
+            document.getElementById('signUpModal').classList.add('hidden');
+        }
+
+        function handleSignIn(event) {
+            event.preventDefault();
+            // デモ用の簡単な認証
+            currentUser = { name: '田中太郎', email: 'tanaka@example.com' };
+            closeModals();
+            if (currentPlan) {
+                showDashboard();
+            } else {
+                alert('プランを選択してください');
+            }
+        }
+
+        function handleSignUp(event) {
+            event.preventDefault();
+            currentUser = { name: '田中太郎', email: 'tanaka@example.com' };
+            closeModals();
+            alert('認証メールを送信しました（デモ）');
+            if (currentPlan) {
+                showDashboard();
+            } else {
+                alert('プランを選択してください');
+            }
+        }
+
+        function selectPlan(plan) {
+            currentPlan = plan;
+            if (currentUser) {
+                showDashboard();
+            } else {
+                alert('まずはアカウントを作成してください');
+                showSignUp();
+            }
+        }
+
+        function showDashboard() {
+            document.getElementById('home').classList.add('hidden');
+            document.getElementById('dashboard').classList.remove('hidden');
+            
+            // プラン情報を表示
+            const planName = currentPlan === 'premium' ? 'プレミアムプラン (¥5,500/月)' : 'ベーシックプラン (¥1,650/月)';
+            document.getElementById('selectedPlan').textContent = planName;
+
+            // アクセス可能な学部を表示
+            const departments = currentPlan === 'premium' 
+                ? ['AI基礎学部', '業務効率化学部', 'データサイエンス学部', 'AI開発学部', 'ビジネスAI学部']
+                : ['AI基礎学部', '業務効率化学部'];
+            
+            const departmentsList = departments.map(dept => `<span class="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full mr-1 mb-1">${dept}</span>`).join('');
+            document.getElementById('accessibleDepartments').innerHTML = departmentsList;
+        }
+
+        function logout() {
+            currentUser = null;
+            currentPlan = null;
+            document.getElementById('dashboard').classList.add('hidden');
+            document.getElementById('home').classList.remove('hidden');
+        }
+
+        // ESCキーでモーダルを閉じる
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModals();
+            }
+        });
+    </script>
+</body>
+</html>

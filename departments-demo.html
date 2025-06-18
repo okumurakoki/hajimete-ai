@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめて.AI - 学部制動画システム</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Navigation -->
+    <nav class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <div class="text-2xl font-bold text-blue-600">はじめて.AI</div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 bg-purple-100 text-purple-800 rounded-full text-sm font-medium">プレミアム</span>
+                    <div class="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">田</div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Department Selection -->
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-gray-900 mb-8">学部を選択してください</h1>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
+            <!-- AI基礎学部 -->
+            <div onclick="showDepartment('ai-basics')" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
+                <div class="h-2 bg-blue-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">🤖</span>
+                        <h3 class="font-semibold text-gray-900">AI基礎学部</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">AIの基本概念から実践的な活用方法まで学ぶ</p>
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">ベーシック</span>
+                        <span class="text-blue-600 text-sm font-medium">8本の動画</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 業務効率化学部 -->
+            <div onclick="showDepartment('productivity')" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
+                <div class="h-2 bg-green-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">⚡</span>
+                        <h3 class="font-semibold text-gray-900">業務効率化学部</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">日常業務にAIを活用して生産性を向上させる方法</p>
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">ベーシック</span>
+                        <span class="text-green-600 text-sm font-medium">10本の動画</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- データサイエンス学部 -->
+            <div onclick="showDepartment('data-science')" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
+                <div class="h-2 bg-purple-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">📊</span>
+                        <h3 class="font-semibold text-gray-900">データサイエンス学部</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">データ分析とAIモデル構築の実践スキル</p>
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">プレミアム</span>
+                        <span class="text-purple-600 text-sm font-medium">8本の動画</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- AI開発学部 -->
+            <div onclick="showDepartment('ai-development')" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
+                <div class="h-2 bg-orange-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">💻</span>
+                        <h3 class="font-semibold text-gray-900">AI開発学部</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">AIアプリケーションの開発とデプロイメント</p>
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">プレミアム</span>
+                        <span class="text-orange-600 text-sm font-medium">5本の動画</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ビジネスAI学部 -->
+            <div onclick="showDepartment('business-ai')" class="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow cursor-pointer overflow-hidden">
+                <div class="h-2 bg-red-600"></div>
+                <div class="p-6">
+                    <div class="flex items-center mb-3">
+                        <span class="text-2xl mr-3">🎯</span>
+                        <h3 class="font-semibold text-gray-900">ビジネスAI学部</h3>
+                    </div>
+                    <p class="text-gray-600 text-sm mb-4">経営戦略とAI活用の実践的アプローチ</p>
+                    <div class="flex items-center justify-between">
+                        <span class="px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">プレミアム</span>
+                        <span class="text-red-600 text-sm font-medium">5本の動画</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Department View -->
+    <div id="departmentView" class="hidden">
+        <!-- Department Header -->
+        <div id="departmentHeader" class="bg-blue-50 border-b">
+            <div class="container mx-auto px-4 py-12">
+                <button onclick="backToHome()" class="text-blue-600 hover:text-blue-700 mb-4 flex items-center">
+                    ← 学部一覧に戻る
+                </button>
+                <div class="flex items-center mb-4">
+                    <span id="departmentIcon" class="text-4xl mr-4">🤖</span>
+                    <div>
+                        <h1 id="departmentName" class="text-4xl font-bold text-blue-600 mb-2">AI基礎学部</h1>
+                        <p id="departmentDesc" class="text-gray-700 text-lg">AIの基本概念から実践的な活用方法まで学ぶ</p>
+                    </div>
+                </div>
+                <div class="grid grid-cols-4 gap-4 mt-8">
+                    <div class="bg-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-gray-900">8</div>
+                        <div class="text-sm text-gray-600">総コンテンツ数</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-blue-600">6</div>
+                        <div class="text-sm text-gray-600">録画コンテンツ</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-red-600">1</div>
+                        <div class="text-sm text-gray-600">ライブ配信</div>
+                    </div>
+                    <div class="bg-white rounded-lg p-4 text-center">
+                        <div class="text-2xl font-bold text-gray-600">1</div>
+                        <div class="text-sm text-gray-600">アーカイブ</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Videos Grid -->
+        <div class="container mx-auto px-4 py-8">
+            <div id="videosGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                <!-- Videos will be populated by JavaScript -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const departments = {
+            'ai-basics': {
+                name: 'AI基礎学部',
+                icon: '🤖',
+                description: 'AIの基本概念から実践的な活用方法まで学ぶ',
+                color: 'blue',
+                videos: [
+                    {
+                        title: 'ChatGPT完全入門 - 基本的な使い方から応用まで',
+                        instructor: '田中 AI太郎',
+                        duration: '45:30',
+                        type: 'recorded',
+                        level: 'beginner',
+                        isNew: true,
+                        isPopular: true
+                    },
+                    {
+                        title: 'Claude入門 - Anthropic製AIアシスタントの活用法',
+                        instructor: '佐藤 みらい',
+                        duration: '38:15',
+                        type: 'recorded',
+                        level: 'beginner',
+                        isNew: true
+                    },
+                    {
+                        title: '【ライブ配信】AI基礎Q&A - 視聴者の質問に答えます',
+                        instructor: '田中 AI太郎',
+                        duration: '60:00',
+                        type: 'live',
+                        level: 'beginner'
+                    }
+                ]
+            },
+            'productivity': {
+                name: '業務効率化学部',
+                icon: '⚡',
+                description: '日常業務にAIを活用して生産性を向上させる方法',
+                color: 'green',
+                videos: [
+                    {
+                        title: 'Excel×AI で業務効率10倍アップ！実践テクニック',
+                        instructor: '中村 効率化',
+                        duration: '42:30',
+                        type: 'recorded',
+                        level: 'beginner',
+                        isNew: true,
+                        isPopular: true
+                    },
+                    {
+                        title: 'AIを使った会議資料作成術 - PowerPoint自動生成',
+                        instructor: '田中 プレゼン',
+                        duration: '35:45',
+                        type: 'recorded',
+                        level: 'beginner',
+                        isNew: true
+                    }
+                ]
+            },
+            'data-science': {
+                name: 'データサイエンス学部',
+                icon: '📊',
+                description: 'データ分析とAIモデル構築の実践スキル',
+                color: 'purple',
+                videos: [
+                    {
+                        title: 'Python×AI入門 - データ分析の第一歩',
+                        instructor: '博士 データ',
+                        duration: '56:30',
+                        type: 'recorded',
+                        level: 'beginner',
+                        isNew: true,
+                        isPremium: true
+                    },
+                    {
+                        title: '機械学習アルゴリズム完全ガイド',
+                        instructor: '教授 ML',
+                        duration: '78:20',
+                        type: 'recorded',
+                        level: 'intermediate',
+                        isPremium: true,
+                        isPopular: true
+                    }
+                ]
+            }
+        };
+
+        function showDepartment(deptId) {
+            const dept = departments[deptId];
+            if (!dept) return;
+
+            // Hide home, show department view
+            document.querySelector('.container').style.display = 'none';
+            document.getElementById('departmentView').classList.remove('hidden');
+
+            // Update header
+            const header = document.getElementById('departmentHeader');
+            header.className = `bg-${dept.color}-50 border-b`;
+            
+            document.getElementById('departmentIcon').textContent = dept.icon;
+            document.getElementById('departmentName').textContent = dept.name;
+            document.getElementById('departmentName').className = `text-4xl font-bold text-${dept.color}-600 mb-2`;
+            document.getElementById('departmentDesc').textContent = dept.description;
+
+            // Generate videos
+            const videosGrid = document.getElementById('videosGrid');
+            videosGrid.innerHTML = dept.videos.map(video => `
+                <div class="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 overflow-hidden cursor-pointer group">
+                    <div class="relative aspect-video bg-gray-200 overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-br from-gray-300 to-gray-400 flex items-center justify-center">
+                            <div class="text-6xl text-gray-500">🎬</div>
+                        </div>
+                        
+                        <div class="absolute top-3 left-3 ${getTypeBadgeColor(video.type)} text-white px-2 py-1 rounded text-xs font-medium">
+                            ${getTypeLabel(video.type)}
+                        </div>
+
+                        <div class="absolute bottom-3 right-3 bg-black bg-opacity-75 text-white px-2 py-1 rounded text-xs">
+                            ${video.duration}
+                        </div>
+
+                        <div class="absolute top-3 right-3 flex gap-1">
+                            ${video.isNew ? '<span class="bg-green-500 text-white px-2 py-1 rounded text-xs font-medium">NEW</span>' : ''}
+                            ${video.isPopular ? '<span class="bg-orange-500 text-white px-2 py-1 rounded text-xs font-medium">人気</span>' : ''}
+                            ${video.isPremium ? '<span class="bg-purple-500 text-white px-2 py-1 rounded text-xs font-medium">プレミアム</span>' : ''}
+                        </div>
+
+                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
+                            <div class="w-16 h-16 bg-white bg-opacity-0 group-hover:bg-opacity-90 rounded-full flex items-center justify-center transition-all duration-300">
+                                <svg class="w-6 h-6 text-transparent group-hover:text-gray-800 ml-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="p-4">
+                        <h3 class="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-${dept.color}-600 transition-colors">
+                            ${video.title}
+                        </h3>
+                        <p class="text-sm text-gray-600 mb-2">${video.instructor}</p>
+                        <div class="flex items-center justify-between text-xs text-gray-500">
+                            <span class="px-2 py-1 bg-${dept.color}-100 text-${dept.color}-800 text-xs rounded-full">${getLevelLabel(video.level)}</span>
+                            <span>2024/06/15</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function backToHome() {
+            document.querySelector('.container').style.display = 'block';
+            document.getElementById('departmentView').classList.add('hidden');
+        }
+
+        function getTypeBadgeColor(type) {
+            switch(type) {
+                case 'live': return 'bg-red-500';
+                case 'archive': return 'bg-gray-500';
+                default: return 'bg-blue-500';
+            }
+        }
+
+        function getTypeLabel(type) {
+            switch(type) {
+                case 'live': return '生放送';
+                case 'archive': return 'アーカイブ';
+                default: return '録画';
+            }
+        }
+
+        function getLevelLabel(level) {
+            switch(level) {
+                case 'intermediate': return '中級';
+                case 'advanced': return '上級';
+                default: return '初級';
+            }
+        }
+    </script>
+</body>
+</html>

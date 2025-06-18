@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>はじめて.AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="min-h-screen bg-gradient-to-b from-blue-50 to-white">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex justify-between items-center">
+                <a href="#" class="text-2xl font-bold text-blue-600">はじめて.AI</a>
+                <nav class="flex space-x-6">
+                    <a href="#dashboard" class="text-gray-700 hover:text-blue-600 transition-colors">ダッシュボード</a>
+                    <a href="#videos" class="text-gray-700 hover:text-blue-600 transition-colors">動画</a>
+                    <a href="#seminars" class="text-gray-700 hover:text-blue-600 transition-colors">セミナー</a>
+                    <a href="#admin" class="text-gray-700 hover:text-blue-600 transition-colors">管理</a>
+                </nav>
+                <div class="flex space-x-4">
+                    <button class="text-gray-700 hover:text-blue-600 transition-colors">ログイン</button>
+                    <button class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors">登録</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 container mx-auto px-4 py-16">
+        <div class="text-center">
+            <h1 class="text-5xl font-bold text-gray-900 mb-6">
+                はじめて<span class="text-blue-600">.AI</span>
+            </h1>
+            <p class="text-xl text-gray-600 mb-8">AI学習の第一歩を始めよう</p>
+            
+            <!-- Pricing Cards -->
+            <div class="space-y-4 mb-12">
+                <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto">
+                    <h3 class="text-lg font-semibold mb-2">ベーシックプラン</h3>
+                    <p class="text-3xl font-bold text-blue-600">¥1,650<span class="text-sm text-gray-500">/月</span></p>
+                    <ul class="mt-4 text-gray-600 text-sm">
+                        <li>• 基本動画コンテンツ</li>
+                        <li>• セミナー参加権</li>
+                    </ul>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto border-2 border-blue-500">
+                    <h3 class="text-lg font-semibold mb-2">プロプラン</h3>
+                    <p class="text-3xl font-bold text-blue-600">¥5,500<span class="text-sm text-gray-500">/月</span></p>
+                    <ul class="mt-4 text-gray-600 text-sm">
+                        <li>• 全動画コンテンツ</li>
+                        <li>• プライベートセミナー</li>
+                        <li>• 個別サポート</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- CTA Buttons -->
+            <div class="space-x-4">
+                <button onclick="showDashboard()" class="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors">
+                    ダッシュボード
+                </button>
+                <button onclick="showVideos()" class="border border-blue-600 text-blue-600 px-8 py-3 rounded-lg hover:bg-blue-50 transition-colors">
+                    動画を見る
+                </button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Dashboard Section (Hidden by default) -->
+    <div id="dashboard" class="hidden container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold mb-6">ダッシュボード</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">学習進捗</h3>
+                <p class="text-gray-600">進捗状況を確認できます</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">最新動画</h3>
+                <p class="text-gray-600">新着の学習動画をチェック</p>
+            </div>
+            <div class="bg-white p-6 rounded-lg shadow-md">
+                <h3 class="text-xl font-semibold mb-4">セミナー予約</h3>
+                <p class="text-gray-600">今後のセミナーを予約</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Videos Section (Hidden by default) -->
+    <div id="videos" class="hidden container mx-auto px-4 py-8">
+        <h2 class="text-3xl font-bold mb-6">動画一覧</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">動画 1</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">AI基礎講座 第1回</h3>
+                    <p class="text-gray-600 text-sm">AI学習の基本を学ぼう</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">動画 2</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">AI基礎講座 第2回</h3>
+                    <p class="text-gray-600 text-sm">機械学習の基礎</p>
+                </div>
+            </div>
+            <div class="bg-white rounded-lg shadow-md overflow-hidden">
+                <div class="h-48 bg-gray-200 flex items-center justify-center">
+                    <span class="text-gray-500">動画 3</span>
+                </div>
+                <div class="p-4">
+                    <h3 class="font-semibold mb-2">AI基礎講座 第3回</h3>
+                    <p class="text-gray-600 text-sm">実践的なAI活用</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-50 border-t mt-16">
+        <div class="container mx-auto px-4 py-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-lg font-semibold mb-4">はじめて.AI</h3>
+                    <p class="text-gray-600">AI学習の第一歩を始めよう</p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">サービス</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-blue-600">動画学習</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-600">セミナー</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">サポート</h4>
+                    <ul class="space-y-2">
+                        <li><a href="#" class="text-gray-600 hover:text-blue-600">お問い合わせ</a></li>
+                        <li><a href="#" class="text-gray-600 hover:text-blue-600">よくある質問</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="border-t mt-8 pt-8 text-center text-gray-600">
+                <p>&copy; 2024 はじめて.AI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function showDashboard() {
+            document.querySelector('main').style.display = 'none';
+            document.getElementById('videos').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'block';
+        }
+
+        function showVideos() {
+            document.querySelector('main').style.display = 'none';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('videos').style.display = 'block';
+        }
+
+        function showHome() {
+            document.querySelector('main').style.display = 'block';
+            document.getElementById('dashboard').style.display = 'none';
+            document.getElementById('videos').style.display = 'none';
+        }
+
+        // Header navigation
+        document.querySelector('header a').addEventListener('click', showHome);
+    </script>
+</body>
+</html>
