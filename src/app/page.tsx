@@ -9,7 +9,7 @@ import { Play, Users, BookOpen, Star, ChevronRight, TrendingUp, Clock, Award } f
 
 export default function HomePage() {
   const { isSignedIn, user } = useUser()
-  const userPlan = user?.publicMetadata?.plan as string
+  const userPlan = user?.unsafeMetadata?.plan as string
 
   const stats = [
     {

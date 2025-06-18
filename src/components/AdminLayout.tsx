@@ -15,7 +15,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
   const [sidebarOpen, setSidebarOpen] = useState(false)
 
   // 管理者権限チェック
-  const isAdmin = user?.publicMetadata?.role === 'admin'
+  const isAdmin = user?.unsafeMetadata?.role === 'admin'
 
   if (!isAdmin) {
     return (

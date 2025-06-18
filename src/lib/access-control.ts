@@ -29,8 +29,8 @@ export const DEPARTMENT_ACCESS: Record<Plan, Department[]> = {
 }
 
 export function createAccessControl(user: User | null): AccessControl {
-  const userPlan = user?.publicMetadata?.plan as Plan | null
-  const userDepartments = (user?.publicMetadata?.departments as Department[]) || []
+  const userPlan = user?.unsafeMetadata?.plan as Plan | null
+  const userDepartments = (user?.unsafeMetadata?.departments as Department[]) || []
 
   return {
     canAccessDepartment: (department: Department) => {

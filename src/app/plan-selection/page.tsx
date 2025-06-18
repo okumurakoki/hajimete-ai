@@ -54,7 +54,7 @@ export default function PlanSelection() {
     try {
       // ここでプラン情報をユーザーメタデータに保存
       await user?.update({
-        publicMetadata: {
+        unsafeMetadata: {
           plan: planId,
           departments: plans.find(p => p.id === planId)?.departments || []
         }

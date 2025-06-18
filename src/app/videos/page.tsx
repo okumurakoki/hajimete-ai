@@ -19,7 +19,7 @@ export default function Videos() {
   const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'duration' | 'title'>('newest')
   const [showPremiumOnly, setShowPremiumOnly] = useState(false)
 
-  const userPlan = user?.publicMetadata?.plan as string
+  const userPlan = user?.unsafeMetadata?.plan as string
 
   useEffect(() => {
     const mockVideos = generateMockVideos()

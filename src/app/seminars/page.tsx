@@ -17,7 +17,7 @@ export default function SeminarsPage() {
     setSeminars(mockSeminars)
   }, [])
 
-  const userPlan = user?.publicMetadata?.plan as string
+  const userPlan = user?.unsafeMetadata?.plan as string
   const registeredSeminars = new Set(['seminar-1', 'seminar-3']) // モックの登録済みセミナー
 
   const filteredSeminars = seminars.filter(seminar => {

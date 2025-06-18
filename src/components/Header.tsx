@@ -10,8 +10,8 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
 
   // ユーザーのプランを取得
-  const userPlan = user?.publicMetadata?.plan as string
-  const userDepartments = user?.publicMetadata?.departments as string[] || []
+  const userPlan = user?.unsafeMetadata?.plan as string
+  const userDepartments = user?.unsafeMetadata?.departments as string[] || []
 
   const navigation = [
     {
@@ -42,7 +42,7 @@ export default function Header() {
       name: '管理',
       href: '/admin/dashboard',
       icon: Settings,
-      show: isSignedIn && user?.publicMetadata?.role === 'admin'
+      show: isSignedIn && user?.unsafeMetadata?.role === 'admin'
     }
   ]
 

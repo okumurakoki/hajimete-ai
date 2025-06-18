@@ -9,7 +9,7 @@ import { BookOpen, Play, Calendar, TrendingUp, Award, Clock, ChevronRight } from
 
 export default function Dashboard() {
   const { user } = useUser()
-  const userPlan = user?.publicMetadata?.plan as string || 'basic'
+  const userPlan = user?.unsafeMetadata?.plan as string || 'basic'
   
   const accessibleDepartments = userPlan === 'premium' 
     ? DEPARTMENTS 

@@ -19,7 +19,7 @@ export default function VideoDetailPage() {
   const [isFavorited, setIsFavorited] = useState(false)
   const [isWatchLater, setIsWatchLater] = useState(false)
 
-  const userPlan = user?.publicMetadata?.plan as string
+  const userPlan = user?.unsafeMetadata?.plan as string
 
   useEffect(() => {
     const videos = generateMockVideos()

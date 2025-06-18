@@ -33,7 +33,7 @@ export default function LivePage() {
     return () => clearInterval(timer)
   }, [])
 
-  const userPlan = user?.publicMetadata?.plan as string
+  const userPlan = user?.unsafeMetadata?.plan as string
 
   if (!selectedStream) {
     return (
