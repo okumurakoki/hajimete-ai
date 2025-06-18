@@ -7,7 +7,8 @@
         name: 'AI基礎学部',
         slug: 'ai-basics',
         description: 'AIの基本概念から実践的な活用方法まで学ぶ',
-        colorPrimary: '#3B82F6',
+        colorClass: 'bg-blue-500 hover:bg-blue-600',
+        textColorClass: 'text-blue-500',
         icon: '🤖',
         accessLevel: 'basic'
       },
@@ -17,7 +18,8 @@
         slug: 'productivity',
         description:
   '日常業務にAIを活用して生産性を向上させる方法',
-        colorPrimary: '#10B981',
+        colorClass: 'bg-green-500 hover:bg-green-600',
+        textColorClass: 'text-green-500',
         icon: '⚡',
         accessLevel: 'basic'
       },
@@ -26,7 +28,8 @@
         name: '実践応用学部',
         slug: 'practical-application',
         description: '実際のビジネス現場でのAI活用事例と実践',
-        colorPrimary: '#F97316',
+        colorClass: 'bg-orange-500 hover:bg-orange-600',
+        textColorClass: 'text-orange-500',
         icon: '🚀',
         accessLevel: 'basic'
       },
@@ -35,7 +38,8 @@
         name: 'キャッチアップ学部',
         slug: 'catchup',
         description: '最新のAI技術とトレンドを学ぶプレミアム講座',
-        colorPrimary: '#8B5CF6',
+        colorClass: 'bg-purple-500 hover:bg-purple-600',
+        textColorClass: 'text-purple-500',
         icon: '⭐',
         accessLevel: 'premium'
       }
@@ -64,17 +68,16 @@
   rounded-lg shadow-md hover:shadow-lg transition-shadow">
                     <div className="text-4xl 
   mb-4">{dept.icon}</div>
-                    <h3 className="text-lg font-semibold mb-2" 
-  style={{color: dept.colorPrimary}}>
+                    <h3 className={`text-lg font-semibold mb-2 
+  ${dept.textColorClass}`}>
                       {dept.name}
                     </h3>
                     <p className="text-gray-600 text-sm 
   mb-4">{dept.description}</p>
                     <Link 
                       href={`/${dept.slug}`}
-                      className="inline-block px-4 py-2 rounded 
-  text-white text-sm"
-                      style={{backgroundColor: dept.colorPrimary}}
+                      className={`inline-block px-4 py-2 rounded 
+  text-white text-sm ${dept.colorClass} transition-colors`}
                     >
                       詳細を見る
                     </Link>
