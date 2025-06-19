@@ -11,19 +11,10 @@
     "start": "next start",
     "start:https": "NODE_ENV=production node server-https.js",
     "lint": "next lint",
-    "pre-build-check": "node scripts/pre-build-check.js",
-    "db:generate": "prisma generate",
-    "db:push": "prisma db push",
-    "db:seed": "tsx prisma/seed.ts",
-    "db:studio": "prisma studio",
-    "db:reset": "prisma db push --force-reset && npm run db:seed"
-  },
-  "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "pre-build-check": "node scripts/pre-build-check.js"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.1.4",
-    "@prisma/client": "^6.10.0",
     "@stripe/stripe-js": "^7.3.1",
     "@supabase/supabase-js": "^2.45.4",
     "@vimeo/vimeo": "^3.0.3",
@@ -32,7 +23,6 @@
     "lucide-react": "^0.263.1",
     "next": "15.2.3",
     "postcss": "^8",
-    "prisma": "^6.10.0",
     "react": "^18",
     "react-dom": "^18",
     "stripe": "^18.2.1",
