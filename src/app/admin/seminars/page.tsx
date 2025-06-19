@@ -1,21 +1,57 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-
-// Disable static generation for admin pages
-export const dynamic = 'force-dynamic'
-import AdminLayout from '@/components/AdminLayout'
+import AdminLayout from '@/components/admin/AdminLayout'
+import Link from 'next/link'
 import { 
-  AdminSeminar, 
-  generateMockAdminSeminars,
-  getStatusColor,
-  getStatusLabel,
-  formatNumber
-} from '@/lib/admin'
+  Calendar, 
+  Plus, 
+  Search, 
+  Filter, 
+  Edit, 
+  Eye, 
+  Trash2, 
+  Users, 
+  Clock, 
+  Video, 
+  Star,
+  Play,
+  Pause,
+  UserCheck,
+  Globe,
+  Lock,
+  TrendingUp,
+  CheckCircle,
+  XCircle,
+  AlertCircle
+} from 'lucide-react'
+
+export const dynamic = 'force-dynamic'
+
+interface SeminarData {
+  id: string
+  title: string
+  description: string
+  instructor: string
+  date: string
+  startTime: string
+  endTime: string
+  capacity: number
+  registered: number
+  attended?: number
+  isPremium: boolean
+  status: 'upcoming' | 'ongoing' | 'completed' | 'cancelled'
+  zoomMeetingId?: string
+  zoomPasscode?: string
+  averageRating?: number
+  tags: string[]
+  revenue?: number
+  feedback?: number
+}
 
 export default function AdminSeminars() {
-  const [seminars, setSeminars] = useState<AdminSeminar[]>([])
-  const [filteredSeminars, setFilteredSeminars] = useState<AdminSeminar[]>([])
+  const [seminars, setSeminars] = useState<SeminarData[]>([])
+  const [filteredSeminars, setFilteredSeminars] = useState<SeminarData[]>([])
   const [loading, setLoading] = useState(true)
   const [searchQuery, setSearchQuery] = useState('')
   const [statusFilter, setStatusFilter] = useState<string>('all')
@@ -23,15 +59,101 @@ export default function AdminSeminars() {
   const [dateFilter, setDateFilter] = useState<string>('all')
 
   const [showModal, setShowModal] = useState(false)
-  const [editingSeminar, setEditingSeminar] = useState<AdminSeminar | null>(null)
+  const [editingSeminar, setEditingSeminar] = useState<SeminarData | null>(null)
+  const [selectedSeminars, setSelectedSeminars] = useState<string[]>([])
 
   useEffect(() => {
-    setTimeout(() => {
-      const mockSeminars = generateMockAdminSeminars()
-      setSeminars(mockSeminars)
-      setFilteredSeminars(mockSeminars)
-      setLoading(false)
-    }, 1000)
+    // モックセミナーデータの生成
+    const mockSeminars: SeminarData[] = [
+      {
+        id: 'seminar-1',
+        title: 'ChatGPT活用実践セミナー',
+        description: 'ビジネスでのChatGPT活用法を実践的に学ぶセミナーです。',
+        instructor: '田中AI博士',
+        date: '2024-06-20',
+        startTime: '14:00',
+        endTime: '16:00',
+        capacity: 100,
+        registered: 85,
+        attended: 78,
+        isPremium: false,
+        status: 'completed',
+        zoomMeetingId: '123-456-789',
+        zoomPasscode: 'ai2024',
+        averageRating: 4.5,
+        tags: ['ChatGPT', 'ビジネス', '実践'],
+        revenue: 425000,
+        feedback: 75
+      },
+      {
+        id: 'seminar-2',
+        title: 'AI画像生成ワークショップ',
+        description: 'Midjourney、DALL-Eを使った画像生成技術を体験できます。',
+        instructor: '山田クリエイター',
+        date: '2024-06-25',
+        startTime: '10:00',
+        endTime: '12:00',
+        capacity: 50,
+        registered: 45,
+        isPremium: true,
+        status: 'upcoming',
+        zoomMeetingId: '987-654-321',
+        zoomPasscode: 'create2024',
+        tags: ['AI画像', 'Midjourney', 'DALL-E'],
+        revenue: 0
+      },
+      {
+        id: 'seminar-3',
+        title: 'プロンプトエンジニアリング上級編',
+        description: '高度なプロンプト設計技術とテクニックを学びます。',
+        instructor: '佐藤プロンプター',
+        date: '2024-06-22',
+        startTime: '19:00',
+        endTime: '21:00',
+        capacity: 30,
+        registered: 28,
+        isPremium: true,
+        status: 'ongoing',
+        zoomMeetingId: '555-123-456',
+        zoomPasscode: 'prompt2024',
+        tags: ['プロンプト', '上級', 'エンジニアリング'],
+        revenue: 0
+      },
+      {
+        id: 'seminar-4',
+        title: 'AI開発者向けPython講座',
+        description: 'AI開発に必要なPython技術を基礎から応用まで学習します。',
+        instructor: '鈴木開発者',
+        date: '2024-06-30',
+        startTime: '13:00',
+        endTime: '17:00',
+        capacity: 80,
+        registered: 12,
+        isPremium: false,
+        status: 'upcoming',
+        zoomMeetingId: '444-789-123',
+        zoomPasscode: 'python2024',
+        tags: ['Python', 'AI開発', 'プログラミング']
+      },
+      {
+        id: 'seminar-5',
+        title: '機械学習モデル構築セミナー',
+        description: '実際のデータを使って機械学習モデルを構築する実践セミナーです。',
+        instructor: '高橋ML研究員',
+        date: '2024-06-18',
+        startTime: '15:00',
+        endTime: '18:00',
+        capacity: 60,
+        registered: 60,
+        isPremium: true,
+        status: 'cancelled',
+        tags: ['機械学習', 'モデル構築', '実践']
+      }
+    ]
+    
+    setSeminars(mockSeminars)
+    setFilteredSeminars(mockSeminars)
+    setLoading(false)
   }, [])
 
   useEffect(() => {
@@ -84,7 +206,57 @@ export default function AdminSeminars() {
     }
   }
 
-  const handleEdit = (seminar: AdminSeminar) => {
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('ja-JP', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+      weekday: 'short'
+    })
+  }
+
+  const formatCurrency = (amount: number) => {
+    return `¥${amount.toLocaleString('ja-JP')}`
+  }
+
+  const getStatusColor = (status: string) => {
+    switch (status) {
+      case 'upcoming': return 'bg-blue-100 text-blue-800'
+      case 'ongoing': return 'bg-green-100 text-green-800'
+      case 'completed': return 'bg-gray-100 text-gray-800'
+      case 'cancelled': return 'bg-red-100 text-red-800'
+      default: return 'bg-gray-100 text-gray-800'
+    }
+  }
+
+  const getStatusLabel = (status: string) => {
+    switch (status) {
+      case 'upcoming': return '予定'
+      case 'ongoing': return '進行中'
+      case 'completed': return '完了'
+      case 'cancelled': return 'キャンセル'
+      default: return '予定'
+    }
+  }
+
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case 'upcoming': return <Clock size={10} className="text-blue-600" />
+      case 'ongoing': return <Play size={10} className="text-green-600" />
+      case 'completed': return <CheckCircle size={10} className="text-gray-600" />
+      case 'cancelled': return <XCircle size={10} className="text-red-600" />
+      default: return <Clock size={10} className="text-blue-600" />
+    }
+  }
+
+  const getCapacityColor = (registered: number, capacity: number) => {
+    const ratio = registered / capacity
+    if (ratio >= 1.0) return 'text-red-600'
+    if (ratio >= 0.8) return 'text-yellow-600'
+    return 'text-green-600'
+  }
+
+  const handleEdit = (seminar: SeminarData) => {
     setEditingSeminar(seminar)
     setShowModal(true)
   }
@@ -100,19 +272,62 @@ export default function AdminSeminars() {
     ))
   }
 
-  const getCapacityColor = (registered: number, capacity: number) => {
-    const ratio = registered / capacity
-    if (ratio >= 0.9) return 'text-red-600'
-    if (ratio >= 0.7) return 'text-yellow-600'
-    return 'text-green-600'
+  const handleSeminarAction = (action: string, seminarId: string) => {
+    switch (action) {
+      case 'edit':
+        const seminar = seminars.find(s => s.id === seminarId)
+        if (seminar) handleEdit(seminar)
+        break
+      case 'view':
+        window.open(`/seminars/${seminarId}`, '_blank')
+        break
+      case 'join':
+        const joinSeminar = seminars.find(s => s.id === seminarId)
+        if (joinSeminar?.zoomMeetingId) {
+          alert(`Zoom Meeting ID: ${joinSeminar.zoomMeetingId}`)
+        }
+        break
+      case 'delete':
+        if (confirm('このセミナーを削除しますか？')) {
+          setSeminars(seminars.filter(s => s.id !== seminarId))
+        }
+        break
+    }
+  }
+
+  const handleSelectSeminar = (seminarId: string) => {
+    setSelectedSeminars(prev => 
+      prev.includes(seminarId)
+        ? prev.filter(id => id !== seminarId)
+        : [...prev, seminarId]
+    )
+  }
+
+  const handleSelectAll = () => {
+    if (selectedSeminars.length === filteredSeminars.length) {
+      setSelectedSeminars([])
+    } else {
+      setSelectedSeminars(filteredSeminars.map(seminar => seminar.id))
+    }
+  }
+
+  const stats = {
+    total: seminars.length,
+    upcoming: seminars.filter(s => s.status === 'upcoming').length,
+    ongoing: seminars.filter(s => s.status === 'ongoing').length,
+    completed: seminars.filter(s => s.status === 'completed').length,
+    cancelled: seminars.filter(s => s.status === 'cancelled').length,
+    premium: seminars.filter(s => s.isPremium).length,
+    totalRegistered: seminars.reduce((sum, s) => sum + s.registered, 0),
+    totalRevenue: seminars.reduce((sum, s) => sum + (s.revenue || 0), 0)
   }
 
   if (loading) {
     return (
-      <AdminLayout>
+      <AdminLayout currentPage="seminars">
         <div className="flex items-center justify-center min-h-96">
           <div className="text-center">
-            <div className="text-4xl mb-4">📅</div>
+            <Calendar size={29} className="mx-auto text-gray-400 mb-4" />
             <div className="text-lg font-medium text-gray-600">セミナーデータを読み込み中...</div>
           </div>
         </div>
@@ -121,105 +336,204 @@ export default function AdminSeminars() {
   }
 
   return (
-    <AdminLayout>
+    <AdminLayout currentPage="seminars">
       <div className="space-y-6">
         {/* Header */}
-        <div className="flex items-center justify-between">
+        <div className="flex justify-between items-center">
           <div>
             <h1 className="text-2xl font-bold text-gray-900">セミナー管理</h1>
-            <p className="text-gray-600">ライブセミナー・ウェビナーの管理</p>
+            <p className="text-gray-600">ライブセミナー・ウェビナーの管理・運営を行います</p>
           </div>
-          <button
-            onClick={handleCreate}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
-          >
-            <span>➕</span>
-            新しいセミナー
-          </button>
+          <div className="flex gap-3">
+            <Link
+              href="/admin/seminars/create"
+              className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-2"
+            >
+              <Plus size={18} />
+              新規作成
+            </Link>
+            <Link
+              href="/admin/seminars/bulk-import"
+              className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors flex items-center gap-2"
+            >
+              <Calendar size={18} />
+              一括インポート
+            </Link>
+          </div>
         </div>
 
-        {/* Stats */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        {/* Statistics */}
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-8 gap-4">
           <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-gray-900">{seminars.length}</div>
-            <div className="text-sm text-gray-600">総セミナー数</div>
-          </div>
-          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-blue-600">
-              {seminars.filter(s => s.status === 'upcoming').length}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">総セミナー数</p>
+                <p className="text-2xl font-bold text-gray-900">{stats.total}</p>
+              </div>
+              <Calendar size={12} className="text-blue-600" />
             </div>
-            <div className="text-sm text-gray-600">予定</div>
           </div>
+          
           <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-green-600">
-              {seminars.filter(s => s.status === 'completed').length}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">予定</p>
+                <p className="text-2xl font-bold text-blue-600">{stats.upcoming}</p>
+              </div>
+              <Clock size={12} className="text-blue-600" />
             </div>
-            <div className="text-sm text-gray-600">完了</div>
           </div>
+          
           <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
-            <div className="text-2xl font-bold text-purple-600">
-              {seminars.filter(s => s.isPremium).length}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">進行中</p>
+                <p className="text-2xl font-bold text-green-600">{stats.ongoing}</p>
+              </div>
+              <Play size={12} className="text-green-600" />
             </div>
-            <div className="text-sm text-gray-600">プレミアム</div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">完了</p>
+                <p className="text-2xl font-bold text-gray-600">{stats.completed}</p>
+              </div>
+              <CheckCircle size={12} className="text-gray-600" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">キャンセル</p>
+                <p className="text-2xl font-bold text-red-600">{stats.cancelled}</p>
+              </div>
+              <XCircle size={12} className="text-red-600" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">プレミアム</p>
+                <p className="text-2xl font-bold text-purple-600">{stats.premium}</p>
+              </div>
+              <Star size={12} className="text-purple-600" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">総参加者</p>
+                <p className="text-2xl font-bold text-orange-600">{stats.totalRegistered.toLocaleString()}</p>
+              </div>
+              <Users size={12} className="text-orange-600" />
+            </div>
+          </div>
+          
+          <div className="bg-white rounded-lg p-4 shadow-sm border border-gray-200">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-gray-600">総売上</p>
+                <p className="text-2xl font-bold text-green-600">{formatCurrency(stats.totalRevenue)}</p>
+              </div>
+              <TrendingUp size={12} className="text-green-600" />
+            </div>
           </div>
         </div>
 
         {/* Filters */}
-        <div className="bg-white rounded-lg p-6 shadow-sm border border-gray-200">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 mb-4">
-            <input
-              type="text"
-              placeholder="セミナーを検索..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
-            />
-
-            <select
-              value={statusFilter}
-              onChange={(e) => setStatusFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">すべてのステータス</option>
-              <option value="upcoming">予定</option>
-              <option value="ongoing">進行中</option>
-              <option value="completed">完了</option>
-              <option value="cancelled">キャンセル</option>
-            </select>
-
-            <select
-              value={dateFilter}
-              onChange={(e) => setDateFilter(e.target.value)}
-              className="px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
-            >
-              <option value="all">すべての日程</option>
-              <option value="today">今日</option>
-              <option value="this_week">今週</option>
-              <option value="this_month">今月</option>
-            </select>
-
-            <label className="flex items-center gap-2">
-              <input
-                type="checkbox"
-                checked={showPremiumOnly}
-                onChange={(e) => setShowPremiumOnly(e.target.checked)}
-                className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-              />
-              <span className="text-sm text-gray-700">プレミアムのみ</span>
-            </label>
+        <div className="bg-white rounded-lg shadow-sm border border-gray-200 p-6">
+          <div className="flex flex-wrap gap-4 items-center">
+            <div className="flex-1 min-w-64">
+              <div className="relative">
+                <Search size={12} className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                <input
+                  type="text"
+                  placeholder="セミナータイトル、講師名で検索..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                />
+              </div>
+            </div>
+            
+            <div className="flex gap-3">
+              <select
+                value={statusFilter}
+                onChange={(e) => setStatusFilter(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="all">すべてのステータス</option>
+                <option value="upcoming">予定</option>
+                <option value="ongoing">進行中</option>
+                <option value="completed">完了</option>
+                <option value="cancelled">キャンセル</option>
+              </select>
+              
+              <select
+                value={dateFilter}
+                onChange={(e) => setDateFilter(e.target.value)}
+                className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="all">すべての日程</option>
+                <option value="today">今日</option>
+                <option value="this_week">今週</option>
+                <option value="this_month">今月</option>
+              </select>
+              
+              <label className="flex items-center gap-2 px-3 py-2 border border-gray-300 rounded-lg">
+                <input
+                  type="checkbox"
+                  checked={showPremiumOnly}
+                  onChange={(e) => setShowPremiumOnly(e.target.checked)}
+                  className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                />
+                <span className="text-sm text-gray-700">プレミアムのみ</span>
+              </label>
+            </div>
           </div>
-
-          <div className="text-sm text-gray-600">
-            {filteredSeminars.length}件のセミナーが見つかりました
+          
+          <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200">
+            <div className="text-sm text-gray-600">
+              {filteredSeminars.length}件のセミナーを表示中 (全{seminars.length}件)
+            </div>
+            
+            {selectedSeminars.length > 0 && (
+              <div className="flex items-center gap-3">
+                <span className="text-sm text-gray-600">
+                  {selectedSeminars.length}件選択中
+                </span>
+                <div className="flex gap-2">
+                  <button className="bg-blue-600 text-white px-3 py-1 rounded text-sm hover:bg-blue-700 transition-colors">
+                    一括編集
+                  </button>
+                  <button className="bg-red-600 text-white px-3 py-1 rounded text-sm hover:bg-red-700 transition-colors">
+                    一括削除
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
 
         {/* Seminars Table */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+            <table className="w-full">
               <thead className="bg-gray-50">
                 <tr>
+                  <th className="px-6 py-3 text-left">
+                    <input
+                      type="checkbox"
+                      checked={selectedSeminars.length === filteredSeminars.length && filteredSeminars.length > 0}
+                      onChange={handleSelectAll}
+                      className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    />
+                  </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     セミナー情報
                   </th>
@@ -227,13 +541,16 @@ export default function AdminSeminars() {
                     日時・講師
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    参加者
+                    参加状況
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     ステータス
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    操作
+                    売上・評価
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    アクション
                   </th>
                 </tr>
               </thead>
@@ -241,70 +558,122 @@ export default function AdminSeminars() {
                 {filteredSeminars.map((seminar) => (
                   <tr key={seminar.id} className="hover:bg-gray-50">
                     <td className="px-6 py-4">
-                      <div>
-                        <h3 className="text-sm font-medium text-gray-900">
-                          {seminar.title}
-                        </h3>
-                        <p className="text-sm text-gray-500 mt-1">
-                          {seminar.description}
-                        </p>
-                        <div className="flex items-center gap-2 mt-2">
-                          {seminar.isPremium && (
-                            <span className="px-2 py-0.5 bg-purple-100 text-purple-800 rounded text-xs">
-                              プレミアム
-                            </span>
-                          )}
-                          {seminar.zoomMeetingId && (
-                            <span className="px-2 py-0.5 bg-blue-100 text-blue-800 rounded text-xs">
-                              Zoom
-                            </span>
-                          )}
+                      <input
+                        type="checkbox"
+                        checked={selectedSeminars.includes(seminar.id)}
+                        onChange={() => handleSelectSeminar(seminar.id)}
+                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                      />
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-gradient-to-br from-blue-500 to-purple-600 rounded-lg flex items-center justify-center text-white font-bold text-sm">
+                          {seminar.date.split('-')[2]}
+                        </div>
+                        <div className="flex-1">
+                          <div className="flex items-center gap-2 mb-1">
+                            <h3 className="font-medium text-gray-900">
+                              {seminar.title}
+                            </h3>
+                            {seminar.isPremium && (
+                              <span className="bg-purple-100 text-purple-800 px-2 py-1 rounded-full text-xs font-medium">
+                                プレミアム
+                              </span>
+                            )}
+                          </div>
+                          <p className="text-sm text-gray-500 line-clamp-2">
+                            {seminar.description}
+                          </p>
+                          <div className="flex flex-wrap gap-1 mt-2">
+                            {seminar.tags.slice(0, 3).map((tag, index) => (
+                              <span
+                                key={index}
+                                className="bg-blue-100 text-blue-800 px-2 py-1 rounded text-xs"
+                              >
+                                #{tag}
+                              </span>
+                            ))}
+                            {seminar.tags.length > 3 && (
+                              <span className="text-xs text-gray-500">
+                                +{seminar.tags.length - 3}
+                              </span>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
-                          {new Date(seminar.date).toLocaleDateString('ja-JP')}
+                        <div className="font-medium text-gray-900">
+                          {formatDate(seminar.date)}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-gray-500 flex items-center gap-1">
+                          <Clock size={14} />
                           {seminar.startTime} - {seminar.endTime}
                         </div>
-                        <div className="text-sm text-gray-500 mt-1">
-                          👨‍🏫 {seminar.instructor}
+                        <div className="text-sm text-gray-500 mt-1 flex items-center gap-1">
+                          <UserCheck size={14} />
+                          {seminar.instructor}
                         </div>
+                        {seminar.zoomMeetingId && (
+                          <div className="text-xs text-blue-600 mt-1 flex items-center gap-1">
+                            <Video size={12} />
+                            Zoom: {seminar.zoomMeetingId}
+                          </div>
+                        )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
-                      <div>
+                      <div className="space-y-1">
                         <div className={`text-sm font-medium ${getCapacityColor(seminar.registered, seminar.capacity)}`}>
-                          {seminar.registered} / {seminar.capacity}
+                          {seminar.registered.toLocaleString()} / {seminar.capacity.toLocaleString()}名
+                        </div>
+                        <div className="w-full bg-gray-200 rounded-full h-2">
+                          <div
+                            className={`h-2 rounded-full ${
+                              seminar.registered / seminar.capacity >= 1.0 ? 'bg-red-500' :
+                              seminar.registered / seminar.capacity >= 0.8 ? 'bg-yellow-500' : 'bg-green-500'
+                            }`}
+                            style={{ width: `${Math.min((seminar.registered / seminar.capacity) * 100, 100)}%` }}
+                          ></div>
                         </div>
                         <div className="text-xs text-gray-500">
                           {Math.round((seminar.registered / seminar.capacity) * 100)}% 埋まり
                         </div>
                         {seminar.attended !== undefined && (
-                          <div className="text-xs text-gray-500 mt-1">
-                            実参加: {seminar.attended}名
+                          <div className="text-xs text-green-600">
+                            実参加: {seminar.attended.toLocaleString()}名
                           </div>
                         )}
                       </div>
                     </td>
                     <td className="px-6 py-4">
                       <div className="space-y-2">
-                        <select
-                          value={seminar.status}
-                          onChange={(e) => handleStatusChange(seminar.id, e.target.value)}
-                          className={`px-2 py-1 rounded text-xs font-medium border-none ${getStatusColor(seminar.status)}`}
-                        >
-                          <option value="upcoming">予定</option>
-                          <option value="ongoing">進行中</option>
-                          <option value="completed">完了</option>
-                          <option value="cancelled">キャンセル</option>
-                        </select>
+                        <div className="flex items-center gap-2">
+                          {getStatusIcon(seminar.status)}
+                          <span className={`px-2 py-1 rounded text-xs font-medium ${getStatusColor(seminar.status)}`}>
+                            {getStatusLabel(seminar.status)}
+                          </span>
+                        </div>
                         {seminar.averageRating && (
+                          <div className="flex items-center gap-1 text-xs text-gray-600">
+                            <Star size={12} className="text-yellow-500" />
+                            {seminar.averageRating.toFixed(1)}
+                            <span className="text-gray-400">({seminar.feedback}件)</span>
+                          </div>
+                        )}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="space-y-1 text-sm">
+                        {seminar.revenue !== undefined && (
+                          <div className="font-medium text-green-600">
+                            {formatCurrency(seminar.revenue)}
+                          </div>
+                        )}
+                        {seminar.status === 'completed' && seminar.averageRating && (
                           <div className="text-xs text-gray-500">
-                            ⭐ {seminar.averageRating.toFixed(1)}
+                            満足度: {(seminar.averageRating * 20).toFixed(0)}%
                           </div>
                         )}
                       </div>
@@ -312,21 +681,34 @@ export default function AdminSeminars() {
                     <td className="px-6 py-4">
                       <div className="flex items-center gap-2">
                         <button
-                          onClick={() => handleEdit(seminar)}
-                          className="text-blue-600 hover:text-blue-700 text-sm font-medium"
+                          onClick={() => handleSeminarAction('view', seminar.id)}
+                          className="p-2 text-blue-600 hover:bg-blue-100 rounded-lg transition-colors"
+                          title="プレビュー"
                         >
-                          編集
+                          <Eye size={10} />
                         </button>
-                        {seminar.zoomMeetingId && (
-                          <button className="text-green-600 hover:text-green-700 text-sm font-medium">
-                            参加
+                        <button
+                          onClick={() => handleSeminarAction('edit', seminar.id)}
+                          className="p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-colors"
+                          title="編集"
+                        >
+                          <Edit size={10} />
+                        </button>
+                        {seminar.zoomMeetingId && seminar.status === 'ongoing' && (
+                          <button
+                            onClick={() => handleSeminarAction('join', seminar.id)}
+                            className="p-2 text-green-600 hover:bg-green-100 rounded-lg transition-colors"
+                            title="Zoom参加"
+                          >
+                            <Video size={10} />
                           </button>
                         )}
                         <button
-                          onClick={() => handleDelete(seminar.id)}
-                          className="text-red-600 hover:text-red-700 text-sm font-medium"
+                          onClick={() => handleSeminarAction('delete', seminar.id)}
+                          className="p-2 text-red-600 hover:bg-red-100 rounded-lg transition-colors"
+                          title="削除"
                         >
-                          削除
+                          <Trash2 size={10} />
                         </button>
                       </div>
                     </td>
@@ -335,199 +717,27 @@ export default function AdminSeminars() {
               </tbody>
             </table>
           </div>
+          
+          {filteredSeminars.length === 0 && (
+            <div className="text-center py-12">
+              <Calendar size={29} className="mx-auto text-gray-400 mb-4" />
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                セミナーが見つかりません
+              </h3>
+              <p className="text-gray-600 mb-4">
+                検索条件を変更するか、新しいセミナーを作成してください
+              </p>
+              <Link
+                href="/admin/seminars/create"
+                className="inline-flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                <Plus size={18} />
+                セミナーを作成
+              </Link>
+            </div>
+          )}
         </div>
 
-        {/* Empty State */}
-        {filteredSeminars.length === 0 && (
-          <div className="text-center py-12">
-            <div className="text-6xl mb-4">📅</div>
-            <h3 className="text-xl font-semibold text-gray-900 mb-2">
-              セミナーが見つかりませんでした
-            </h3>
-            <p className="text-gray-600 mb-6">
-              検索条件を変更するか、新しいセミナーを作成してください
-            </p>
-            <button
-              onClick={handleCreate}
-              className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition-colors"
-            >
-              新しいセミナーを作成
-            </button>
-          </div>
-        )}
-
-        {/* Modal */}
-        {showModal && (
-          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg p-6 w-full max-w-2xl mx-4 max-h-[90vh] overflow-y-auto">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-xl font-bold text-gray-900">
-                  {editingSeminar ? 'セミナーを編集' : '新しいセミナーを作成'}
-                </h2>
-                <button
-                  onClick={() => setShowModal(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
-                  ✕
-                </button>
-              </div>
-
-              <form className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    タイトル
-                  </label>
-                  <input
-                    type="text"
-                    defaultValue={editingSeminar?.title || ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="セミナーのタイトルを入力"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    説明
-                  </label>
-                  <textarea
-                    rows={3}
-                    defaultValue={editingSeminar?.description || ''}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    placeholder="セミナーの説明を入力"
-                  />
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      講師
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue={editingSeminar?.instructor || ''}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      定員
-                    </label>
-                    <input
-                      type="number"
-                      defaultValue={editingSeminar?.capacity || 100}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      日付
-                    </label>
-                    <input
-                      type="date"
-                      defaultValue={editingSeminar?.date || ''}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      開始時間
-                    </label>
-                    <input
-                      type="time"
-                      defaultValue={editingSeminar?.startTime || ''}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      終了時間
-                    </label>
-                    <input
-                      type="time"
-                      defaultValue={editingSeminar?.endTime || ''}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Zoom Meeting ID
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue={editingSeminar?.zoomMeetingId || ''}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                      placeholder="123-456-789"
-                    />
-                  </div>
-
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Zoom パスコード
-                    </label>
-                    <input
-                      type="text"
-                      defaultValue={editingSeminar?.zoomPasscode || ''}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      ステータス
-                    </label>
-                    <select
-                      defaultValue={editingSeminar?.status || 'upcoming'}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-                    >
-                      <option value="upcoming">予定</option>
-                      <option value="ongoing">進行中</option>
-                      <option value="completed">完了</option>
-                      <option value="cancelled">キャンセル</option>
-                    </select>
-                  </div>
-
-                  <div className="flex items-end">
-                    <label className="flex items-center gap-2">
-                      <input
-                        type="checkbox"
-                        defaultChecked={editingSeminar?.isPremium || false}
-                        className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
-                      />
-                      <span className="text-sm font-medium text-gray-700">プレミアム限定</span>
-                    </label>
-                  </div>
-                </div>
-
-                <div className="flex justify-end gap-3 pt-6 border-t border-gray-200">
-                  <button
-                    type="button"
-                    onClick={() => setShowModal(false)}
-                    className="px-4 py-2 text-gray-600 border border-gray-300 rounded-md hover:bg-gray-50"
-                  >
-                    キャンセル
-                  </button>
-                  <button
-                    type="submit"
-                    className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
-                  >
-                    {editingSeminar ? '更新' : '作成'}
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-        )}
       </div>
     </AdminLayout>
   )

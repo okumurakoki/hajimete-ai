@@ -1,53 +1,95 @@
 'use client'
 
-// import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@/contexts/AuthContext'
+import { useUserProgress } from '@/contexts/UserProgressContext'
+import { useUserFavorites } from '@/contexts/UserFavoritesContext'
+import { useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 
 export const dynamic = 'force-dynamic'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
 import { DEPARTMENTS } from '@/lib/departments'
 import Link from 'next/link'
-import { BookOpen, Play, Calendar, TrendingUp, Award, Clock, ChevronRight } from 'lucide-react'
+import { BookOpen, Play, Calendar, TrendingUp, Award, Clock, ChevronRight, Heart, Bookmark } from 'lucide-react'
 
 export default function Dashboard() {
-  // const { user } = useUser()
-  const user = { firstName: 'ユーザー', unsafeMetadata: { plan: 'basic' } } // Mock for build compatibility
-  const userPlan = user?.unsafeMetadata?.plan as string || 'basic'
+  const { user, isAuthenticated, isLoading } = useAuth()
+  const { progress, isLoading: progressLoading } = useUserProgress()
+  const { getFavoriteVideosCount, getWatchLaterCount } = useUserFavorites()
+  const router = useRouter()
+  
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/sign-up')
+    }
+  }, [isAuthenticated, isLoading, router])
+
+  if (isLoading || progressLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <p className="text-gray-600">読み込み中...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!isAuthenticated) {
+    return null
+  }
+
+  const userPlan = user?.plan || 'free'
   
   const accessibleDepartments = userPlan === 'premium' 
     ? DEPARTMENTS 
     : DEPARTMENTS.filter(dept => dept.plan === 'basic')
 
-  const quickStats = [
+  const quickStats = progress ? [
     {
       title: '学習時間',
-      value: '24時間',
-      change: '+5時間',
+      value: `${Math.floor(progress.totalStudyTime / 60)}時間`,
+      change: `+${Math.floor(progress.totalStudyTime / 60 * 0.2)}時間`,
       icon: Clock,
       color: 'text-blue-600 bg-blue-50'
     },
     {
       title: '完了コース',
-      value: '12コース',
-      change: '+3コース',
+      value: `${progress.completedCourses}コース`,
+      change: `+${Math.floor(progress.completedCourses * 0.25)}コース`,
       icon: BookOpen,
       color: 'text-green-600 bg-green-50'
     },
     {
       title: '視聴動画',
-      value: '48本',
-      change: '+8本',
+      value: `${progress.watchedVideos}本`,
+      change: `+${Math.floor(progress.watchedVideos * 0.15)}本`,
       icon: Play,
       color: 'text-orange-600 bg-orange-50'
     },
     {
       title: '学習ランク',
-      value: 'B+',
+      value: progress.rank,
       change: '前月比',
       icon: Award,
       color: 'text-purple-600 bg-purple-50'
+    },
+    {
+      title: 'お気に入り',
+      value: `${getFavoriteVideosCount()}本`,
+      change: '追加済み',
+      icon: Heart,
+      color: 'text-red-600 bg-red-50'
+    },
+    {
+      title: '後で見る',
+      value: `${getWatchLaterCount()}本`,
+      change: '保存済み',
+      icon: Bookmark,
+      color: 'text-indigo-600 bg-indigo-50'
     }
-  ]
+  ] : []
 
   const recentVideos = [
     {
@@ -92,7 +134,7 @@ export default function Dashboard() {
             return (
               <div key={index} className="schoo-card p-4 slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
                 <div className={`w-10 h-10 rounded-lg flex items-center justify-center mb-3 ${stat.color}`}>
-                  <Icon size={20} />
+                  <Icon size={12} />
                 </div>
                 <div className="text-2xl font-bold text-gray-900 mb-1">{stat.value}</div>
                 <div className="text-sm text-gray-600 mb-1">{stat.title}</div>
@@ -106,21 +148,26 @@ export default function Dashboard() {
         <div className={`rounded-xl p-6 text-white mb-8 slide-up ${
           userPlan === 'premium' 
             ? 'bg-gradient-to-br from-purple-600 via-purple-700 to-purple-800' 
-            : 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800'
+            : userPlan === 'basic'
+            ? 'bg-gradient-to-br from-blue-600 via-blue-700 to-blue-800'
+            : 'bg-gradient-to-br from-gray-600 via-gray-700 to-gray-800'
         }`}>
           <div className="flex flex-col md:flex-row md:items-center justify-between">
             <div className="mb-4 md:mb-0">
               <div className="flex items-center gap-2 mb-2">
                 <h2 className="text-xl font-bold">
-                  {userPlan === 'premium' ? '⭐ プレミアムプラン' : '🎓 ベーシックプラン'}
+                  {userPlan === 'premium' ? '⭐ プレミアムプラン' : 
+                   userPlan === 'basic' ? '🎓 ベーシックプラン' : 
+                   '🆓 フリープラン'}
                 </h2>
               </div>
               <p className="opacity-90">
                 {accessibleDepartments.length}個の学部にアクセス可能
                 {userPlan === 'premium' && ' • ライブ配信視聴可能'}
+                {userPlan === 'free' && ' • 基本コンテンツのみ'}
               </p>
             </div>
-            {userPlan === 'basic' && (
+            {(userPlan === 'basic' || userPlan === 'free') && (
               <Link href="/plan-selection">
                 <button className="schoo-btn-premium text-sm">
                   プランをアップグレード
@@ -166,7 +213,7 @@ export default function Dashboard() {
                       
                       <div className="flex items-center text-blue-600 font-medium text-sm group-hover:text-blue-700 transition-colors">
                         コンテンツを見る
-                        <ChevronRight size={16} className="ml-1 group-hover:translate-x-1 transition-transform" />
+                        <ChevronRight size={10} className="ml-1 group-hover:translate-x-1 transition-transform" />
                       </div>
                     </div>
                   </Link>
@@ -182,7 +229,7 @@ export default function Dashboard() {
                   <div key={index} className="schoo-card p-4 hover-lift">
                     <div className="flex items-center gap-4">
                       <div className="w-16 h-12 bg-gradient-to-br from-gray-200 to-gray-300 rounded-lg flex items-center justify-center">
-                        <Play size={16} className="text-gray-500" />
+                        <Play size={10} className="text-gray-500" />
                       </div>
                       <div className="flex-1">
                         <h3 className="font-semibold text-gray-900 mb-1">{video.title}</h3>
@@ -200,9 +247,9 @@ export default function Dashboard() {
                           />
                         </div>
                       </div>
-                      <button className="schoo-btn-secondary text-sm">
+                      <Link href="/videos" className="schoo-btn-secondary text-sm">
                         続きを見る
-                      </button>
+                      </Link>
                     </div>
                   </div>
                 ))}
@@ -218,14 +265,14 @@ export default function Dashboard() {
               <div className="space-y-3">
                 <Link href="/videos" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
                   <div className="w-8 h-8 bg-blue-50 rounded-lg flex items-center justify-center text-blue-600">
-                    <Play size={16} />
+                    <Play size={10} />
                   </div>
                   <span className="font-medium text-gray-700 group-hover:text-blue-600">動画を見る</span>
                 </Link>
                 
                 <Link href="/seminars" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
                   <div className="w-8 h-8 bg-green-50 rounded-lg flex items-center justify-center text-green-600">
-                    <Calendar size={16} />
+                    <Calendar size={10} />
                   </div>
                   <span className="font-medium text-gray-700 group-hover:text-green-600">セミナー予約</span>
                 </Link>
@@ -233,7 +280,7 @@ export default function Dashboard() {
                 {userPlan === 'premium' && (
                   <Link href="/live" className="flex items-center gap-3 p-3 rounded-lg hover:bg-gray-50 transition-colors group">
                     <div className="w-8 h-8 bg-orange-50 rounded-lg flex items-center justify-center text-orange-600">
-                      <TrendingUp size={16} />
+                      <TrendingUp size={10} />
                     </div>
                     <span className="font-medium text-gray-700 group-hover:text-orange-600">ライブ配信</span>
                   </Link>
@@ -245,25 +292,29 @@ export default function Dashboard() {
             <div className="schoo-card p-6 fade-in">
               <h3 className="font-bold text-gray-900 mb-4">今月の目標</h3>
               <div className="space-y-4">
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600">学習時間</span>
-                    <span className="font-medium">24 / 30時間</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-blue-600 h-2 rounded-full" style={{ width: '80%' }} />
-                  </div>
-                </div>
-                
-                <div>
-                  <div className="flex justify-between text-sm mb-2">
-                    <span className="text-gray-600">動画視聴</span>
-                    <span className="font-medium">48 / 50本</span>
-                  </div>
-                  <div className="w-full bg-gray-200 rounded-full h-2">
-                    <div className="bg-green-600 h-2 rounded-full" style={{ width: '96%' }} />
-                  </div>
-                </div>
+                {progress && (
+                  <>
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-600">学習時間</span>
+                        <span className="font-medium">{Math.floor(progress.monthlyGoal.currentStudyTime / 60)} / {Math.floor(progress.monthlyGoal.studyTimeGoal / 60)}時間</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-blue-600 h-2 rounded-full" style={{ width: `${Math.min(100, (progress.monthlyGoal.currentStudyTime / progress.monthlyGoal.studyTimeGoal) * 100)}%` }} />
+                      </div>
+                    </div>
+                    
+                    <div>
+                      <div className="flex justify-between text-sm mb-2">
+                        <span className="text-gray-600">動画視聴</span>
+                        <span className="font-medium">{progress.monthlyGoal.currentVideos} / {progress.monthlyGoal.videoGoal}本</span>
+                      </div>
+                      <div className="w-full bg-gray-200 rounded-full h-2">
+                        <div className="bg-green-600 h-2 rounded-full" style={{ width: `${Math.min(100, (progress.monthlyGoal.currentVideos / progress.monthlyGoal.videoGoal) * 100)}%` }} />
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             </div>
 

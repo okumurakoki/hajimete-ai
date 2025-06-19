@@ -1,20 +1,39 @@
 'use client'
 
 import { useState } from 'react'
-
-// Disable static generation for auth-required pages
-export const dynamic = 'force-dynamic'
 import { useRouter } from 'next/navigation'
-// import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@/contexts/AuthContext'
+import StripeCheckout from '@/components/StripeCheckout'
+
+export const dynamic = 'force-dynamic'
 
 export default function PlanSelection() {
-  // const { user } = useUser()
-  const user = { firstName: 'ユーザー', update: async (data: any) => { console.log('Mock user update:', data); } } // Mock for build compatibility
+  const { user, isAuthenticated, updatePlan } = useAuth()
   const router = useRouter()
-  const [selectedPlan, setSelectedPlan] = useState<'basic' | 'premium' | null>(null)
+  const [selectedPlan, setSelectedPlan] = useState<'free' | 'basic' | 'premium' | null>(null)
+  const [showCheckout, setShowCheckout] = useState(false)
   const [loading, setLoading] = useState(false)
 
   const plans = [
+    {
+      id: 'free' as const,
+      name: '無料プラン',
+      price: '¥0',
+      period: '月',
+      description: 'まずは無料で始める',
+      features: [
+        'AI基礎学部（一部コンテンツ）',
+        '基本動画視聴',
+        'コミュニティアクセス',
+        '学習進捗管理',
+        '',
+        '',
+        ''
+      ],
+      departments: ['AI基礎学部（限定）'],
+      recommended: false,
+      isFree: true
+    },
     {
       id: 'basic' as const,
       name: 'ベーシックプラン',
@@ -23,13 +42,16 @@ export default function PlanSelection() {
       description: 'AI学習の基礎を身につける',
       features: [
         'AI基礎学部（全コンテンツ）',
-        '業務効率化学部（全コンテンツ）',
+        '実践活用学部（全コンテンツ）',
         '基本セミナー参加権',
         'コミュニティアクセス',
-        '学習進捗管理'
+        '学習進捗管理',
+        'メール質問サポート',
+        ''
       ],
-      departments: ['AI基礎学部', '業務効率化学部'],
-      recommended: false
+      departments: ['AI基礎学部', '実践活用学部'],
+      recommended: false,
+      isFree: false
     },
     {
       id: 'premium' as const,
@@ -46,34 +68,38 @@ export default function PlanSelection() {
         'ダウンロード機能',
         '修了証書発行'
       ],
-      departments: ['AI基礎学部', '業務効率化学部', 'データサイエンス学部', 'AI開発学部', 'ビジネスAI学部'],
-      recommended: true
+      departments: ['全学部アクセス可能'],
+      recommended: true,
+      isFree: false
     }
   ]
 
-  const handlePlanSelect = async (planId: 'basic' | 'premium') => {
-    setLoading(true)
+  const handlePlanSelect = async (planId: 'free' | 'basic' | 'premium') => {
+    if (!isAuthenticated) {
+      router.push('/sign-up')
+      return
+    }
+    
     setSelectedPlan(planId)
-
-    try {
-      // ここでプラン情報をユーザーメタデータに保存
-      if (user?.update) {
-        await user.update({
-          unsafeMetadata: {
-            plan: planId,
-            departments: plans.find(p => p.id === planId)?.departments || []
-          }
-        })
+    
+    if (planId === 'free') {
+      // 無料プランは即座に適用
+      setLoading(true)
+      try {
+        updatePlan(planId)
+        alert('無料プランが適用されました！')
+        router.push('/dashboard')
+      } catch (error) {
+        alert('プラン変更に失敗しました。もう一度お試しください。')
+      } finally {
+        setLoading(false)
       }
-
-      // ダッシュボードにリダイレクト
-      router.push('/dashboard')
-    } catch (error) {
-      console.error('Plan selection error:', error)
-    } finally {
-      setLoading(false)
+    } else {
+      // 有料プランはStripe決済を表示
+      setShowCheckout(true)
     }
   }
+
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -101,11 +127,11 @@ export default function PlanSelection() {
         </div>
 
         {/* Plan Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto">
           {plans.map((plan) => (
             <div
               key={plan.id}
-              className={`relative bg-white rounded-2xl shadow-lg p-8 ${
+              className={`relative bg-white rounded-2xl shadow-lg p-8 flex flex-col h-full ${
                 plan.recommended ? 'ring-2 ring-blue-500 transform scale-105' : ''
               }`}
             >
@@ -127,10 +153,10 @@ export default function PlanSelection() {
               </div>
 
               {/* Features */}
-              <div className="mb-8">
+              <div className="mb-8 flex-grow">
                 <h4 className="font-semibold text-gray-900 mb-4">プランに含まれるもの：</h4>
-                <ul className="space-y-3">
-                  {plan.features.map((feature, index) => (
+                <ul className="space-y-3 mb-8 min-h-[210px]">
+                  {plan.features.filter(feature => feature.trim() !== '').map((feature, index) => (
                     <li key={index} className="flex items-start">
                       <svg className="flex-shrink-0 w-5 h-5 text-green-500 mt-0.5 mr-3" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
@@ -139,35 +165,44 @@ export default function PlanSelection() {
                     </li>
                   ))}
                 </ul>
-              </div>
 
-              {/* Departments */}
-              <div className="mb-8">
-                <h4 className="font-semibold text-gray-900 mb-4">アクセス可能な学部：</h4>
-                <div className="flex flex-wrap gap-2">
-                  {plan.departments.map((dept, index) => (
-                    <span
-                      key={index}
-                      className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
-                    >
-                      {dept}
-                    </span>
-                  ))}
+                {/* Departments */}
+                <div className="mb-8">
+                  <h4 className="font-semibold text-gray-900 mb-4">アクセス可能な学部：</h4>
+                  <div className="flex flex-wrap gap-2 min-h-[60px]">
+                    {plan.departments.map((dept, index) => (
+                      <span
+                        key={index}
+                        className="inline-block bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full"
+                      >
+                        {dept}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
 
               {/* CTA Button */}
-              <button
-                onClick={() => handlePlanSelect(plan.id)}
-                disabled={loading && selectedPlan === plan.id}
-                className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
-                  plan.recommended
-                    ? 'bg-blue-600 hover:bg-blue-700 text-white'
-                    : 'bg-gray-900 hover:bg-gray-800 text-white'
-                } disabled:opacity-50`}
-              >
-                {loading && selectedPlan === plan.id ? '選択中...' : `${plan.name}を選択`}
-              </button>
+              <div className="mt-auto">
+                <button
+                  onClick={() => handlePlanSelect(plan.id)}
+                  disabled={loading && selectedPlan === plan.id}
+                  className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
+                    plan.recommended
+                      ? 'bg-blue-600 hover:bg-blue-700 text-white'
+                      : plan.isFree 
+                        ? 'bg-green-600 hover:bg-green-700 text-white'
+                        : 'bg-gray-900 hover:bg-gray-800 text-white'
+                  } disabled:opacity-50`}
+                >
+                  {loading && selectedPlan === plan.id 
+                    ? '処理中...' 
+                    : plan.isFree 
+                      ? '無料で始める' 
+                      : `${plan.name}を選択`
+                  }
+                </button>
+              </div>
             </div>
           ))}
         </div>
@@ -207,6 +242,51 @@ export default function PlanSelection() {
           </div>
         </div>
       </div>
+
+      {/* Stripe決済モーダル */}
+      {showCheckout && selectedPlan && selectedPlan !== 'free' && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-8 max-w-md w-full mx-4">
+            <div className="text-center mb-6">
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">
+                プラン加入手続き
+              </h3>
+              <p className="text-gray-600">
+                {plans.find(p => p.id === selectedPlan)?.name}の決済を行います
+              </p>
+            </div>
+            
+            <div className="mb-6">
+              <div className="text-center p-4 bg-gray-50 rounded-lg">
+                <div className="text-3xl font-bold text-gray-900">
+                  {plans.find(p => p.id === selectedPlan)?.price}
+                </div>
+                <div className="text-gray-600">月額料金</div>
+              </div>
+            </div>
+
+            <div className="space-y-3 mb-6">
+              <StripeCheckout
+                seminarId={`plan-${selectedPlan}`}
+                seminarTitle={plans.find(p => p.id === selectedPlan)?.name || ''}
+                seminarDescription={plans.find(p => p.id === selectedPlan)?.description || ''}
+                amount={selectedPlan === 'basic' ? 1650 : 5500}
+                userPlan={selectedPlan}
+                currency="jpy"
+              >
+                決済手続きを開始
+              </StripeCheckout>
+              
+              <button
+                onClick={() => setShowCheckout(false)}
+                className="w-full bg-gray-200 text-gray-800 py-3 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors"
+              >
+                キャンセル
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }

@@ -4,8 +4,10 @@ import { getDepartmentBySlug } from '@/lib/departments'
 import DepartmentLayout from '@/components/DepartmentLayout'
 import { VideoContent } from '@/lib/departments'
 
+export const dynamic = 'force-dynamic'
+
 export default function DataSciencePage() {
-  const department = getDepartmentBySlug('practical-application')!
+  const department = getDepartmentBySlug('data-science')!
 
   const videos: VideoContent[] = [
     {

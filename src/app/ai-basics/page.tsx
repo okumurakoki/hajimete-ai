@@ -4,6 +4,8 @@ import { getDepartmentBySlug } from '@/lib/departments'
 import DepartmentLayout from '@/components/DepartmentLayout'
 import { VideoContent } from '@/lib/departments'
 
+export const dynamic = 'force-dynamic'
+
 export default function AIBasicsPage() {
   const department = getDepartmentBySlug('ai-basics')!
 

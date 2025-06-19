@@ -1,3 +1,13 @@
+import { 
+  Brain, 
+  Zap, 
+  Rocket, 
+  Star, 
+  Building, 
+  BarChart3, 
+  Code 
+} from 'lucide-react'
+
 export interface Department {
   id: string
   name: string
@@ -9,7 +19,7 @@ export interface Department {
     background: string
     text: string
   }
-  icon: string
+  icon: any
   plan: 'basic' | 'premium'
 }
 
@@ -25,7 +35,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-blue-50',
       text: 'text-blue-600'
     },
-    icon: '🤖',
+    icon: Brain,
     plan: 'basic'
   },
   {
@@ -39,7 +49,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-green-50',
       text: 'text-green-600'
     },
-    icon: '⚡',
+    icon: Zap,
     plan: 'basic'
   },
   {
@@ -53,7 +63,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-orange-50',
       text: 'text-orange-600'
     },
-    icon: '🚀',
+    icon: Rocket,
     plan: 'basic'
   },
   {
@@ -67,7 +77,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-purple-50',
       text: 'text-purple-600'
     },
-    icon: '⭐',
+    icon: Star,
     plan: 'premium'
   },
   {
@@ -81,7 +91,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-red-50',
       text: 'text-red-600'
     },
-    icon: '💼',
+    icon: Building,
     plan: 'premium'
   },
   {
@@ -95,7 +105,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-indigo-50',
       text: 'text-indigo-600'
     },
-    icon: '📊',
+    icon: BarChart3,
     plan: 'premium'
   },
   {
@@ -109,7 +119,7 @@ export const DEPARTMENTS: Department[] = [
       background: 'bg-gray-50',
       text: 'text-gray-600'
     },
-    icon: '🔧',
+    icon: Code,
     plan: 'premium'
   }
 ]

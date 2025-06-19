@@ -1,0 +1,436 @@
+   ▲ Next.js 15.2.3
+   - Local:        http://localhost:8080
+   - Network:      http://192.0.0.2:8080
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1449ms
+ ○ Compiling /demo ...
+ ✓ Compiled /demo in 1356ms (785 modules)
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ GET /demo 200 in 1768ms
+ ✓ Compiled in 239ms (346 modules)
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ HEAD /demo 200 in 235ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ GET /demo 200 in 246ms
+ ✓ Compiled /_not-found in 189ms (775 modules)
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-32x32.png 500 in 585ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-16x16.png 500 in 301ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-32x32.png 500 in 357ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-16x16.png 500 in 297ms
+ ✓ Compiled / in 211ms (794 modules)
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at HomePage (src/app/page.tsx:13:43)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '3094043207'
+}
+ GET / 500 in 442ms
+ ⚠ Fast Refresh had to perform a full reload. Read more: https://nextjs.org/docs/messages/fast-refresh-reload
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-32x32.png 500 in 272ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-16x16.png 500 in 278ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ GET /demo 200 in 170ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-32x32.png 500 in 285ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-16x16.png 500 in 289ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-32x32.png 500 in 264ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-16x16.png 500 in 288ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-32x32.png 500 in 384ms
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '3272799175'
+}
+ ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} className=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+    at stringify (<anonymous>)
+    at stringify (<anonymous>) {
+  digest: '2498378595'
+}
+ ⨯ Error: useAuth must be used within an AuthProvider
+    at useAuth (src/contexts/AuthContext.tsx:150:10)
+    at Header (src/components/Header.tsx:9:60)
+  148 |   const context = useContext(AuthContext)
+  149 |   if (context === undefined) {
+> 150 |     throw new Error('useAuth must be used within an AuthProvider')
+      |          ^
+  151 |   }
+  152 |   return context
+  153 | } {
+  digest: '2349713990'
+}
+ GET /favicon-16x16.png 500 in 299ms
+[?25h

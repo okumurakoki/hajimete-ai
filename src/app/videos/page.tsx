@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-// import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@/contexts/AuthContext'
 
 export const dynamic = 'force-dynamic'
 import Header from '@/components/Header'
@@ -11,18 +11,20 @@ import { DEPARTMENTS } from '@/lib/departments'
 import Link from 'next/link'
 
 export default function Videos() {
-  // const { user } = useUser()
-  const user = { unsafeMetadata: { plan: 'basic' } } // Mock for build compatibility
+  const { user } = useAuth()
   const [videos, setVideos] = useState<Video[]>([])
   const [filteredVideos, setFilteredVideos] = useState<Video[]>([])
+  const [displayedVideos, setDisplayedVideos] = useState<Video[]>([])
   const [searchQuery, setSearchQuery] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState<string>('all')
   const [selectedLevel, setSelectedLevel] = useState<string>('all')
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
   const [sortBy, setSortBy] = useState<'newest' | 'popular' | 'duration' | 'title'>('newest')
   const [showPremiumOnly, setShowPremiumOnly] = useState(false)
+  const [videosPerPage] = useState(12)
+  const [currentPage, setCurrentPage] = useState(1)
 
-  const userPlan = user?.unsafeMetadata?.plan as string
+  const userPlan = user?.plan || 'free'
 
   useEffect(() => {
     const mockVideos = generateMockVideos()
@@ -62,7 +64,21 @@ export default function Videos() {
     filtered = sortVideos(filtered, sortBy)
 
     setFilteredVideos(filtered)
+    setCurrentPage(1) // Reset to first page when filters change
   }, [videos, searchQuery, selectedDepartment, selectedLevel, selectedCategory, sortBy, showPremiumOnly])
+
+  // Update displayed videos based on current page
+  useEffect(() => {
+    const startIndex = 0
+    const endIndex = currentPage * videosPerPage
+    setDisplayedVideos(filteredVideos.slice(startIndex, endIndex))
+  }, [filteredVideos, currentPage, videosPerPage])
+
+  const handleLoadMore = () => {
+    setCurrentPage(prev => prev + 1)
+  }
+
+  const hasMoreVideos = currentPage * videosPerPage < filteredVideos.length
 
   const getLevelColor = (level: string) => {
     switch (level) {
@@ -218,14 +234,14 @@ export default function Videos() {
             </label>
 
             <div className="ml-auto text-sm text-gray-600">
-              {filteredVideos.length}件の動画が見つかりました
+              {displayedVideos.length} / {filteredVideos.length}件の動画を表示中
             </div>
           </div>
         </div>
 
         {/* Video Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {filteredVideos.map((video) => {
+          {displayedVideos.map((video) => {
             const hasAccess = canAccessVideo(video, userPlan)
             
             return (
@@ -345,10 +361,13 @@ export default function Videos() {
         )}
 
         {/* Load More */}
-        {filteredVideos.length > 0 && (
+        {hasMoreVideos && (
           <div className="text-center mt-12">
-            <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors">
-              さらに読み込む
+            <button 
+              onClick={handleLoadMore}
+              className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700 transition-colors"
+            >
+              さらに読み込む ({filteredVideos.length - displayedVideos.length}件)
             </button>
           </div>
         )}

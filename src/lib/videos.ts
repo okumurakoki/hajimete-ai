@@ -28,6 +28,7 @@ export interface Video {
     title: string
     startTime: number // seconds
     duration: number // seconds
+    description?: string // optional description for each chapter
   }[]
 }
 
@@ -136,10 +137,10 @@ export function generateMockVideos(): Video[] {
         { name: '練習用データ.zip', url: '#', type: 'zip' }
       ],
       chapters: [
-        { title: 'ChatGPTとは', startTime: 0, duration: 300 },
-        { title: '基本的な使い方', startTime: 300, duration: 600 },
-        { title: 'プロンプトのコツ', startTime: 900, duration: 900 },
-        { title: '実践演習', startTime: 1800, duration: 1020 }
+        { title: 'ChatGPTとは', startTime: 0, duration: 300, description: 'ChatGPTの概要と基本概念について学びます。AIの基礎知識から始めて、ChatGPTの特徴や可能性を理解しましょう。' },
+        { title: '基本的な使い方', startTime: 300, duration: 600, description: 'ChatGPTの画面操作と基本的な会話方法を実践的に学習します。効果的な質問の仕方とレスポンスの読み方を身につけます。' },
+        { title: 'プロンプトのコツ', startTime: 900, duration: 900, description: '高品質な回答を得るためのプロンプト作成テクニックを詳しく解説。具体的な例文と改善方法を通じて実践的なスキルを習得します。' },
+        { title: '実践演習', startTime: 1800, duration: 1020, description: '実際のビジネスシーンでの活用例を通じて、学んだスキルを定着させます。様々な場面でのChatGPT活用法を体験しましょう。' }
       ]
     },
     {

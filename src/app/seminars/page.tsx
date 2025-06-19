@@ -1,27 +1,28 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-// import { useUser } from '@clerk/nextjs'
+import { useAuth } from '@/contexts/AuthContext'
 
 export const dynamic = 'force-dynamic'
 import Header from '@/components/Header'
 import Footer from '@/components/Footer'
+import SeminarCancellation from '@/components/SeminarCancellation'
 import { Seminar, generateMockSeminars } from '@/lib/live'
 
 export default function SeminarsPage() {
-  // const { user } = useUser()
-  const user = { unsafeMetadata: { plan: 'basic' } } // Mock for build compatibility
+  const { user } = useAuth()
   const [seminars, setSeminars] = useState<Seminar[]>([])
   const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth())
   const [filter, setFilter] = useState<'all' | 'available' | 'registered'>('all')
+  const [cancellingseminar, setCancellingS] = useState<{id: string, title: string} | null>(null)
+  const [registeredSeminars, setRegisteredSeminars] = useState(new Set(['seminar-1', 'seminar-3']))
 
   useEffect(() => {
     const mockSeminars = generateMockSeminars()
     setSeminars(mockSeminars)
   }, [])
 
-  const userPlan = user?.unsafeMetadata?.plan as string
-  const registeredSeminars = new Set(['seminar-1', 'seminar-3']) // モックの登録済みセミナー
+  const userPlan = user?.plan || 'free'
 
   const filteredSeminars = seminars.filter(seminar => {
     const seminarDate = new Date(seminar.date)
@@ -46,14 +47,41 @@ export default function SeminarsPage() {
            !registeredSeminars.has(seminar.id)
   }
 
-  const handleRegister = (seminarId: string) => {
-    // 実際の実装では、ここでAPIを呼び出してセミナーに登録
-    alert('セミナーに登録しました！')
+  const getPriceForPlan = (planType: string) => {
+    switch (planType) {
+      case 'free': return 5500
+      case 'basic': return 5500  
+      case 'premium': return 4400
+      default: return 5500
+    }
   }
 
-  const handleCancelRegistration = (seminarId: string) => {
-    // 実際の実装では、ここでAPIを呼び出して登録をキャンセル
-    alert('登録をキャンセルしました')
+  const formatPrice = (price: number) => {
+    return price === 0 ? '無料' : `¥${price.toLocaleString('ja-JP')}`
+  }
+
+  const handleCancelRegistration = (seminarId: string, seminarTitle: string) => {
+    setCancellingS({ id: seminarId, title: seminarTitle })
+  }
+
+  const handleCancellationComplete = () => {
+    if (cancellingseminar) {
+      // Remove from registered seminars
+      const newRegisteredSeminars = new Set(registeredSeminars)
+      newRegisteredSeminars.delete(cancellingseminar.id)
+      setRegisteredSeminars(newRegisteredSeminars)
+      
+      // Close modal
+      setCancellingS(null)
+      
+      // Show success message
+      alert('セミナーの参加をキャンセルしました')
+    }
+  }
+
+  const handleRegister = (seminarId: string) => {
+    // セミナー詳細ページに遷移
+    window.location.href = `/seminars/${seminarId}`
   }
 
   const months = [
@@ -234,6 +262,29 @@ export default function SeminarsPage() {
                     ))}
                   </div>
 
+                  {/* Price Info */}
+                  <div className="mb-4 p-3 bg-gray-50 rounded-lg">
+                    <div className="flex justify-between items-center">
+                      <span className="text-sm text-gray-600">参加料金</span>
+                      <div className="text-right">
+                        <div className="font-semibold text-gray-900">
+                          {formatPrice(getPriceForPlan(userPlan))}
+                        </div>
+                        <div className="text-xs text-gray-500">
+                          {userPlan === 'premium' ? 'プレミアム価格' : '通常価格'}
+                        </div>
+                      </div>
+                    </div>
+                    {userPlan !== 'premium' && (
+                      <div className="text-xs text-purple-600 mt-1">
+                        プレミアムプランなら {formatPrice(getPriceForPlan('premium'))} 
+                        <span className="ml-1 text-gray-500">
+                          ({formatPrice(getPriceForPlan(userPlan) - getPriceForPlan('premium'))}お得)
+                        </span>
+                      </div>
+                    )}
+                  </div>
+
                   {/* Action Button */}
                   <div className="flex gap-2">
                     {isRegistered ? (
@@ -242,7 +293,7 @@ export default function SeminarsPage() {
                           ✓ 参加予定
                         </button>
                         <button
-                          onClick={() => handleCancelRegistration(seminar.id)}
+                          onClick={() => handleCancelRegistration(seminar.id, seminar.title)}
                           className="bg-gray-200 text-gray-700 py-2 px-4 rounded-lg font-medium hover:bg-gray-300 transition-colors"
                         >
                           キャンセル
@@ -253,7 +304,7 @@ export default function SeminarsPage() {
                         onClick={() => handleRegister(seminar.id)}
                         className="w-full bg-blue-600 text-white py-2 px-4 rounded-lg font-medium hover:bg-blue-700 transition-colors"
                       >
-                        参加申し込み
+                        詳細を見る・申し込み
                       </button>
                     ) : (
                       <button
@@ -329,6 +380,16 @@ export default function SeminarsPage() {
       </main>
 
       <Footer />
+
+      {/* Cancellation Modal */}
+      {cancellingseminar && (
+        <SeminarCancellation
+          seminarId={cancellingseminar.id}
+          seminarTitle={cancellingseminar.title}
+          onCancel={handleCancellationComplete}
+          onClose={() => setCancellingS(null)}
+        />
+      )}
     </div>
   )
 }

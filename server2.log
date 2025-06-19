@@ -1,0 +1,20 @@
+   ▲ Next.js 15.2.3
+   - Local:        http://localhost:3020
+   - Network:      http://192.0.0.2:3020
+   - Environments: .env.local, .env
+
+ ✓ Starting...
+ ✓ Ready in 1486ms
+ ○ Compiling /test-simple ...
+ ✓ Compiled /test-simple in 1233ms (770 modules)
+Warning: Invalid hook call. Hooks can only be called inside of the body of a function component. This could happen for one of the following reasons:
+1. You might have mismatching versions of React and the renderer (such as React DOM)
+2. You might be breaking the Rules of Hooks
+3. You might have more than one copy of React in the same app
+See https://reactjs.org/link/invalid-hook-call for tips about how to debug and fix this problem.
+ ⨯ [TypeError: Cannot read properties of null (reading 'useContext')] {
+  digest: '3104772213'
+}
+ GET /test-simple 500 in 1554ms
+ ✓ Compiled in 214ms (337 modules)
+[?25h

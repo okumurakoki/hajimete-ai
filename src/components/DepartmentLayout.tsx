@@ -36,7 +36,9 @@ export default function DepartmentLayout({ department, videos }: DepartmentLayou
       <div className={`${department.color.background} border-b`}>
         <div className="container mx-auto px-4 py-12">
           <div className="flex items-center mb-4">
-            <span className="text-4xl mr-4">{department.icon}</span>
+            <span className="text-4xl mr-4">
+              <department.icon size={48} />
+            </span>
             <div>
               <h1 className={`text-4xl font-bold ${department.color.text} mb-2`}>
                 {department.name}

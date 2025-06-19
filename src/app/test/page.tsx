@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 // 機能テスト用の簡単なページ
 export default function TestPage() {
   return (

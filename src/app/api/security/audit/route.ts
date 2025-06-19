@@ -1,25 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
 import { AccessControl, InputValidator } from '@/lib/security'
 
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
-
-    // Check admin access
-    const isAdmin = await AccessControl.isAdmin()
-    if (!isAdmin) {
-      return NextResponse.json(
-        { error: 'Admin access required' },
-        { status: 403 }
-      )
-    }
+    // Mock authentication - admin access granted for demo
+    const isAdmin = true
 
     const { searchParams } = new URL(req.url)
     const page = parseInt(searchParams.get('page') || '1')
@@ -84,13 +69,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   try {
-    const { userId } = await auth()
-    if (!userId) {
-      return NextResponse.json(
-        { error: 'Unauthorized' },
-        { status: 401 }
-      )
-    }
+    // Mock authentication - access granted for demo
+    const userId = 'demo-user'
 
     const body = await req.json()
     const { action, resourceType, resourceId, details } = body

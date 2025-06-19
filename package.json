@@ -4,10 +4,12 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "dev:https": "node server-https.js",
     "build": "next build",
     "build:check": "npm run pre-build-check && next build",
     "build:safe": "next build",
     "start": "next start",
+    "start:https": "NODE_ENV=production node server-https.js",
     "lint": "next lint",
     "pre-build-check": "node scripts/pre-build-check.js",
     "db:generate": "prisma generate",
@@ -22,6 +24,7 @@
   "dependencies": {
     "@clerk/nextjs": "^6.1.4",
     "@prisma/client": "^6.10.0",
+    "@stripe/stripe-js": "^7.3.1",
     "@supabase/supabase-js": "^2.45.4",
     "@vimeo/vimeo": "^3.0.3",
     "autoprefixer": "^10.4.21",
@@ -34,7 +37,9 @@
     "react-dom": "^18",
     "stripe": "^18.2.1",
     "svix": "^1.67.0",
-    "tailwindcss": "^3.4.1"
+    "tailwindcss": "^3.4.1",
+    "vercel": "^43.2.0",
+    "zod": "^3.25.67"
   },
   "devDependencies": {
     "@types/node": "^20",
@@ -42,6 +47,7 @@
     "@types/react-dom": "^18",
     "eslint": "^8",
     "eslint-config-next": "15.2.3",
+    "mkcert": "^3.2.0",
     "tsx": "^4.20.3",
     "typescript": "^5"
   }
