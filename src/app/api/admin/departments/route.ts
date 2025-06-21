@@ -8,6 +8,9 @@ const mockDepartments = [
     description: 'ChatGPTの使い方からAIの仕組みまで、基礎から丁寧に学習',
     image: null,
     color: '#3B82F6',
+    iconType: 'lucide',
+    iconValue: 'brain',
+    uploadedImage: null,
     coursesCount: 5
   },
   {
@@ -16,6 +19,9 @@ const mockDepartments = [
     description: 'ExcelやOfficeツールとAIを組み合わせた実践的スキル',
     image: null,
     color: '#10B981',
+    iconType: 'gradient',
+    iconValue: 'Growth',
+    uploadedImage: null,
     coursesCount: 8
   },
   {
@@ -24,6 +30,9 @@ const mockDepartments = [
     description: 'プログラミングとAIを活用した高度な課題解決手法',
     image: null,
     color: '#8B5CF6',
+    iconType: 'lucide',
+    iconValue: 'code',
+    uploadedImage: null,
     coursesCount: 12
   }
 ]
@@ -49,7 +58,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { name, description, color } = body
+    const { name, description, color, iconType, iconValue, uploadedImage } = body
 
     // Basic validation
     if (!name) {
@@ -67,6 +76,9 @@ export async function POST(request: Request) {
       description,
       image: null,
       color: color || '#3B82F6',
+      iconType: iconType || 'lucide',
+      iconValue: iconValue || 'brain',
+      uploadedImage: uploadedImage || null,
       coursesCount: 0
     }
 
