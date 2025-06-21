@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Plus, BookOpen, Users, Video, BarChart3, Settings } from 'lucide-react'
+import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 
 interface Department {
   id: string
@@ -27,6 +28,7 @@ export default function AdminDashboard() {
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'overview' | 'departments' | 'courses'>('overview')
+  const [showDepartmentForm, setShowDepartmentForm] = useState(false)
 
   // データ取得
   useEffect(() => {
@@ -54,6 +56,29 @@ export default function AdminDashboard() {
       console.error('データ取得エラー:', error)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const handleCreateDepartment = async (formData: { name: string; description: string; color: string }) => {
+    try {
+      const response = await fetch('/api/admin/departments', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        const newDepartment = await response.json()
+        setDepartments(prev => [...prev, { ...newDepartment, coursesCount: 0 }])
+        setShowDepartmentForm(false)
+      } else {
+        throw new Error('Failed to create department')
+      }
+    } catch (error) {
+      console.error('学部作成エラー:', error)
+      alert('学部の作成に失敗しました。もう一度お試しください。')
     }
   }
 
@@ -184,7 +209,10 @@ export default function AdminDashboard() {
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-gray-900">学部管理</h2>
-                  <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center">
+                  <button 
+                    onClick={() => setShowDepartmentForm(true)}
+                    className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center"
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     学部を作成
                   </button>
@@ -218,7 +246,10 @@ export default function AdminDashboard() {
                       <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                       <h3 className="text-lg font-medium text-gray-900 mb-2">学部がありません</h3>
                       <p className="text-gray-600 mb-4">最初の学部を作成して始めましょう</p>
-                      <button className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors">
+                      <button 
+                        onClick={() => setShowDepartmentForm(true)}
+                        className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                      >
                         学部を作成
                       </button>
                     </div>
@@ -289,6 +320,13 @@ export default function AdminDashboard() {
           </>
         )}
       </main>
+
+      {/* 学部作成フォーム */}
+      <DepartmentForm
+        isOpen={showDepartmentForm}
+        onClose={() => setShowDepartmentForm(false)}
+        onSave={handleCreateDepartment}
+      />
     </div>
   )
 }
