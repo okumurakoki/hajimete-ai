@@ -64,26 +64,15 @@ export default function AuthSignInPage() {
 
           {/* フッター */}
           <div className="text-center mt-8">
-            <p className="text-sm text-gray-500">
-              アカウントをお持ちでない方は{' '}
-              <a 
-                href="/auth/sign-up" 
-                className="text-blue-600 hover:text-blue-800 font-medium transition-colors"
-              >
-                新規登録
-              </a>
-            </p>
-            <div className="mt-4">
-              <a 
-                href="/" 
-                className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
-              >
-                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                ホームに戻る
-              </a>
-            </div>
+            <a 
+              href="/" 
+              className="inline-flex items-center text-sm text-gray-500 hover:text-gray-700 transition-colors"
+            >
+              <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+              </svg>
+              ホームに戻る
+            </a>
           </div>
         </div>
       </div>
