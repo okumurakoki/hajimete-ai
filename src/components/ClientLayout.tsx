@@ -1,6 +1,7 @@
 'use client'
 
 import { ClerkProvider } from '@clerk/nextjs'
+import { jaJP } from '@clerk/localizations'
 import { useEffect, useState } from 'react'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
 
@@ -72,7 +73,7 @@ export default function ClientLayout({
   }
 
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={jaJP}>
       <ErrorBoundary>
         {children}
       </ErrorBoundary>
