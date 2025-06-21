@@ -145,13 +145,10 @@ export default function CourseForm({ isOpen, onClose, onSave, departments, initi
                     src={formData.thumbnail} 
                     alt="Thumbnail" 
                     className="w-full h-full object-cover rounded-lg"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none'
-                      e.currentTarget.nextElementSibling!.style.display = 'flex'
-                    }}
                   />
-                ) : null}
-                <BookOpen className="w-6 h-6 text-gray-400" />
+                ) : (
+                  <BookOpen className="w-6 h-6 text-gray-400" />
+                )}
               </div>
               <div className="flex-1">
                 <h4 className="font-semibold text-gray-900 mb-1">
