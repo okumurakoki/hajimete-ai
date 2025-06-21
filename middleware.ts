@@ -52,6 +52,18 @@ export default clerkMiddleware(async (auth, req) => {
     if (isProtectedRoute(req)) {
       await auth.protect()
     }
+
+    // 管理者ルートの特別保護
+    if (req.nextUrl.pathname.startsWith('/admin')) {
+      const { userId } = await auth()
+      if (!userId) {
+        const signInUrl = new URL('/auth/sign-in', req.url)
+        return Response.redirect(signInUrl)
+      }
+
+      // 管理者権限チェックは AdminGuard コンポーネントで行う
+      // ここでは認証済みユーザーのみを通す
+    }
   } catch (error) {
     // Clerk認証エラーをキャッチして適切に処理
     console.warn('Clerk middleware error:', error)

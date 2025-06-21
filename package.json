@@ -11,7 +11,8 @@
     "start": "next start",
     "start:https": "NODE_ENV=production node server-https.js",
     "lint": "next lint",
-    "pre-build-check": "node scripts/pre-build-check.js"
+    "pre-build-check": "node scripts/pre-build-check.js",
+    "make-admin": "node scripts/make-admin.js"
   },
   "dependencies": {
     "@clerk/localizations": "^3.16.5",

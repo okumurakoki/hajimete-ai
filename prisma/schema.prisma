@@ -1,0 +1,149 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// 学部モデル
+model Department {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  image       String?
+  color       String?  // ブランドカラー
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  
+  // リレーション
+  courses     Course[]
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("departments")
+}
+
+// コース・講義モデル
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  thumbnail   String?
+  videoUrl    String?
+  duration    Int?     // 分単位
+  level       Level    @default(BEGINNER)
+  tags        String[] // タグ配列
+  order       Int      @default(0)
+  isActive    Boolean  @default(true)
+  isFree      Boolean  @default(false)
+  
+  // リレーション
+  department   Department @relation(fields: [departmentId], references: [id], onDelete: Cascade)
+  departmentId String
+  lessons      Lesson[]
+  enrollments  Enrollment[]
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("courses")
+}
+
+// レッスンモデル
+model Lesson {
+  id          String      @id @default(cuid())
+  title       String
+  content     String?     // Markdown対応
+  videoUrl    String?
+  duration    Int?        // 分単位
+  type        LessonType  @default(VIDEO)
+  order       Int
+  isActive    Boolean     @default(true)
+  isFree      Boolean     @default(false)
+  
+  // リレーション
+  course      Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  courseId    String
+  progress    Progress[]
+  
+  // タイムスタンプ
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  
+  @@map("lessons")
+}
+
+// ユーザー学習進捗
+model Progress {
+  id           String   @id @default(cuid())
+  userId       String   // ClerkユーザーID
+  lessonId     String
+  isCompleted  Boolean  @default(false)
+  watchTime    Int      @default(0) // 視聴時間（秒）
+  lastPosition Int      @default(0) // 最後の視聴位置（秒）
+  
+  // リレーション
+  lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  
+  // タイムスタンプ
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@unique([userId, lessonId])
+  @@map("progress")
+}
+
+// コース登録
+model Enrollment {
+  id        String   @id @default(cuid())
+  userId    String   // ClerkユーザーID
+  courseId  String
+  
+  // リレーション
+  course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  // タイムスタンプ
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
+
+// 管理者モデル
+model Admin {
+  id        String   @id @default(cuid())
+  userId    String   @unique // ClerkユーザーID
+  role      Role     @default(ADMIN)
+  
+  // タイムスタンプ
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@map("admins")
+}
+
+// Enums
+enum Level {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum LessonType {
+  VIDEO
+  TEXT
+  QUIZ
+  ASSIGNMENT
+}
+
+enum Role {
+  SUPER_ADMIN
+  ADMIN
+  EDITOR
+}
