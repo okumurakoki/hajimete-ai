@@ -28,7 +28,7 @@ export default function AuthSignInPage() {
           </div>
 
           {/* カード部分 */}
-          <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 p-8">
+          <div className="bg-transparent p-8">
             <SignIn 
               routing="path"
               path="/auth/sign-in"
