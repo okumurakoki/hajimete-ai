@@ -75,9 +75,17 @@ export default function ClientLayout({
     <ClerkProvider
       appearance={{
         elements: {
-          formButtonPrimary: 'bg-blue-600 hover:bg-blue-700 text-sm normal-case',
-          card: 'shadow-md'
-        },
+          card: "shadow-none border-0 bg-transparent p-0 m-0",
+          rootBox: "shadow-none border-0 bg-transparent",
+          cardBox: "shadow-none border-0 bg-transparent",
+          main: "shadow-none border-0 bg-transparent",
+          formButtonPrimary: "shadow-none border-0",
+          socialButtonsBlockButton: "shadow-none border-0",
+          formFieldInput: "shadow-none border-0",
+          footer: "hidden",
+          formContainer: "shadow-none border-0 bg-transparent p-0",
+          form: "shadow-none border-0 bg-transparent"
+        }
       }}
     >
       <ErrorBoundary>

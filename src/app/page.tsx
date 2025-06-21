@@ -90,13 +90,13 @@ function Navigation({ isSignedIn }: { isSignedIn: boolean }) {
             ) : (
               <div className="flex items-center space-x-4">
                 <a
-                  href="/sign-in"
+                  href="/auth/sign-in"
                   className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
                 >
                   サインイン
                 </a>
                 <a
-                  href="/sign-up"
+                  href="/auth/sign-up"
                   className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
                 >
                   無料で始める
@@ -130,8 +130,8 @@ function Navigation({ isSignedIn }: { isSignedIn: boolean }) {
                 </a>
               ) : (
                 <div className="flex flex-col space-y-2">
-                  <a href="/sign-in" className="text-gray-600 hover:text-blue-600 font-medium">サインイン</a>
-                  <a href="/sign-up" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-center">
+                  <a href="/auth/sign-in" className="text-gray-600 hover:text-blue-600 font-medium">サインイン</a>
+                  <a href="/auth/sign-up" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-center">
                     無料で始める
                   </a>
                 </div>
@@ -164,7 +164,7 @@ function HeroSection() {
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
             <a
-              href="/sign-up"
+              href="/auth/sign-up"
               className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
             >
               🚀 今すぐ無料で始める
@@ -273,7 +273,7 @@ function DepartmentsSection() {
                 </div>
               </div>
               <button
-                onClick={() => window.location.href = '/sign-up'}
+                onClick={() => window.location.href = '/auth/sign-up'}
                 className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors"
               >
                 学習を開始する
@@ -331,7 +331,7 @@ function PricingSection() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">無料プラン</h3>
             <div className="text-4xl font-bold text-gray-900 mb-4">¥0<span className="text-lg text-gray-600">/月</span></div>
             <button
-              onClick={() => window.location.href = '/sign-up'}
+              onClick={() => window.location.href = '/auth/sign-up'}
               className="w-full bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg font-semibold"
             >
               無料で始める
@@ -345,7 +345,7 @@ function PricingSection() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">ベーシックプラン</h3>
             <div className="text-4xl font-bold text-gray-900 mb-4">¥3,500<span className="text-lg text-gray-600">/月</span></div>
             <button
-              onClick={() => window.location.href = '/sign-up'}
+              onClick={() => window.location.href = '/auth/sign-up'}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold"
             >
               このプランを選択
@@ -356,7 +356,7 @@ function PricingSection() {
             <h3 className="text-xl font-bold text-gray-900 mb-4">プレミアムプラン</h3>
             <div className="text-4xl font-bold text-gray-900 mb-4">¥5,500<span className="text-lg text-gray-600">/月</span></div>
             <button
-              onClick={() => window.location.href = '/sign-up'}
+              onClick={() => window.location.href = '/auth/sign-up'}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-semibold"
             >
               このプランを選択
@@ -413,7 +413,7 @@ function CTASection() {
         
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <a
-            href="/sign-up"
+            href="/auth/sign-up"
             className="bg-white hover:bg-gray-100 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
           >
             🚀 無料で学習開始

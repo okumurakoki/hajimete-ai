@@ -21,6 +21,11 @@
   .schoo-card {
     @apply bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200;
   }
+
+  /* Clerk認証コンポーネント用スタイル */
+  .clerk-loaded {
+    --clerk-font-family: 'Noto Sans JP', system-ui, sans-serif;
+  }
   
   .schoo-card-premium {
     @apply bg-gradient-to-br from-purple-50 to-purple-100 border-purple-200 hover:shadow-purple-200/50;
