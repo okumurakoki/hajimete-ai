@@ -34,6 +34,31 @@ export default function AuthSignInPage() {
               path="/auth/sign-in"
               signUpUrl="/auth/sign-up"
               redirectUrl="/dashboard"
+              appearance={{
+                variables: {
+                  colorPrimary: "#3B82F6",
+                  colorText: "#1F2937",
+                  fontFamily: "'Noto Sans JP', system-ui, sans-serif",
+                  borderRadius: "8px"
+                },
+                elements: {
+                  // カード全体
+                  card: "bg-transparent shadow-none border-0",
+                  headerTitle: "hidden",
+                  headerSubtitle: "hidden",
+                  
+                  // フォーム要素
+                  formFieldInput: "border border-gray-300 focus:border-blue-500 focus:ring-1 focus:ring-blue-500",
+                  formFieldLabel: "text-gray-700 font-medium text-sm",
+                  formButtonPrimary: "bg-blue-600 hover:bg-blue-700 text-white font-medium py-2.5",
+                  
+                  // ソーシャルボタン
+                  socialButtonsBlockButton: "border border-gray-300 hover:bg-gray-50 text-gray-700",
+                  
+                  // リンク
+                  footerActionLink: "text-blue-600 hover:text-blue-700 font-medium"
+                }
+              }}
             />
           </div>
 
