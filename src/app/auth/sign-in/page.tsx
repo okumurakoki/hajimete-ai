@@ -28,7 +28,7 @@ export default function AuthSignInPage() {
           </div>
 
           {/* カード部分 */}
-          <div className="bg-white/90 backdrop-blur-xl rounded-3xl shadow-2xl border border-white/60 p-8">
+          <div className="bg-white/95 backdrop-blur-xl rounded-3xl shadow-2xl border border-gray-200/50 p-8">
             <SignIn 
               routing="path"
               path="/auth/sign-in"
@@ -43,13 +43,13 @@ export default function AuthSignInPage() {
                   fontFamily: "'Noto Sans JP', system-ui, sans-serif"
                 },
                 elements: {
-                  rootBox: "w-full",
+                  rootBox: "w-full bg-white rounded-2xl border border-gray-200 shadow-sm p-6",
                   card: "bg-transparent shadow-none border-0 p-0 rounded-none",
                   headerTitle: "hidden",
                   headerSubtitle: "hidden",
                   
                   // ソーシャルボタン
-                  socialButtonsBlockButton: "w-full mb-3 py-3.5 px-4 bg-white border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all duration-200 shadow-sm hover:shadow-md",
+                  socialButtonsBlockButton: "w-full mb-3 py-3.5 px-4 bg-gray-50 border border-gray-200 rounded-xl font-medium text-gray-700 hover:bg-gray-100 hover:border-gray-300 transition-all duration-200 shadow-sm",
                   socialButtonsBlockButtonText: "text-gray-700 font-medium text-sm",
                   socialButtonsProviderIcon: "w-5 h-5",
                   
@@ -59,7 +59,7 @@ export default function AuthSignInPage() {
                   dividerRow: "my-6",
                   
                   // フォーム要素
-                  formFieldInput: "w-full px-4 py-3.5 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500",
+                  formFieldInput: "w-full px-4 py-3.5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200 bg-white text-gray-900 placeholder-gray-500 shadow-sm",
                   formFieldLabel: "text-gray-700 font-medium mb-2 text-sm block",
                   formFieldRow: "mb-4",
                   
@@ -76,7 +76,7 @@ export default function AuthSignInPage() {
                   
                   // その他
                   identityPreviewText: "text-gray-600 text-sm",
-                  otpCodeFieldInput: "border border-gray-200 rounded-xl px-3 py-3 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-mono bg-white mr-2 last:mr-0",
+                  otpCodeFieldInput: "border border-gray-300 rounded-xl px-3 py-3 text-center focus:outline-none focus:ring-2 focus:ring-blue-500 text-lg font-mono bg-white mr-2 last:mr-0 shadow-sm",
                   formFieldInputShowPasswordButton: "text-gray-500 hover:text-gray-700 transition-colors absolute right-3 top-1/2 transform -translate-y-1/2",
                   
                   // フッター
