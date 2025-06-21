@@ -80,7 +80,7 @@ export async function GET() {
 export async function POST(request: Request) {
   try {
     const body = await request.json()
-    const { title, description, departmentId, thumbnail } = body
+    const { title, description, departmentId, thumbnail, thumbnailFile, difficulty, duration, videoUrl, status } = body
 
     // Basic validation
     if (!title || !departmentId) {
@@ -89,17 +89,31 @@ export async function POST(request: Request) {
 
     // In the future, this will create in database:
     // const course = await prisma.course.create({
-    //   data: { title, description, departmentId, thumbnail },
+    //   data: { title, description, departmentId, thumbnail, difficulty, duration, videoUrl, status },
     //   include: { department: { select: { name: true } } }
     // })
+
+    // Mock departments for now
+    const mockDepartments = [
+      { id: '1', name: 'AI基礎学部' },
+      { id: '2', name: '業務効率化学部' },
+      { id: '3', name: '実践応用学部' }
+    ]
+
+    const department = mockDepartments.find(d => d.id === departmentId)
 
     const newCourse = {
       id: Date.now().toString(),
       title,
       description,
       thumbnail,
+      thumbnailFile,
+      difficulty: difficulty || 'beginner',
+      duration: duration || 30,
+      videoUrl,
+      status: status || 'draft',
       departmentId,
-      department: { name: 'Mock Department' }, // Would be fetched from DB
+      department: { name: department?.name || 'Unknown Department' },
       lessonsCount: 0
     }
 

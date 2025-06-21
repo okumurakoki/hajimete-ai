@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon } from 'lucide-react'
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
+import CourseForm from '@/components/admin/forms/CourseForm'
 
 interface Department {
   id: string
@@ -103,6 +104,7 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState<'overview' | 'departments' | 'courses'>('overview')
   const [showDepartmentForm, setShowDepartmentForm] = useState(false)
+  const [showCourseForm, setShowCourseForm] = useState(false)
 
   // アイコンレンダリング関数
   const renderDepartmentIcon = (dept: Department) => {
@@ -188,6 +190,31 @@ export default function AdminDashboard() {
     } catch (error) {
       console.error('学部作成エラー:', error)
       alert('学部の作成に失敗しました。もう一度お試しください。')
+    }
+  }
+
+  const handleCreateCourse = async (formData: { title: string; description: string; departmentId: string; thumbnail?: string; thumbnailFile?: File | null; difficulty: string; duration: number; videoUrl?: string; status: string }) => {
+    try {
+      const response = await fetch('/api/admin/courses', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        const newCourse = await response.json()
+        setCourses(prev => [...prev, newCourse])
+        setShowCourseForm(false)
+        // データを再読み込みして最新状態を取得
+        fetchData()
+      } else {
+        throw new Error('Failed to create course')
+      }
+    } catch (error) {
+      console.error('講義作成エラー:', error)
+      alert('講義の作成に失敗しました。もう一度お試しください。')
     }
   }
 
@@ -302,7 +329,7 @@ export default function AdminDashboard() {
                       <span className="font-medium text-blue-700">新しい学部を作成</span>
                     </button>
                     <button
-                      onClick={() => setActiveTab('courses')}
+                      onClick={() => setShowCourseForm(true)}
                       className="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
                     >
                       <Plus className="w-5 h-5 text-green-600 mr-3" />
@@ -372,7 +399,10 @@ export default function AdminDashboard() {
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
                   <h2 className="text-2xl font-bold text-gray-900">講義管理</h2>
-                  <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center">
+                  <button 
+                    onClick={() => setShowCourseForm(true)}
+                    className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center"
+                  >
                     <Plus className="w-4 h-4 mr-2" />
                     講義を作成
                   </button>
@@ -417,7 +447,10 @@ export default function AdminDashboard() {
                         <Video className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                         <h3 className="text-lg font-medium text-gray-900 mb-2">講義がありません</h3>
                         <p className="text-gray-600 mb-4">最初の講義を作成して始めましょう</p>
-                        <button className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors">
+                        <button 
+                          onClick={() => setShowCourseForm(true)}
+                          className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors"
+                        >
                           講義を作成
                         </button>
                       </div>
@@ -435,6 +468,18 @@ export default function AdminDashboard() {
         isOpen={showDepartmentForm}
         onClose={() => setShowDepartmentForm(false)}
         onSave={handleCreateDepartment}
+      />
+
+      {/* 講義作成フォーム */}
+      <CourseForm
+        isOpen={showCourseForm}
+        onClose={() => setShowCourseForm(false)}
+        onSave={handleCreateCourse}
+        departments={departments.map(dept => ({
+          id: dept.id,
+          name: dept.name,
+          color: dept.color || undefined
+        }))}
       />
     </div>
   )
