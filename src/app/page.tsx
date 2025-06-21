@@ -1,286 +1,480 @@
 'use client'
 
-import Link from 'next/link'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
-import { DEPARTMENTS } from '@/lib/departments'
-import { Play, Users, BookOpen, Star, ChevronRight, TrendingUp, Clock, Award, Brain } from 'lucide-react'
-import { useAuth } from '@/contexts/AuthContext'
-
-export const dynamic = 'force-dynamic'
+import { useUser } from '@clerk/nextjs'
+import { useState, useEffect } from 'react'
 
 export default function HomePage() {
-  const { isAuthenticated, user } = useAuth()
+  const { isSignedIn } = useUser()
+  const [mounted, setMounted] = useState(false)
 
-  const stats = [
-    {
-      number: '10,000+',
-      label: '受講生',
-      icon: Users,
-      color: 'text-blue-600'
-    },
-    {
-      number: '200+',
-      label: '動画コンテンツ',
-      icon: Play,
-      color: 'text-green-600'
-    },
-    {
-      number: '50+',
-      label: 'ライブセミナー',
-      icon: BookOpen,
-      color: 'text-orange-600'
-    },
-    {
-      number: '4.8',
-      label: '満足度評価',
-      icon: Star,
-      color: 'text-purple-600'
-    }
-  ]
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
-  const features = [
-    {
-      title: '実践的なAI学習',
-      description: '現場で使えるスキルを体系的に学習',
-      icon: TrendingUp,
-      color: 'bg-blue-50 text-blue-600'
-    },
-    {
-      title: 'ライブセミナー',
-      description: '専門家との双方向コミュニケーション',
-      icon: Clock,
-      color: 'bg-green-50 text-green-600'
-    },
-    {
-      title: '認定証取得',
-      description: 'スキル習得の証明書を発行',
-      icon: Award,
-      color: 'bg-orange-50 text-orange-600'
-    }
-  ]
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
+    <div className="min-h-screen bg-white">
+      {/* ナビゲーション */}
+      <Navigation isSignedIn={isSignedIn || false} />
       
-      <main className="flex-1">
-        {/* ヒーローセクション */}
-        <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-indigo-700 text-white overflow-hidden min-h-[80vh] flex items-center">
-          {/* 背景装飾 */}
-          <div className="absolute inset-0">
-            <div className="absolute inset-0 bg-gradient-to-r from-black/20 to-transparent"></div>
-            <div className="absolute top-1/4 right-1/4 w-96 h-96 bg-gradient-to-br from-white/10 to-transparent rounded-full blur-3xl"></div>
-            <div className="absolute bottom-1/4 left-1/4 w-80 h-80 bg-gradient-to-br from-purple-300/20 to-transparent rounded-full blur-2xl"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-to-br from-blue-400/5 to-purple-400/5 rounded-full blur-3xl"></div>
+      {/* ヒーローセクション */}
+      <HeroSection />
+      
+      {/* 特徴セクション */}
+      <FeaturesSection />
+      
+      {/* 学部紹介セクション */}
+      <DepartmentsSection />
+      
+      {/* 統計セクション */}
+      <StatsSection />
+      
+      {/* 料金プランセクション */}
+      <PricingSection />
+      
+      {/* お客様の声セクション */}
+      <TestimonialsSection />
+      
+      {/* CTAセクション */}
+      <CTASection />
+      
+      {/* フッター */}
+      <Footer />
+    </div>
+  )
+}
+
+// ナビゲーションコンポーネント
+function Navigation({ isSignedIn }: { isSignedIn: boolean }) {
+  const [isMenuOpen, setIsMenuOpen] = useState(false)
+
+  return (
+    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center py-4">
+          {/* ロゴ */}
+          <div className="flex items-center">
+            <div className="text-2xl mr-2">🤖</div>
+            <h1 className="text-2xl font-bold text-blue-600">はじめて.AI</h1>
           </div>
-          
-          <div className="relative container mx-auto px-6 lg:px-8">
-            <div className="max-w-5xl mx-auto">
-              <div className="text-center lg:text-left lg:flex lg:items-center lg:gap-16">
-                <div className="lg:flex-1 fade-in">
-                  <div className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-sm font-medium mb-8 border border-white/20">
-                    <Star size={14} className="mr-2 text-yellow-300" />
-                    日本最大級のAI学習プラットフォーム
-                  </div>
-                  
-                  <h1 className="text-5xl lg:text-7xl font-bold mb-8 leading-tight tracking-tight">
-                    AIを学ぶなら
-                    <br />
-                    <span className="bg-gradient-to-r from-yellow-300 to-orange-300 bg-clip-text text-transparent">
-                      はじめて.AI
-                    </span>
-                  </h1>
-                  
-                  <p className="text-xl lg:text-2xl mb-10 text-blue-100 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                    基礎から実践まで、あなたのペースで学べる
-                    <br className="hidden sm:block" />
-                    <span className="text-white font-medium">実践的なAI学習体験</span>
-                  </p>
-              
-                  {isAuthenticated ? (
-                    <div className="flex flex-col sm:flex-row gap-4 lg:justify-start justify-center">
-                      <Link href="/dashboard" className="bg-white text-blue-600 hover:bg-gray-50 text-lg px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 inline-flex items-center gap-2 justify-center">
-                        <TrendingUp size={19} />
-                        ダッシュボードへ
-                      </Link>
-                      <Link href="/videos" className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 inline-flex items-center gap-2 justify-center">
-                        <Play size={19} />
-                        動画を見る
-                      </Link>
-                    </div>
-                  ) : (
-                    <div className="flex flex-col sm:flex-row gap-4 lg:justify-start justify-center">
-                      <Link href="/dashboard" className="bg-white text-blue-600 hover:bg-gray-50 text-lg px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 inline-flex items-center gap-2 justify-center">
-                        <Star size={19} />
-                        無料で始める
-                      </Link>
-                      <Link href="/plan-selection" className="bg-white/10 backdrop-blur-sm border-2 border-white/30 text-white hover:bg-white hover:text-blue-600 text-lg px-8 py-4 rounded-2xl font-semibold transition-all duration-300 hover:shadow-xl hover:scale-105 inline-flex items-center gap-2 justify-center">
-                        <Award size={19} />
-                        プランを見る
-                      </Link>
-                    </div>
-                  )}
-                </div>
-                
-                {/* 右側のビジュアル要素 */}
-                <div className="lg:flex-1 lg:block hidden">
-                  <div className="relative">
-                    <div className="w-full max-w-md mx-auto">
-                      <div className="relative aspect-square">
-                        <div className="absolute inset-0 bg-gradient-to-br from-white/20 to-white/5 rounded-3xl backdrop-blur-sm border border-white/20 shadow-2xl"></div>
-                        <div className="absolute inset-4 bg-gradient-to-br from-blue-500/20 to-purple-500/20 rounded-2xl flex items-center justify-center">
-                          <Brain size={120} className="text-white/80" />
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
+
+          {/* デスクトップナビゲーション */}
+          <div className="hidden md:flex items-center space-x-8">
+            <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              特徴
+            </a>
+            <a href="#departments" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              学部紹介
+            </a>
+            <a href="#pricing" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              料金
+            </a>
+            <a href="/demo" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+              デモ
+            </a>
+            
+            {isSignedIn ? (
+              <a
+                href="/dashboard"
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+              >
+                ダッシュボード
+              </a>
+            ) : (
+              <div className="flex items-center space-x-4">
+                <a
+                  href="/sign-in"
+                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                >
+                  サインイン
+                </a>
+                <a
+                  href="/sign-up"
+                  className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium transition-colors"
+                >
+                  無料で始める
+                </a>
               </div>
-            </div>
+            )}
           </div>
-        </section>
 
-        {/* 統計セクション */}
-        <section className="py-16 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {stats.map((stat, index) => {
-                const Icon = stat.icon
-                return (
-                  <div key={index} className="text-center slide-up" style={{ animationDelay: `${index * 0.1}s` }}>
-                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full bg-gray-50 flex items-center justify-center ${stat.color}`}>
-                      <Icon size={17} />
-                    </div>
-                    <div className="text-3xl lg:text-4xl font-bold text-gray-900 mb-2">{stat.number}</div>
-                    <div className="text-gray-600 font-medium">{stat.label}</div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
+          {/* モバイルメニューボタン */}
+          <button
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+            className="md:hidden p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100"
+          >
+            <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+            </svg>
+          </button>
+        </div>
 
-        {/* 学部紹介セクション */}
-        <section className="py-20 bg-gray-50">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 fade-in">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                4つの専門学部で体系的に学ぶ
-              </h2>
-              <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-                初心者から上級者まで、段階的にAIスキルを身につけられる学部制システム
-              </p>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-6xl mx-auto">
-              {DEPARTMENTS.map((dept, index) => {
-                const IconComponent = dept.icon
-                return (
-                  <Link 
-                    key={dept.id} 
-                    href={isAuthenticated ? `/${dept.slug}` : '/dashboard'}
-                    className="group"
-                  >
-                    <div className={`schoo-card h-full p-8 ${dept.plan === 'premium' ? 'schoo-card-premium' : ''} slide-up`} 
-                         style={{ animationDelay: `${index * 0.2}s` }}>
-                      <div className="flex items-start justify-between mb-6">
-                        <div className={`w-16 h-16 rounded-xl flex items-center justify-center ${dept.color.secondary} ${dept.color.text}`}>
-                          <IconComponent size={19} />
-                        </div>
-                        
-                        {dept.plan === 'premium' && (
-                          <div className="bg-gradient-to-r from-purple-500 to-purple-600 text-white px-3 py-1 rounded-full text-sm font-semibold flex items-center gap-1">
-                            <Star size={10} />
-                            プレミアム
-                          </div>
-                        )}
-                      </div>
-
-                    <h3 className="text-2xl font-bold text-gray-900 mb-3 group-hover:text-blue-600 transition-colors">
-                      {dept.name}
-                    </h3>
-                    <p className="text-gray-600 mb-6 leading-relaxed">
-                      {dept.description}
-                    </p>
-
-                    <div className="flex items-center text-blue-600 font-semibold group-hover:text-blue-700 transition-colors">
-                      <span>詳しく見る</span>
-                      <ChevronRight size={12} className="ml-1 group-hover:translate-x-1 transition-transform" />
-                    </div>
-                  </div>
-                </Link>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* 特徴セクション */}
-        <section className="py-20 bg-white">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-16 fade-in">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-                なぜはじめて.AIが選ばれるのか
-              </h2>
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-              {features.map((feature, index) => {
-                const Icon = feature.icon
-                return (
-                  <div key={index} className="text-center slide-up" style={{ animationDelay: `${index * 0.2}s` }}>
-                    <div className={`w-20 h-20 mx-auto mb-6 rounded-2xl ${feature.color} flex items-center justify-center`}>
-                      <Icon size={19} />
-                    </div>
-                    <h3 className="text-xl font-bold text-gray-900 mb-4">{feature.title}</h3>
-                    <p className="text-gray-600 leading-relaxed">{feature.description}</p>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-
-        {/* CTAセクション */}
-        <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600 text-white">
-          <div className="container mx-auto px-4 text-center">
-            <div className="max-w-3xl mx-auto fade-in">
-              <h2 className="text-3xl lg:text-4xl font-bold mb-6">
-                今すぐAI学習を始めよう
-              </h2>
-              <p className="text-xl mb-8 text-blue-100">
-                {isAuthenticated 
-                  ? `${user?.firstName}さん、今日も新しいことを学びましょう！`
-                  : '無料プランから始めて、AIの世界への第一歩を踏み出そう'
-                }
-              </p>
-              
-              {isAuthenticated ? (
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link href="/videos" className="schoo-btn-primary bg-white text-blue-600 hover:bg-gray-100">
-                    動画を見る
-                  </Link>
-                  <Link href="/seminars" className="schoo-btn-secondary bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600">
-                    セミナーに参加
-                  </Link>
-                </div>
+        {/* モバイルメニュー */}
+        {isMenuOpen && (
+          <div className="md:hidden pb-4">
+            <div className="flex flex-col space-y-4">
+              <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium">特徴</a>
+              <a href="#departments" className="text-gray-600 hover:text-blue-600 font-medium">学部紹介</a>
+              <a href="#pricing" className="text-gray-600 hover:text-blue-600 font-medium">料金</a>
+              <a href="/demo" className="text-gray-600 hover:text-blue-600 font-medium">デモ</a>
+              {isSignedIn ? (
+                <a href="/dashboard" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-center">
+                  ダッシュボード
+                </a>
               ) : (
-                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                  <Link href="/dashboard" className="schoo-btn-primary bg-white text-blue-600 hover:bg-gray-100">
+                <div className="flex flex-col space-y-2">
+                  <a href="/sign-in" className="text-gray-600 hover:text-blue-600 font-medium">サインイン</a>
+                  <a href="/sign-up" className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium text-center">
                     無料で始める
-                  </Link>
-                  <Link href="/plan-selection" className="schoo-btn-secondary bg-transparent border-2 border-white text-white hover:bg-white hover:text-blue-600">
-                    プランを見る
-                  </Link>
+                  </a>
                 </div>
               )}
             </div>
           </div>
-        </section>
-      </main>
+        )}
+      </div>
+    </nav>
+  )
+}
 
-      <Footer />
-    </div>
+// ヒーローセクション
+function HeroSection() {
+  return (
+    <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+            AI学習の
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
+              新しいスタンダード
+            </span>
+          </h1>
+          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+            ChatGPTから実践的なAI活用まで、あなたのペースで学べる包括的なAI学習プラットフォーム。
+            <br />
+            初心者から上級者まで、段階的にスキルアップできます。
+          </p>
+          
+          <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+            <a
+              href="/sign-up"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+            >
+              🚀 今すぐ無料で始める
+            </a>
+            <a
+              href="/demo"
+              className="bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold border border-gray-300 transition-colors shadow-lg hover:shadow-xl"
+            >
+              📺 デモを見る
+            </a>
+          </div>
+
+          {/* 信頼性インジケーター */}
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-600">
+            <div className="flex items-center">
+              <span className="text-2xl mr-2">✅</span>
+              <span>無料プランあり</span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl mr-2">⚡</span>
+              <span>即座に学習開始</span>
+            </div>
+            <div className="flex items-center">
+              <span className="text-2xl mr-2">🎯</span>
+              <span>実践的カリキュラム</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+// 他のセクション（簡略版）
+function FeaturesSection() {
+  const features = [
+    {
+      icon: '🎓',
+      title: '段階的学習システム',
+      description: '基礎から応用まで、あなたのレベルに合わせて段階的に学習できます。'
+    },
+    {
+      icon: '🔥',
+      title: '実践的コンテンツ',
+      description: '実際の業務で使えるスキルを身につけられる実践的な学習内容です。'
+    },
+    {
+      icon: '👥',
+      title: 'コミュニティサポート',
+      description: '同じ目標を持つ仲間と学習し、講師陣からの手厚いサポートを受けられます。'
+    }
+  ]
+
+  return (
+    <section id="features" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            なぜはじめて.AIが選ばれるのか
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            効果的なAI学習を実現する特徴
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {features.map((feature, index) => (
+            <div key={index} className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow">
+              <div className="text-4xl mb-4">{feature.icon}</div>
+              <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
+              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function DepartmentsSection() {
+  return (
+    <section id="departments" className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            4つの学部で体系的に学習
+          </h2>
+          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+            あなたの目標とレベルに合わせて選択できる学習プログラム
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+          {[
+            { icon: '🎓', name: 'AI基礎学部', description: 'ChatGPTの使い方からAIの仕組みまで' },
+            { icon: '⚡', name: '業務効率化学部', description: 'ExcelやOfficeツールとAI活用' },
+            { icon: '🚀', name: '実践応用学部', description: 'プログラミングとAI開発' },
+            { icon: '⭐', name: 'キャッチアップ学部', description: '最新AI技術とトレンド' }
+          ].map((dept, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+              <div className="flex items-center mb-6">
+                <div className="text-4xl mr-4">{dept.icon}</div>
+                <div>
+                  <h3 className="text-2xl font-bold text-gray-900">{dept.name}</h3>
+                  <p className="text-gray-600">{dept.description}</p>
+                </div>
+              </div>
+              <button
+                onClick={() => window.location.href = '/sign-up'}
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold transition-colors"
+              >
+                学習を開始する
+              </button>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function StatsSection() {
+  const stats = [
+    { value: '1,000+', label: '受講生数' },
+    { value: '50+', label: '学習コンテンツ' },
+    { value: '95%', label: '満足度' },
+    { value: '24/7', label: 'サポート体制' }
+  ]
+
+  return (
+    <section className="py-20 bg-blue-600">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            数字で見るはじめて.AI
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
+          {stats.map((stat, index) => (
+            <div key={index} className="text-center">
+              <div className="text-4xl md:text-5xl font-bold text-white mb-2">{stat.value}</div>
+              <div className="text-blue-100 text-lg">{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function PricingSection() {
+  return (
+    <section id="pricing" className="py-20 bg-white">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            シンプルで明確な料金プラン
+          </h2>
+        </div>
+
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="rounded-xl shadow-lg p-8 border border-gray-200">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">無料プラン</h3>
+            <div className="text-4xl font-bold text-gray-900 mb-4">¥0<span className="text-lg text-gray-600">/月</span></div>
+            <button
+              onClick={() => window.location.href = '/sign-up'}
+              className="w-full bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg font-semibold"
+            >
+              無料で始める
+            </button>
+          </div>
+          
+          <div className="rounded-xl shadow-lg p-8 border-2 border-blue-500 relative">
+            <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
+              おすすめ
+            </div>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">ベーシックプラン</h3>
+            <div className="text-4xl font-bold text-gray-900 mb-4">¥3,500<span className="text-lg text-gray-600">/月</span></div>
+            <button
+              onClick={() => window.location.href = '/sign-up'}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold"
+            >
+              このプランを選択
+            </button>
+          </div>
+          
+          <div className="rounded-xl shadow-lg p-8 border border-gray-200">
+            <h3 className="text-xl font-bold text-gray-900 mb-4">プレミアムプラン</h3>
+            <div className="text-4xl font-bold text-gray-900 mb-4">¥5,500<span className="text-lg text-gray-600">/月</span></div>
+            <button
+              onClick={() => window.location.href = '/sign-up'}
+              className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-semibold"
+            >
+              このプランを選択
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function TestimonialsSection() {
+  return (
+    <section className="py-20 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+            受講生の声
+          </h2>
+        </div>
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {[
+            { name: '田中 太郎', role: 'マーケティング担当', content: 'ChatGPTを使った業務効率化で、資料作成時間が70%短縮されました。' },
+            { name: '佐藤 花子', role: 'データアナリスト', content: 'AI基礎から応用まで体系的に学べて、実際のプロジェクトですぐに活用できています。' },
+            { name: '山田 次郎', role: 'フリーランス', content: '無料プランから始めて、今ではクライアントワークでAIを積極的に活用しています。' }
+          ].map((testimonial, index) => (
+            <div key={index} className="bg-white rounded-xl shadow-lg p-8">
+              <div className="flex items-center mb-6">
+                <div className="text-4xl mr-4">👨‍💼</div>
+                <div>
+                  <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
+                  <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                </div>
+              </div>
+              <p className="text-gray-600 leading-relaxed">"{testimonial.content}"</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function CTASection() {
+  return (
+    <section className="py-20 bg-gradient-to-r from-blue-600 to-purple-600">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+        <h2 className="text-3xl md:text-4xl font-bold text-white mb-6">
+          今すぐAI学習を始めませんか？
+        </h2>
+        <p className="text-xl text-blue-100 mb-8 max-w-3xl mx-auto">
+          無料プランから始めて、あなたのペースでAIスキルを身につけましょう。
+        </p>
+        
+        <div className="flex flex-col sm:flex-row gap-4 justify-center">
+          <a
+            href="/sign-up"
+            className="bg-white hover:bg-gray-100 text-blue-600 px-8 py-4 rounded-lg text-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+          >
+            🚀 無料で学習開始
+          </a>
+          <a
+            href="/demo"
+            className="bg-transparent hover:bg-white/10 text-white border border-white px-8 py-4 rounded-lg text-lg font-semibold transition-colors"
+          >
+            📺 デモを見る
+          </a>
+        </div>
+      </div>
+    </section>
+  )
+}
+
+function Footer() {
+  return (
+    <footer className="bg-gray-900 text-white py-12">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+          <div>
+            <div className="flex items-center mb-4">
+              <div className="text-2xl mr-2">🤖</div>
+              <h3 className="text-xl font-bold">はじめて.AI</h3>
+            </div>
+            <p className="text-gray-400 leading-relaxed">
+              AI学習プラットフォーム - 本番環境で動作中
+            </p>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">学習コンテンツ</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="#" className="hover:text-white transition-colors">AI基礎学部</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">業務効率化学部</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">実践応用学部</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">サポート</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="/demo" className="hover:text-white transition-colors">デモ</a></li>
+              <li><a href="#" className="hover:text-white transition-colors">お問い合わせ</a></li>
+            </ul>
+          </div>
+          
+          <div>
+            <h4 className="font-semibold mb-4">法的情報</h4>
+            <ul className="space-y-2 text-gray-400">
+              <li><a href="/privacy" className="hover:text-white transition-colors">プライバシーポリシー</a></li>
+              <li><a href="/terms" className="hover:text-white transition-colors">利用規約</a></li>
+            </ul>
+          </div>
+        </div>
+        
+        <div className="border-t border-gray-800 mt-12 pt-8 text-center text-gray-400">
+          <p>&copy; 2024 はじめて.AI. All rights reserved.</p>
+        </div>
+      </div>
+    </footer>
   )
 }

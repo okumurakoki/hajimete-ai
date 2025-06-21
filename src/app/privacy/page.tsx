@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
-import Header from '@/components/Header'
-import Footer from '@/components/Footer'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
   title: 'プライバシーポリシー',
@@ -9,8 +8,20 @@ export const metadata: Metadata = {
 
 export default function PrivacyPage() {
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50">
-      <Header />
+    <div className="min-h-screen bg-gray-50">
+      {/* Simple Header */}
+      <header className="bg-white shadow-sm border-b">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <Link href="/" className="text-xl font-bold text-blue-600">
+              はじめて.AI
+            </Link>
+            <Link href="/" className="text-blue-600 hover:text-blue-700">
+              ホームに戻る
+            </Link>
+          </div>
+        </div>
+      </header>
       
       <main className="flex-1">
         <div className="container mx-auto px-4 py-8 max-w-4xl">
@@ -146,7 +157,24 @@ export default function PrivacyPage() {
         </div>
       </main>
 
-      <Footer />
+      {/* Simple Footer */}
+      <footer className="bg-white border-t mt-12">
+        <div className="container mx-auto px-4 py-6">
+          <div className="text-center">
+            <p className="text-gray-600 text-sm">
+              © 2024 はじめて.AI. All rights reserved.
+            </p>
+            <div className="mt-2">
+              <Link href="/" className="text-blue-600 hover:text-blue-700 text-sm mr-4">
+                ホーム
+              </Link>
+              <Link href="/terms" className="text-blue-600 hover:text-blue-700 text-sm">
+                利用規約
+              </Link>
+            </div>
+          </div>
+        </div>
+      </footer>
     </div>
   )
 }

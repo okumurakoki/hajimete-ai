@@ -54,13 +54,23 @@ export default function StripeCheckout({
 
       if (!response.ok) {
         let errorMessage = 'Failed to create checkout session'
+        let details = ''
         try {
           const errorData = await response.json()
           errorMessage = errorData.error || errorMessage
+          details = errorData.details || ''
+          console.error('Stripe API Error:', {
+            status: response.status,
+            statusText: response.statusText,
+            error: errorData.error,
+            details: errorData.details,
+            requestData: { seminarId, seminarTitle, amount, userPlan }
+          })
         } catch (parseError) {
           console.error('Error parsing response:', parseError)
+          console.error('Response status:', response.status, response.statusText)
         }
-        throw new Error(errorMessage)
+        throw new Error(details ? `${errorMessage}: ${details}` : errorMessage)
       }
 
       const { sessionId } = await response.json()

@@ -1,5 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Dynamic rendering for Vercel
+  
   // Clerk compatibility
   serverExternalPackages: ['@clerk/nextjs'],
 

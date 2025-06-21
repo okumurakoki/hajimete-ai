@@ -40,9 +40,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   })
 
   useEffect(() => {
-    // 自動的にデモユーザーでログイン
-    setUser(demoUser)
-  }, [demoUser])
+    // 自動的にデモユーザーでログイン（プラン設定済み）
+    const userWithPlan = { ...demoUser, plan: 'free' as const }
+    setUser(userWithPlan)
+    setDemoUser(userWithPlan)
+  }, [])
 
   const signIn = () => {
     setUser(demoUser)

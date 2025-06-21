@@ -1,18 +1,17 @@
 'use client'
 
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
-
-interface ErrorBoundaryState {
-  hasError: boolean
-  error?: Error
-  errorInfo?: React.ErrorInfo
-}
 
 interface ErrorBoundaryProps {
   children: React.ReactNode
   fallback?: React.ComponentType<{ error: Error; retry: () => void }>
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean
+  error?: Error
 }
 
 export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundaryState> {
@@ -22,33 +21,37 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
   }
 
   static getDerivedStateFromError(error: Error): ErrorBoundaryState {
-    return {
-      hasError: true,
-      error
+    // Chrome拡張機能のエラーは無視
+    if (error.message.includes('message channel closed') || 
+        error.message.includes('Extension context invalidated') ||
+        error.message.includes('chrome-extension') ||
+        error.stack?.includes('chrome-extension')) {
+      console.warn('Chrome extension error suppressed:', error.message)
+      return { hasError: false }
     }
+    return { hasError: true, error }
   }
 
   componentDidCatch(error: Error, errorInfo: React.ErrorInfo) {
-    // Log error to monitoring service (Sentry, etc.)
-    console.error('Error caught by boundary:', error, errorInfo)
-    
-    this.setState({
-      error,
-      errorInfo
-    })
-  }
-
-  handleRetry = () => {
-    this.setState({ hasError: false, error: undefined, errorInfo: undefined })
+    // Chrome拡張機能のエラーは無視
+    if (error.message.includes('message channel closed') || 
+        error.message.includes('Extension context invalidated') ||
+        error.message.includes('chrome-extension') ||
+        error.stack?.includes('chrome-extension')) {
+      return
+    }
+    console.error('Application Error:', error, errorInfo)
   }
 
   render() {
-    if (this.state.hasError) {
-      if (this.props.fallback) {
-        return <this.props.fallback error={this.state.error!} retry={this.handleRetry} />
-      }
-
-      return <DefaultErrorFallback error={this.state.error!} retry={this.handleRetry} />
+    if (this.state.hasError && this.state.error) {
+      const FallbackComponent = this.props.fallback || DefaultErrorFallback
+      return (
+        <FallbackComponent 
+          error={this.state.error} 
+          retry={() => this.setState({ hasError: false, error: undefined })}
+        />
+      )
     }
 
     return this.props.children

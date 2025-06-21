@@ -1,7 +1,6 @@
 'use client'
 
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
-import { useAuth } from '@/contexts/AuthContext'
 
 interface UserFavorites {
   favoriteVideos: string[]
@@ -59,46 +58,14 @@ const generateUserFavorites = (userId: string): UserFavorites => {
 }
 
 export function UserFavoritesProvider({ children }: { children: ReactNode }) {
-  const { user, isAuthenticated } = useAuth()
   const [favorites, setFavorites] = useState<UserFavorites>({
-    favoriteVideos: [],
-    watchLaterVideos: [],
-    favoriteSeminars: []
+    favoriteVideos: ['video-1', 'video-3'],
+    watchLaterVideos: ['video-2', 'video-4'],
+    favoriteSeminars: ['seminar-1']
   })
-
-  useEffect(() => {
-    if (isAuthenticated && user?.id) {
-      // Load existing favorites from localStorage or generate new ones
-      const savedFavorites = localStorage.getItem(`userFavorites_${user.id}`)
-      
-      if (savedFavorites) {
-        try {
-          setFavorites(JSON.parse(savedFavorites))
-        } catch (error) {
-          console.error('Error parsing saved favorites:', error)
-          const generated = generateUserFavorites(user.id)
-          setFavorites(generated)
-          localStorage.setItem(`userFavorites_${user.id}`, JSON.stringify(generated))
-        }
-      } else {
-        const generated = generateUserFavorites(user.id)
-        setFavorites(generated)
-        localStorage.setItem(`userFavorites_${user.id}`, JSON.stringify(generated))
-      }
-    } else {
-      setFavorites({
-        favoriteVideos: [],
-        watchLaterVideos: [],
-        favoriteSeminars: []
-      })
-    }
-  }, [user?.id, isAuthenticated])
 
   const saveFavorites = (newFavorites: UserFavorites) => {
     setFavorites(newFavorites)
-    if (user?.id) {
-      localStorage.setItem(`userFavorites_${user.id}`, JSON.stringify(newFavorites))
-    }
   }
 
   const isFavorited = (videoId: string): boolean => {

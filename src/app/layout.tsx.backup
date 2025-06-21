@@ -1,0 +1,172 @@
+import type { Metadata } from 'next'
+import { Noto_Sans_JP } from 'next/font/google'
+import './globals.css'
+import { ClerkProvider } from '@clerk/nextjs'
+import ClientProviders from '@/components/providers/ClientProviders'
+
+const notoSansJP = Noto_Sans_JP({ 
+  subsets: ['latin'], 
+  weight: ['300', '400', '500', '700'],
+  display: 'swap',
+  variable: '--font-noto-sans-jp',
+})
+
+// Force dynamic rendering
+export const dynamic = 'force-dynamic'
+
+export const metadata: Metadata = {
+  title: {
+    default: 'はじめて.AI - AI学習プラットフォーム | 初心者から上級者まで',
+    template: '%s | はじめて.AI'
+  },
+  description: 'AIの基礎から実践まで学べる日本最大級の総合学習プラットフォーム。ChatGPT、機械学習、データサイエンスを初心者から上級者まで体系的に学習。10,000人以上が利用する実践的なAI教育サービス。',
+  keywords: [
+    'AI学習', '人工知能', '機械学習', 'ChatGPT', 'プログラミング', 
+    'データサイエンス', 'オンライン学習', 'AI教育', '深層学習', 
+    'Python', 'AI資格', 'デジタル変革', 'DX', 'ビジネスAI'
+  ],
+  authors: [{ name: 'はじめて.AI運営チーム', url: 'https://app.oku-ai.co.jp' }],
+  creator: 'はじめて.AI',
+  publisher: 'はじめて.AI',
+  category: '教育・学習',
+  classification: 'AI学習プラットフォーム',
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
+  metadataBase: new URL('https://app.oku-ai.co.jp'),
+  alternates: {
+    canonical: 'https://app.oku-ai.co.jp',
+    languages: {
+      'ja-JP': 'https://app.oku-ai.co.jp',
+    },
+  },
+  openGraph: {
+    type: 'website',
+    locale: 'ja_JP',
+    url: 'https://app.oku-ai.co.jp',
+    siteName: 'はじめて.AI',
+    title: 'はじめて.AI - AI学習プラットフォーム | 初心者から上級者まで',
+    description: 'AIの基礎から実践まで学べる日本最大級の総合学習プラットフォーム。10,000人以上が利用する実践的なAI教育サービス。',
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'はじめて.AI - AI学習プラットフォーム',
+        type: 'image/jpeg',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    site: '@hajimete_ai',
+    creator: '@hajimete_ai',
+    title: 'はじめて.AI - AI学習プラットフォーム',
+    description: 'AIの基礎から実践まで学べる日本最大級の総合学習プラットフォーム',
+    images: ['/og-image.jpg'],
+  },
+  robots: {
+    index: true,
+    follow: true,
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
+  },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
+  other: {
+    'application-name': 'はじめて.AI',
+    'msapplication-TileColor': '#2563eb',
+    'theme-color': '#2563eb',
+  },
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="ja">
+      <head>
+        <link rel="icon" href="/favicon.ico" />
+        <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+        <link rel="manifest" href="/site.webmanifest" />
+        <meta name="theme-color" content="#2563eb" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "EducationalOrganization",
+              "name": "はじめて.AI",
+              "alternateName": "Hajimete AI",
+              "url": "https://app.oku-ai.co.jp",
+              "logo": "https://app.oku-ai.co.jp/logo.png",
+              "description": "AIの基礎から実践まで学べる日本最大級の総合学習プラットフォーム",
+              "foundingDate": "2024",
+              "address": {
+                "@type": "PostalAddress",
+                "addressCountry": "JP",
+                "addressLocality": "東京都"
+              },
+              "contactPoint": {
+                "@type": "ContactPoint",
+                "contactType": "customer service",
+                "email": "support@hajimete-ai.com"
+              },
+              "offers": [
+                {
+                  "@type": "Offer",
+                  "name": "無料プラン",
+                  "price": "0",
+                  "priceCurrency": "JPY",
+                  "description": "AI基礎学部の基本コンテンツが利用可能"
+                },
+                {
+                  "@type": "Offer", 
+                  "name": "ベーシックプラン",
+                  "price": "1650",
+                  "priceCurrency": "JPY",
+                  "description": "AI基礎学部と業務効率化学部が利用可能"
+                },
+                {
+                  "@type": "Offer",
+                  "name": "プレミアムプラン", 
+                  "price": "5500",
+                  "priceCurrency": "JPY",
+                  "description": "全学部とライブ配信が利用可能"
+                }
+              ],
+              "serviceType": "AI教育・学習プラットフォーム",
+              "areaServed": "JP",
+              "audience": {
+                "@type": "EducationalAudience",
+                "educationalRole": "student"
+              }
+            })
+          }}
+        />
+      </head>
+      <body className={notoSansJP.className}>
+        <ClerkProvider>
+          <ClientProviders>
+            {children}
+          </ClientProviders>
+        </ClerkProvider>
+      </body>
+    </html>
+  )
+}
