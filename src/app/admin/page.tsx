@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon } from 'lucide-react'
+import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play } from 'lucide-react'
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 import CourseForm from '@/components/admin/forms/CourseForm'
 
@@ -205,12 +205,14 @@ export default function AdminDashboard() {
 
       if (response.ok) {
         const newCourse = await response.json()
-        setCourses(prev => [...prev, newCourse])
+        console.log('新しい講義が作成されました:', newCourse)
         setShowCourseForm(false)
         // データを再読み込みして最新状態を取得
-        fetchData()
+        await fetchData()
       } else {
-        throw new Error('Failed to create course')
+        const errorData = await response.json()
+        console.error('講義作成失敗:', errorData)
+        throw new Error(errorData.error || 'Failed to create course')
       }
     } catch (error) {
       console.error('講義作成エラー:', error)
@@ -424,14 +426,57 @@ export default function AdminDashboard() {
                                 <Video className="w-6 h-6 text-gray-400" />
                               )}
                             </div>
-                            <div>
-                              <h4 className="font-semibold text-gray-900 mb-1">{course.title}</h4>
-                              <p className="text-sm text-gray-600 mb-2">{course.description || '説明なし'}</p>
-                              <div className="flex items-center text-sm text-gray-500">
-                                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded text-xs font-medium mr-2">
+                            <div className="flex-1">
+                              <div className="flex items-start justify-between mb-2">
+                                <h4 className="font-semibold text-gray-900">{course.title}</h4>
+                                <div className="flex items-center space-x-2">
+                                  {(course as any).status === 'published' ? (
+                                    <span className="px-2 py-1 bg-green-100 text-green-700 text-xs rounded-full flex items-center">
+                                      <Eye className="w-3 h-3 mr-1" />
+                                      公開
+                                    </span>
+                                  ) : (
+                                    <span className="px-2 py-1 bg-yellow-100 text-yellow-700 text-xs rounded-full flex items-center">
+                                      <EyeOff className="w-3 h-3 mr-1" />
+                                      下書き
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+                              <p className="text-sm text-gray-600 mb-3">{course.description || '説明なし'}</p>
+                              <div className="flex items-center gap-3 text-xs text-gray-500">
+                                <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">
                                   {course.department?.name || '未分類'}
                                 </span>
-                                <span>{course.lessonsCount || 0} レッスン</span>
+                                {(course as any).difficulty && (
+                                  <span className={`px-2 py-1 rounded font-medium ${
+                                    (course as any).difficulty === 'beginner' ? 'bg-green-100 text-green-700' :
+                                    (course as any).difficulty === 'intermediate' ? 'bg-yellow-100 text-yellow-700' :
+                                    'bg-red-100 text-red-700'
+                                  }`}>
+                                    {(course as any).difficulty === 'beginner' ? '🌱 初級' :
+                                     (course as any).difficulty === 'intermediate' ? '🚀 中級' :
+                                     '⚡ 上級'}
+                                  </span>
+                                )}
+                                {(course as any).duration && (
+                                  <span className="flex items-center">
+                                    <Clock className="w-3 h-3 mr-1" />
+                                    {Math.floor((course as any).duration / 60) > 0 
+                                      ? `${Math.floor((course as any).duration / 60)}時間${(course as any).duration % 60 > 0 ? (course as any).duration % 60 + '分' : ''}`
+                                      : `${(course as any).duration}分`}
+                                  </span>
+                                )}
+                                <span className="flex items-center">
+                                  <BookOpen className="w-3 h-3 mr-1" />
+                                  {course.lessonsCount || 0} レッスン
+                                </span>
+                                {(course as any).videoUrl && (
+                                  <span className="flex items-center text-green-600">
+                                    <Play className="w-3 h-3 mr-1" />
+                                    動画
+                                  </span>
+                                )}
                               </div>
                             </div>
                           </div>
