@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server'
+import { deleteCourse, updateCourseStatus, updateCourse } from '@/lib/mockData'
 
 // DELETE /api/admin/courses/[id] - 講義削除
 export async function DELETE(
@@ -9,17 +10,24 @@ export async function DELETE(
     const resolvedParams = await params
     const courseId = resolvedParams.id
 
-    // 実際のデータベースでは以下のようになります:
-    // await prisma.course.delete({
-    //   where: { id: courseId }
-    // })
+    console.log(`🗑️ 削除要求: ${courseId}`)
 
-    console.log(`講義 ${courseId} が削除されました`)
+    // 実際のデータ削除を実行
+    const deleted = deleteCourse(courseId)
     
-    return NextResponse.json({ 
-      message: '講義が正常に削除されました',
-      id: courseId 
-    })
+    if (deleted) {
+      console.log(`✅ 講義 ${courseId} が正常に削除されました`)
+      return NextResponse.json({ 
+        message: '講義が正常に削除されました',
+        id: courseId 
+      })
+    } else {
+      console.log(`❌ 講義 ${courseId} が見つかりませんでした`)
+      return NextResponse.json(
+        { error: '指定された講義が見つかりません' }, 
+        { status: 404 }
+      )
+    }
   } catch (error) {
     console.error('Delete course error:', error)
     return NextResponse.json(
@@ -40,33 +48,33 @@ export async function PATCH(
     const body = await request.json()
     const { status } = body
 
+    console.log(`🔄 ステータス更新要求: ${courseId} → ${status}`)
+
     // バリデーション
     if (!status || !['draft', 'published'].includes(status)) {
+      console.log(`❌ 無効なステータス: ${status}`)
       return NextResponse.json(
         { error: '有効なステータスを指定してください (draft または published)' },
         { status: 400 }
       )
     }
 
-    // 実際のデータベースでは以下のようになります:
-    // const updatedCourse = await prisma.course.update({
-    //   where: { id: courseId },
-    //   data: { status },
-    //   include: { department: { select: { name: true } } }
-    // })
-
-    const updatedCourse = {
-      id: courseId,
-      status,
-      updatedAt: new Date().toISOString()
-    }
-
-    console.log(`講義 ${courseId} のステータスが ${status} に更新されました`)
+    // 実際のデータ更新を実行
+    const updatedCourse = updateCourseStatus(courseId, status)
     
-    return NextResponse.json({
-      message: 'ステータスが正常に更新されました',
-      course: updatedCourse
-    })
+    if (updatedCourse) {
+      console.log(`✅ ステータス更新成功: ${courseId} → ${status}`)
+      return NextResponse.json({
+        message: 'ステータスが正常に更新されました',
+        course: updatedCourse
+      })
+    } else {
+      console.log(`❌ 講義が見つかりません: ${courseId}`)
+      return NextResponse.json(
+        { error: '指定された講義が見つかりません' }, 
+        { status: 404 }
+      )
+    }
   } catch (error) {
     console.error('Update course status error:', error)
     return NextResponse.json(
@@ -96,30 +104,16 @@ export async function PUT(
       status 
     } = body
 
+    console.log(`📝 講義更新要求: ${courseId}`)
+
     // バリデーション
     if (!title || !departmentId) {
+      console.log(`❌ バリデーションエラー: title=${!!title}, departmentId=${!!departmentId}`)
       return NextResponse.json(
         { error: 'タイトルと学部は必須です' },
         { status: 400 }
       )
     }
-
-    // 実際のデータベースでは以下のようになります:
-    // const updatedCourse = await prisma.course.update({
-    //   where: { id: courseId },
-    //   data: { 
-    //     title, 
-    //     description, 
-    //     departmentId, 
-    //     thumbnail, 
-    //     difficulty, 
-    //     duration, 
-    //     videoUrl, 
-    //     status,
-    //     updatedAt: new Date()
-    //   },
-    //   include: { department: { select: { name: true } } }
-    // })
 
     // Mock departments for response
     const mockDepartments = [
@@ -129,9 +123,8 @@ export async function PUT(
     ]
 
     const department = mockDepartments.find(d => d.id === departmentId)
-
-    const updatedCourse = {
-      id: courseId,
+    
+    const updateData = {
       title,
       description,
       thumbnail,
@@ -141,14 +134,21 @@ export async function PUT(
       status: status || 'draft',
       departmentId,
       department: { name: department?.name || 'Unknown Department' },
-      lessonsCount: 0, // 実際の値は DB から取得
-      enrolledCount: 0, // 実際の値は DB から取得
-      updatedAt: new Date().toISOString()
     }
 
-    console.log(`講義 ${courseId} が更新されました:`, updatedCourse)
+    // 実際のデータ更新を実行
+    const updatedCourse = updateCourse(courseId, updateData)
     
-    return NextResponse.json(updatedCourse)
+    if (updatedCourse) {
+      console.log(`✅ 講義更新成功: ${courseId}`)
+      return NextResponse.json(updatedCourse)
+    } else {
+      console.log(`❌ 講義が見つかりません: ${courseId}`)
+      return NextResponse.json(
+        { error: '指定された講義が見つかりません' }, 
+        { status: 404 }
+      )
+    }
   } catch (error) {
     console.error('Update course error:', error)
     return NextResponse.json(
