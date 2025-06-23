@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server'
+import { NextResponse, NextRequest } from 'next/server'
 
 // Mock data for now - will connect to database later
 const mockCourses = [
@@ -13,7 +13,10 @@ const mockCourses = [
     status: 'published',
     departmentId: '1',
     department: { name: 'AI基礎学部' },
-    lessonsCount: 5
+    lessonsCount: 5,
+    enrolledCount: 124,
+    createdAt: '2024-01-15T10:00:00Z',
+    updatedAt: '2024-01-20T15:30:00Z'
   },
   {
     id: '2',
@@ -26,7 +29,10 @@ const mockCourses = [
     status: 'published',
     departmentId: '1', 
     department: { name: 'AI基礎学部' },
-    lessonsCount: 8
+    lessonsCount: 8,
+    enrolledCount: 89,
+    createdAt: '2024-01-18T14:00:00Z',
+    updatedAt: '2024-01-25T09:15:00Z'
   },
   {
     id: '3',
@@ -39,7 +45,10 @@ const mockCourses = [
     status: 'published',
     departmentId: '1',
     department: { name: 'AI基礎学部' },
-    lessonsCount: 6
+    lessonsCount: 6,
+    enrolledCount: 156,
+    createdAt: '2024-01-10T09:30:00Z',
+    updatedAt: '2024-01-12T16:45:00Z'
   },
   {
     id: '4',
@@ -52,7 +61,10 @@ const mockCourses = [
     status: 'published',
     departmentId: '2',
     department: { name: '業務効率化学部' },
-    lessonsCount: 10
+    lessonsCount: 10,
+    enrolledCount: 203,
+    createdAt: '2024-01-22T11:00:00Z',
+    updatedAt: '2024-01-28T14:20:00Z'
   },
   {
     id: '5',
@@ -65,7 +77,10 @@ const mockCourses = [
     status: 'draft',
     departmentId: '2',
     department: { name: '業務効率化学部' },
-    lessonsCount: 7
+    lessonsCount: 7,
+    enrolledCount: 0,
+    createdAt: '2024-02-01T13:45:00Z',
+    updatedAt: '2024-02-01T13:45:00Z'
   },
   {
     id: '6',
@@ -78,7 +93,10 @@ const mockCourses = [
     status: 'published',
     departmentId: '3',
     department: { name: '実践応用学部' },
-    lessonsCount: 15
+    lessonsCount: 15,
+    enrolledCount: 67,
+    createdAt: '2024-01-25T16:20:00Z',
+    updatedAt: '2024-02-02T10:30:00Z'
   }
 ]
 
@@ -101,49 +119,68 @@ export async function GET() {
   }
 }
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   try {
-    const body = await request.json()
-    const { title, description, departmentId, thumbnail, thumbnailFile, difficulty, duration, videoUrl, status } = body
-
-    // Basic validation
-    if (!title || !departmentId) {
-      return NextResponse.json({ error: 'タイトルと学部は必須です' }, { status: 400 })
+    const data = await request.json()
+    
+    console.log('📝 受信したデータ:', data)
+    
+    // バリデーション
+    if (!data.title || !data.departmentId) {
+      console.error('❌ バリデーションエラー: タイトルまたは学部が不足')
+      return NextResponse.json(
+        { success: false, error: 'タイトルと学部は必須です' },
+        { status: 400 }
+      )
     }
 
-    // In the future, this will create in database:
-    // const course = await prisma.course.create({
-    //   data: { title, description, departmentId, thumbnail, difficulty, duration, videoUrl, status },
-    //   include: { department: { select: { name: true } } }
-    // })
-
-    // Mock departments for now
+    // 学部情報を取得
     const mockDepartments = [
       { id: '1', name: 'AI基礎学部' },
       { id: '2', name: '業務効率化学部' },
       { id: '3', name: '実践応用学部' }
     ]
+    
+    const department = mockDepartments.find(d => d.id === data.departmentId)
+    console.log('🏢 見つかった学部:', department)
 
-    const department = mockDepartments.find(d => d.id === departmentId)
-
+    // 新しい講義を作成
     const newCourse = {
       id: Date.now().toString(),
-      title,
-      description,
-      thumbnail,
-      thumbnailFile,
-      difficulty: difficulty || 'beginner',
-      duration: duration || 30,
-      videoUrl,
-      status: status || 'draft',
-      departmentId,
+      title: data.title,
+      description: data.description || '',
+      thumbnail: data.thumbnail || null,
+      thumbnailFile: data.thumbnailFile || null,
+      difficulty: data.difficulty || 'beginner',
+      duration: data.duration || 30,
+      videoUrl: data.videoUrl || null,
+      status: data.status || 'draft',
+      departmentId: data.departmentId,
       department: { name: department?.name || 'Unknown Department' },
-      lessonsCount: 0
+      lessonsCount: 0,
+      enrolledCount: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
     }
 
-    return NextResponse.json(newCourse, { status: 201 })
+    console.log('🆕 作成された講義:', newCourse)
+
+    // モックデータに追加（実際のプロジェクトではDBに保存）
+    mockCourses.unshift(newCourse)
+    
+    console.log('📊 現在の講義数:', mockCourses.length)
+
+    return NextResponse.json({
+      success: true,
+      message: '講義が作成されました',
+      course: newCourse
+    }, { status: 201 })
+
   } catch (error) {
-    console.error('Create course error:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
+    console.error('💥 講義作成エラー:', error)
+    return NextResponse.json(
+      { success: false, error: '講義の作成に失敗しました' },
+      { status: 500 }
+    )
   }
 }

@@ -223,30 +223,46 @@ export default function AdminDashboard() {
     }
   }
 
+  const handleCourseCreated = async (newCourse: any) => {
+    console.log('新しい講義が作成されました:', newCourse)
+    
+    // ローカル状態に新しい講義を追加
+    setCourses(prev => [newCourse, ...prev])
+    
+    // フォームを閉じる
+    setShowCourseForm(false)
+    setEditingCourse(null)
+    
+    // サーバーから最新データを取得して確実に同期
+    await fetchData()
+  }
+
   const handleEditCourse = (course: any) => {
     setEditingCourse(course)
     setShowCourseForm(true)
   }
 
   const handleDeleteCourse = async (courseId: string) => {
-    if (!confirm('この講義を削除してもよろしいですか？この操作は取り消せません。')) {
-      return
-    }
-
     try {
       const response = await fetch(`/api/admin/courses/${courseId}`, {
         method: 'DELETE',
       })
 
       if (response.ok) {
-        console.log('講義が削除されました:', courseId)
+        // ローカル状態を更新
+        setCourses(prev => prev.filter(course => course.id !== courseId))
+        
+        // サーバーから最新データを取得
         await fetchData()
+        
+        console.log('講義が正常に削除されました')
       } else {
-        throw new Error('Failed to delete course')
+        const errorData = await response.json()
+        alert(`削除に失敗しました: ${errorData.error || '不明なエラー'}`)
       }
     } catch (error) {
-      console.error('講義削除エラー:', error)
-      alert('講義の削除に失敗しました。もう一度お試しください。')
+      console.error('Error deleting course:', error)
+      alert('講義の削除中にエラーが発生しました')
     }
   }
 
@@ -261,14 +277,24 @@ export default function AdminDashboard() {
       })
 
       if (response.ok) {
-        console.log('講義ステータスが更新されました:', courseId, newStatus)
+        // ローカル状態を更新
+        setCourses(prev => prev.map(course => 
+          course.id === courseId 
+            ? { ...course, status: newStatus }
+            : course
+        ))
+        
+        // サーバーから最新データを取得
         await fetchData()
+        
+        console.log(`ステータスが ${newStatus} に更新されました`)
       } else {
-        throw new Error('Failed to update course status')
+        const errorData = await response.json()
+        alert(`ステータス更新に失敗しました: ${errorData.error || '不明なエラー'}`)
       }
     } catch (error) {
-      console.error('ステータス更新エラー:', error)
-      alert('ステータスの更新に失敗しました。もう一度お試しください。')
+      console.error('Error updating course status:', error)
+      alert('ステータス更新中にエラーが発生しました')
     }
   }
 
@@ -485,6 +511,7 @@ export default function AdminDashboard() {
           setEditingCourse(null)
         }}
         onSave={handleCreateCourse}
+        onSuccess={handleCourseCreated}
         departments={departments.map(dept => ({
           id: dept.id,
           name: dept.name,

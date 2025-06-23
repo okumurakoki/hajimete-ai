@@ -6,12 +6,14 @@ import { X, Save, BookOpen, Upload, Clock, Star, Eye, EyeOff, Play, Image, Link,
 interface CourseFormProps {
   isOpen: boolean
   onClose: () => void
-  onSave: (data: CourseFormData) => Promise<void>
+  onSave?: (courseData: any) => void  // 既存
+  onSuccess?: (course: any) => void   // 追加 - これが必要！
   departments: { id: string; name: string; color?: string }[]
   initialData?: Partial<CourseFormData>
 }
 
 interface CourseFormData {
+  id?: string
   title: string
   description: string
   departmentId: string
@@ -29,7 +31,7 @@ const difficultyConfig = {
   advanced: { label: '上級', color: 'bg-red-100 text-red-700', icon: '⚡' }
 }
 
-export default function CourseForm({ isOpen, onClose, onSave, departments, initialData }: CourseFormProps) {
+export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departments, initialData }: CourseFormProps) {
   const [formData, setFormData] = useState<CourseFormData>({
     title: initialData?.title || '',
     description: initialData?.description || '',
@@ -47,15 +49,75 @@ export default function CourseForm({ isOpen, onClose, onSave, departments, initi
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.title.trim() || !formData.departmentId) return
-
     setIsSubmitting(true)
+
     try {
-      await onSave(formData)
-      onClose()
-      resetForm()
+      const courseData = {
+        ...initialData ? { id: initialData.id } : {},
+        title: formData.title,
+        description: formData.description,
+        departmentId: formData.departmentId,
+        difficulty: formData.difficulty,
+        duration: formData.duration,
+        status: formData.status,
+        videoUrl: formData.videoUrl || undefined,
+        thumbnail: formData.thumbnail || undefined,
+        thumbnailFile: thumbnailPreview || undefined,
+      }
+
+      console.log('📝 送信するデータ:', courseData)
+      console.log('🔄 メソッド:', initialData ? 'PUT' : 'POST')
+
+      const response = await fetch('/api/admin/courses', {
+        method: initialData ? 'PUT' : 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(courseData),
+      })
+
+      console.log('📡 レスポンスステータス:', response.status)
+
+      if (response.ok) {
+        const result = await response.json()
+        console.log('✅ API成功レスポンス:', result)
+
+        // onSave コールバック（既存の処理）
+        if (onSave) {
+          console.log('🔄 onSave コールバック実行')
+          onSave(result.course || courseData)
+        }
+
+        // onSuccess コールバック（新規追加）
+        if (onSuccess) {
+          console.log('🎉 onSuccess コールバック実行')
+          onSuccess(result.course || courseData)
+        }
+
+        // フォームをリセット
+        setFormData({
+          title: '',
+          description: '',
+          departmentId: '',
+          difficulty: 'beginner',
+          duration: 30,
+          status: 'draft',
+          videoUrl: '',
+          thumbnail: ''
+        })
+        setThumbnailPreview(null)
+        setActiveTab('basic')
+
+        console.log('🚪 フォームを閉じます')
+        onClose()
+      } else {
+        const errorData = await response.json()
+        console.error('❌ API エラーレスポンス:', errorData)
+        alert(errorData.error || '講義の保存に失敗しました')
+      }
     } catch (error) {
-      console.error('Save error:', error)
+      console.error('💥 ネットワークエラー:', error)
+      alert('講義の保存中にエラーが発生しました')
     } finally {
       setIsSubmitting(false)
     }
