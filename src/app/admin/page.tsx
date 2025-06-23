@@ -244,24 +244,37 @@ export default function AdminDashboard() {
 
   const handleDeleteCourse = async (courseId: string) => {
     try {
+      console.log('🗑️ 削除開始:', courseId)
+      
       const response = await fetch(`/api/admin/courses/${courseId}`, {
         method: 'DELETE',
       })
 
+      console.log('📡 削除レスポンス:', response.status)
+      
       if (response.ok) {
-        // ローカル状態を更新
-        setCourses(prev => prev.filter(course => course.id !== courseId))
+        const result = await response.json()
+        console.log('✅ 削除成功:', result)
         
-        // サーバーから最新データを取得
+        // 重要：ローカル状態を即座に更新
+        setCourses(prev => {
+          const filtered = prev.filter(course => course.id !== courseId)
+          console.log('🔄 状態更新:', `${prev.length} → ${filtered.length}`)
+          return filtered
+        })
+        
+        // サーバーから最新データを取得（念のため）
+        console.log('🔄 サーバーデータ再取得中...')
         await fetchData()
         
-        console.log('講義が正常に削除されました')
+        console.log('🎉 削除処理完了')
       } else {
         const errorData = await response.json()
+        console.error('❌ 削除失敗:', errorData)
         alert(`削除に失敗しました: ${errorData.error || '不明なエラー'}`)
       }
     } catch (error) {
-      console.error('Error deleting course:', error)
+      console.error('💥 削除エラー:', error)
       alert('講義の削除中にエラーが発生しました')
     }
   }
