@@ -131,3 +131,8 @@ export const updateCourse = (courseId: string, updateData: any) => {
   }
   return null
 }
+
+// コース一覧取得
+export const getCourses = () => {
+  return mockCourses
+}

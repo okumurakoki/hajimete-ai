@@ -5,6 +5,7 @@ import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code,
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 import CourseForm from '@/components/admin/forms/CourseForm'
 import CourseManagement from '@/components/admin/CourseManagement'
+import AnalyticsDashboard from '@/components/admin/analytics/AnalyticsDashboard'
 
 interface Department {
   id: string
@@ -103,7 +104,7 @@ export default function AdminDashboard() {
   const [departments, setDepartments] = useState<Department[]>([])
   const [courses, setCourses] = useState<Course[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'departments' | 'courses'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'departments' | 'courses'>('overview')
   const [showDepartmentForm, setShowDepartmentForm] = useState(false)
   const [showCourseForm, setShowCourseForm] = useState(false)
   const [editingCourse, setEditingCourse] = useState<any>(null)
@@ -338,6 +339,7 @@ export default function AdminDashboard() {
           <div className="flex space-x-8">
             {[
               { id: 'overview', label: '概要', icon: BarChart3 },
+              { id: 'analytics', label: '統計分析', icon: BarChart3 },
               { id: 'departments', label: '学部管理', icon: BookOpen },
               { id: 'courses', label: '講義管理', icon: Video }
             ].map((tab) => (
@@ -431,6 +433,11 @@ export default function AdminDashboard() {
                   </div>
                 </div>
               </div>
+            )}
+
+            {/* 統計分析タブ */}
+            {activeTab === 'analytics' && (
+              <AnalyticsDashboard />
             )}
 
             {/* 学部管理タブ */}
