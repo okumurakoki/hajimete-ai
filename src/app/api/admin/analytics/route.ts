@@ -24,6 +24,39 @@ function generateDepartmentStats() {
   ]
 }
 
+function generateRevenueData(days: number) {
+  const data = []
+  let baseRevenue = 50000 // 基準収益
+  
+  for (let i = days; i >= 0; i--) {
+    const date = subDays(new Date(), i)
+    const dailyRevenue = baseRevenue + Math.floor(Math.random() * 15000) - 7500
+    data.push({
+      date: format(date, 'yyyy-MM-dd'),
+      revenue: Math.max(dailyRevenue, 20000), // 最低2万円
+      subscriptions: Math.floor(dailyRevenue / 2980), // 月額2980円想定
+      upgrades: Math.floor(Math.random() * 5) + 1,
+      cancellations: Math.floor(Math.random() * 3)
+    })
+    baseRevenue += Math.floor(Math.random() * 2000) - 1000 // トレンド
+  }
+  return data
+}
+
+function generateSubscriptionStats() {
+  return {
+    total: 1247,
+    active: 1189,
+    trial: 58,
+    premium: 421,
+    basic: 768,
+    enterprise: 58,
+    churnRate: 2.1,
+    averageLifetime: 8.5, // 月
+    monthlyGrowth: 15.2
+  }
+}
+
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
@@ -83,6 +116,47 @@ export async function GET(request: NextRequest) {
           draftCourses: courses.filter(c => c.status === 'draft').length
         }
         return NextResponse.json({ type: 'kpi', data: kpiData })
+
+      case 'revenue':
+        // 収益データ
+        const revenueData = generateRevenueData(30)
+        const totalRevenue = revenueData.reduce((sum, day) => sum + day.revenue, 0)
+        const avgDailyRevenue = Math.round(totalRevenue / revenueData.length)
+        
+        return NextResponse.json({ 
+          type: 'revenue', 
+          data: {
+            daily: revenueData,
+            totalRevenue,
+            avgDailyRevenue,
+            monthlyProjection: avgDailyRevenue * 30,
+            growth: ((revenueData[revenueData.length - 1].revenue - revenueData[0].revenue) / revenueData[0].revenue) * 100
+          }
+        })
+
+      case 'subscriptions':
+        // サブスクリプション統計
+        const subscriptionData = generateSubscriptionStats()
+        return NextResponse.json({ type: 'subscriptions', data: subscriptionData })
+
+      case 'financial':
+        // 財務概要
+        const revenue = generateRevenueData(30)
+        const subscriptions = generateSubscriptionStats()
+        const totalMonthlyRevenue = revenue.reduce((sum, day) => sum + day.revenue, 0)
+        
+        const financialData = {
+          monthlyRevenue: totalMonthlyRevenue,
+          averageRevenuePerUser: Math.round(totalMonthlyRevenue / subscriptions.active),
+          totalSubscribers: subscriptions.total,
+          paidSubscribers: subscriptions.active,
+          trialUsers: subscriptions.trial,
+          churnRate: subscriptions.churnRate,
+          ltv: Math.round(subscriptions.averageLifetime * (totalMonthlyRevenue / subscriptions.active)), // LTV計算
+          mrr: Math.round(totalMonthlyRevenue), // 月間定期収益
+          arr: Math.round(totalMonthlyRevenue * 12) // 年間定期収益
+        }
+        return NextResponse.json({ type: 'financial', data: financialData })
 
       case 'overview':
       default:

@@ -6,12 +6,18 @@ import EnrollmentChart from './EnrollmentChart'
 import PopularCourses from './PopularCourses'
 import DepartmentStats from './DepartmentStats'
 import KPIMetrics from './KPIMetrics'
+import RevenueChart from './RevenueChart'
+import SubscriptionStats from './SubscriptionStats'
+import FinancialOverview from './FinancialOverview'
 
 interface AnalyticsData {
   enrollment?: any
   popularCourses?: any[]
   departments?: any[]
   kpi?: any
+  revenue?: any
+  subscriptions?: any
+  financial?: any
 }
 
 export default function AnalyticsDashboard() {
@@ -26,25 +32,34 @@ export default function AnalyticsDashboard() {
       console.log('📊 統計データを取得中...')
       
       // 並列でデータを取得
-      const [enrollmentRes, popularRes, departmentsRes, kpiRes] = await Promise.all([
+      const [enrollmentRes, popularRes, departmentsRes, kpiRes, revenueRes, subscriptionsRes, financialRes] = await Promise.all([
         fetch('/api/admin/analytics?type=enrollment'),
         fetch('/api/admin/analytics?type=popular-courses'),
         fetch('/api/admin/analytics?type=departments'),
-        fetch('/api/admin/analytics?type=kpi')
+        fetch('/api/admin/analytics?type=kpi'),
+        fetch('/api/admin/analytics?type=revenue'),
+        fetch('/api/admin/analytics?type=subscriptions'),
+        fetch('/api/admin/analytics?type=financial')
       ])
 
-      const [enrollment, popular, departments, kpi] = await Promise.all([
+      const [enrollment, popular, departments, kpi, revenue, subscriptions, financial] = await Promise.all([
         enrollmentRes.json(),
         popularRes.json(),
         departmentsRes.json(),
-        kpiRes.json()
+        kpiRes.json(),
+        revenueRes.json(),
+        subscriptionsRes.json(),
+        financialRes.json()
       ])
 
       setData({
         enrollment: enrollment.data,
         popularCourses: popular.data,
         departments: departments.data,
-        kpi: kpi.data
+        kpi: kpi.data,
+        revenue: revenue.data,
+        subscriptions: subscriptions.data,
+        financial: financial.data
       })
 
       setLastUpdate(new Date())
@@ -168,6 +183,27 @@ export default function AnalyticsDashboard() {
             <PopularCourses courses={data.popularCourses} />
           )}
         </div>
+
+        {/* 中段: 収益統計 */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* 収益チャート */}
+          {data.revenue && (
+            <RevenueChart 
+              data={data.revenue}
+              title="月間収益推移 (30日間)"
+            />
+          )}
+
+          {/* 有料メンバー統計 */}
+          {data.subscriptions && (
+            <SubscriptionStats data={data.subscriptions} />
+          )}
+        </div>
+
+        {/* 財務概要 */}
+        {data.financial && (
+          <FinancialOverview data={data.financial} />
+        )}
 
         {/* 下段: 部門別統計 */}
         {data.departments && (
