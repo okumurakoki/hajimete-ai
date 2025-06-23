@@ -100,8 +100,15 @@ const mockCourses = [
   }
 ]
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   try {
+    console.log('🔍 現在のmockCourses件数:', mockCourses.length)
+    console.log('📋 mockCourses内容:', mockCourses.map(c => ({
+      id: c.id, 
+      title: c.title,
+      createdAt: c.createdAt
+    })))
+    
     // In the future, this will fetch from database:
     // const courses = await prisma.course.findMany({
     //   include: {
