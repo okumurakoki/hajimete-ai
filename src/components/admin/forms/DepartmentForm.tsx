@@ -233,16 +233,16 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
-          <h2 className="text-xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
             {initialData ? '学部を編集' : '新しい学部を作成'}
           </h2>
           <button
             onClick={handleClose}
             disabled={isSubmitting}
-            className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors disabled:opacity-50"
           >
             <X size={24} />
           </button>
@@ -251,14 +251,14 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
           {/* 学部名 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               学部名 <span className="text-red-500">*</span>
             </label>
             <input
               type="text"
               value={formData.name}
               onChange={(e) => setFormData({...formData, name: e.target.value})}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
               placeholder="例: AI・機械学習"
               required
               disabled={isSubmitting}
@@ -267,13 +267,13 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
 
           {/* 説明 */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               説明
             </label>
             <textarea
               value={formData.description}
               onChange={(e) => setFormData({...formData, description: e.target.value})}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
+              className="w-full border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg px-3 py-2 h-24 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-shadow"
               placeholder="学部の概要や学習内容について説明してください"
               disabled={isSubmitting}
             />
@@ -293,7 +293,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   formData.iconType === 'lucide' 
                     ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <BookOpen className="w-4 h-4 inline mr-1" />
@@ -305,7 +305,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                 className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
                   formData.iconType === 'gradient' 
                     ? 'bg-blue-600 text-white' 
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                 }`}
               >
                 <Sparkles className="w-4 h-4 inline mr-1" />
@@ -314,7 +314,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
               <label className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors cursor-pointer ${
                 formData.iconType === 'upload' 
                   ? 'bg-blue-600 text-white' 
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}>
                 <Upload className="w-4 h-4 inline mr-1" />
                 画像アップロード
@@ -336,8 +336,8 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                   onClick={() => setActiveIconCategory(category as any)}
                   className={`px-3 py-1 rounded-lg text-xs font-medium transition-colors ${
                     activeIconCategory === category
-                      ? 'bg-gray-800 text-white'
-                      : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                      ? 'bg-gray-800 dark:bg-gray-600 text-white'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                   }`}
                 >
                   {category === 'tech' ? 'テック' : 
@@ -355,7 +355,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                   type="text"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg text-sm"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg text-sm"
                   placeholder="アイコンを検索..."
                 />
               </div>
@@ -363,7 +363,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
 
             {/* 画像アップロード表示 */}
             {formData.iconType === 'upload' && (
-              <div className="mb-4 p-4 border-2 border-dashed border-gray-300 rounded-lg text-center">
+              <div className="mb-4 p-4 border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg text-center">
                 {imagePreview ? (
                   <div className="space-y-2">
                     <img 
@@ -371,7 +371,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                       alt="Preview" 
                       className="w-16 h-16 mx-auto rounded-lg object-cover"
                     />
-                    <p className="text-sm text-gray-600">画像がアップロードされました</p>
+                    <p className="text-sm text-gray-600 dark:text-gray-300">画像がアップロードされました</p>
                     <label className="inline-block px-3 py-1 bg-blue-600 text-white text-sm rounded cursor-pointer hover:bg-blue-700">
                       画像を変更
                       <input
@@ -384,9 +384,9 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                   </div>
                 ) : (
                   <div className="py-4">
-                    <Upload className="w-8 h-8 mx-auto text-gray-400 mb-2" />
-                    <p className="text-sm text-gray-600 mb-2">画像をアップロードしてください</p>
-                    <p className="text-xs text-gray-500">PNG, JPG, GIF (最大2MB)</p>
+                    <Upload className="w-8 h-8 mx-auto text-gray-400 dark:text-gray-500 mb-2" />
+                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">画像をアップロードしてください</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">PNG, JPG, GIF (最大2MB)</p>
                   </div>
                 )}
               </div>
@@ -394,7 +394,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
 
             {/* アイコン選択グリッド */}
             {formData.iconType !== 'upload' && (
-              <div className="border border-gray-200 rounded-lg p-4 max-h-40 overflow-y-auto">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 max-h-40 overflow-y-auto">
                 {formData.iconType === 'lucide' ? (
                   <div className="grid grid-cols-6 gap-2">
                     {filteredIcons.map((iconItem) => {
@@ -406,12 +406,12 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                           onClick={() => setFormData({...formData, iconValue: iconItem.value})}
                           className={`p-3 rounded-lg border-2 transition-all hover:scale-110 ${
                             formData.iconValue === iconItem.value
-                              ? 'border-blue-500 bg-blue-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/50'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                           }`}
                           title={iconItem.name}
                         >
-                          <IconComponent className="w-5 h-5 mx-auto text-gray-600" />
+                          <IconComponent className="w-5 h-5 mx-auto text-gray-600 dark:text-gray-300" />
                         </button>
                       )
                     })}
@@ -425,8 +425,8 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                         onClick={() => setFormData({...formData, iconValue: gradientIcon.name})}
                         className={`p-3 rounded-lg border-2 transition-all hover:scale-105 ${
                           formData.iconValue === gradientIcon.name
-                            ? 'border-blue-500 bg-blue-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/50'
+                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                         }`}
                         title={gradientIcon.name}
                       >
@@ -436,7 +436,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                         >
                           {gradientIcon.symbol}
                         </div>
-                        <p className="text-xs text-gray-600 mt-1">{gradientIcon.name}</p>
+                        <p className="text-xs text-gray-600 dark:text-gray-300 mt-1">{gradientIcon.name}</p>
                       </button>
                     ))}
                   </div>
@@ -470,8 +470,8 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
           </div>
 
           {/* プレビュー */}
-          <div className="bg-gray-50 rounded-lg p-4">
-            <p className="text-sm text-gray-600 mb-2">プレビュー:</p>
+          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+            <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">プレビュー:</p>
             <div className="flex items-center">
               <div
                 className="w-12 h-12 rounded-lg flex items-center justify-center mr-3"
@@ -480,10 +480,10 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
                 {renderIcon()}
               </div>
               <div>
-                <div className="font-medium text-gray-900">
+                <div className="font-medium text-gray-900 dark:text-gray-100">
                   {formData.name || '学部名'}
                 </div>
-                <div className="text-sm text-gray-600">
+                <div className="text-sm text-gray-600 dark:text-gray-300">
                   {formData.description || '説明なし'}
                 </div>
               </div>
@@ -496,7 +496,7 @@ export default function DepartmentForm({ isOpen, onClose, onSave, initialData }:
               type="button"
               onClick={handleClose}
               disabled={isSubmitting}
-              className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+              className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
             >
               キャンセル
             </button>

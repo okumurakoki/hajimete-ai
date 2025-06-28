@@ -39,11 +39,11 @@ export default function KPIMetrics({
       unit: '人',
       icon: Users,
       color: 'blue',
-      bgColor: 'bg-blue-100',
-      textColor: 'text-blue-600',
-      iconColor: 'text-blue-600',
+      bgColor: 'bg-blue-100 dark:bg-blue-900/50',
+      textColor: 'text-blue-600 dark:text-blue-400',
+      iconColor: 'text-blue-600 dark:text-blue-400',
       trend: '+12.5%',
-      trendColor: 'text-green-600'
+      trendColor: 'text-green-600 dark:text-green-400'
     },
     {
       title: '総コース数',
@@ -51,11 +51,11 @@ export default function KPIMetrics({
       unit: 'コース',
       icon: BookOpen,
       color: 'green',
-      bgColor: 'bg-green-100',
-      textColor: 'text-green-600',
-      iconColor: 'text-green-600',
+      bgColor: 'bg-green-100 dark:bg-green-900/50',
+      textColor: 'text-green-600 dark:text-green-400',
+      iconColor: 'text-green-600 dark:text-green-400',
       trend: '+3',
-      trendColor: 'text-green-600'
+      trendColor: 'text-green-600 dark:text-green-400'
     },
     {
       title: '平均完了率',
@@ -63,11 +63,11 @@ export default function KPIMetrics({
       unit: '%',
       icon: Award,
       color: 'purple',
-      bgColor: 'bg-purple-100',
-      textColor: 'text-purple-600',
-      iconColor: 'text-purple-600',
+      bgColor: 'bg-purple-100 dark:bg-purple-900/50',
+      textColor: 'text-purple-600 dark:text-purple-400',
+      iconColor: 'text-purple-600 dark:text-purple-400',
       trend: '+2.3%',
-      trendColor: 'text-green-600'
+      trendColor: 'text-green-600 dark:text-green-400'
     },
     {
       title: '月間成長率',
@@ -75,11 +75,11 @@ export default function KPIMetrics({
       unit: '%',
       icon: TrendingUp,
       color: 'yellow',
-      bgColor: 'bg-yellow-100',
-      textColor: 'text-yellow-600',
-      iconColor: 'text-yellow-600',
+      bgColor: 'bg-yellow-100 dark:bg-yellow-900/50',
+      textColor: 'text-yellow-600 dark:text-yellow-400',
+      iconColor: 'text-yellow-600 dark:text-yellow-400',
       trend: '+1.2%',
-      trendColor: 'text-green-600'
+      trendColor: 'text-green-600 dark:text-green-400'
     },
     {
       title: '公開中コース',
@@ -87,11 +87,11 @@ export default function KPIMetrics({
       unit: 'コース',
       icon: Eye,
       color: 'indigo',
-      bgColor: 'bg-indigo-100',
-      textColor: 'text-indigo-600',
-      iconColor: 'text-indigo-600',
+      bgColor: 'bg-indigo-100 dark:bg-indigo-900/50',
+      textColor: 'text-indigo-600 dark:text-indigo-400',
+      iconColor: 'text-indigo-600 dark:text-indigo-400',
       trend: '活動中',
-      trendColor: 'text-green-600'
+      trendColor: 'text-green-600 dark:text-green-400'
     },
     {
       title: '下書きコース',
@@ -99,11 +99,11 @@ export default function KPIMetrics({
       unit: 'コース',
       icon: EyeOff,
       color: 'gray',
-      bgColor: 'bg-gray-100',
-      textColor: 'text-gray-600',
-      iconColor: 'text-gray-600',
+      bgColor: 'bg-gray-100 dark:bg-gray-700',
+      textColor: 'text-gray-600 dark:text-gray-300',
+      iconColor: 'text-gray-600 dark:text-gray-300',
       trend: '準備中',
-      trendColor: 'text-yellow-600'
+      trendColor: 'text-yellow-600 dark:text-yellow-400'
     }
   ]
 
@@ -168,7 +168,7 @@ export default function KPIMetrics({
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {/* 学習効率 */}
           <div className="text-center">
-            <div className="text-lg font-bold text-blue-600">
+            <div className="text-lg font-bold text-blue-600 dark:text-blue-400">
               {Math.round(data.totalStudents / data.totalCourses)}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-300">平均受講者/コース</div>
@@ -176,7 +176,7 @@ export default function KPIMetrics({
 
           {/* コース充実度 */}
           <div className="text-center">
-            <div className="text-lg font-bold text-green-600">
+            <div className="text-lg font-bold text-green-600 dark:text-green-400">
               {Math.round((data.activeCourses / data.totalCourses) * 100)}%
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-300">コース公開率</div>
@@ -184,7 +184,7 @@ export default function KPIMetrics({
 
           {/* 成長速度 */}
           <div className="text-center">
-            <div className="text-lg font-bold text-purple-600">
+            <div className="text-lg font-bold text-purple-600 dark:text-purple-400">
               {Math.round(data.monthlyGrowth * 30)}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-300">月間新規受講者</div>
@@ -192,7 +192,7 @@ export default function KPIMetrics({
 
           {/* 学習満足度 */}
           <div className="text-center">
-            <div className="text-lg font-bold text-yellow-600">
+            <div className="text-lg font-bold text-yellow-600 dark:text-yellow-400">
               4.{Math.floor(Math.random() * 3) + 6}
             </div>
             <div className="text-xs text-gray-600 dark:text-gray-300">平均評価 (5点満点)</div>
@@ -210,15 +210,15 @@ export default function KPIMetrics({
         <div className="space-y-2">
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-600 dark:text-gray-300">新規受講者</span>
-            <span className="font-semibold">+{Math.floor(Math.random() * 50) + 20}人</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">+{Math.floor(Math.random() * 50) + 20}人</span>
           </div>
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-600 dark:text-gray-300">コース完了</span>
-            <span className="font-semibold">+{Math.floor(Math.random() * 30) + 15}件</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">+{Math.floor(Math.random() * 30) + 15}件</span>
           </div>
           <div className="flex justify-between items-center text-sm">
             <span className="text-gray-600 dark:text-gray-300">新規コース</span>
-            <span className="font-semibold">+{Math.floor(Math.random() * 3) + 1}コース</span>
+            <span className="font-semibold text-gray-900 dark:text-gray-100">+{Math.floor(Math.random() * 3) + 1}コース</span>
           </div>
         </div>
       </div>

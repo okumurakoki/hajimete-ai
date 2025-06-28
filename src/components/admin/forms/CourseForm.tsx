@@ -459,7 +459,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                 <div className="space-y-6">
                   {/* 公開設定 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       公開設定
                     </label>
                     <div className="grid grid-cols-2 gap-4">
@@ -469,15 +469,15 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                         disabled={isSubmitting}
                         className={`p-4 rounded-lg border-2 transition-all text-left ${
                           formData.status === 'draft'
-                            ? 'border-yellow-500 bg-yellow-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-yellow-500 bg-yellow-50 dark:bg-yellow-900/20'
+                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                         } disabled:opacity-50`}
                       >
                         <div className="flex items-center mb-2">
-                          <EyeOff className="w-5 h-5 text-yellow-600 mr-2" />
-                          <span className="font-medium">下書き保存</span>
+                          <EyeOff className="w-5 h-5 text-yellow-600 dark:text-yellow-400 mr-2" />
+                          <span className="font-medium text-gray-900 dark:text-gray-100">下書き保存</span>
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
                           非公開で保存し、後で編集・公開できます
                         </p>
                       </button>
@@ -488,15 +488,15 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                         disabled={isSubmitting}
                         className={`p-4 rounded-lg border-2 transition-all text-left ${
                           formData.status === 'published'
-                            ? 'border-green-500 bg-green-50'
-                            : 'border-gray-200 hover:border-gray-300'
+                            ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                            : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                         } disabled:opacity-50`}
                       >
                         <div className="flex items-center mb-2">
-                          <Eye className="w-5 h-5 text-green-600 mr-2" />
-                          <span className="font-medium">即座に公開</span>
+                          <Eye className="w-5 h-5 text-green-600 dark:text-green-400 mr-2" />
+                          <span className="font-medium text-gray-900 dark:text-gray-100">即座に公開</span>
                         </div>
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
                           保存と同時に受講者に公開されます
                         </p>
                       </button>
@@ -504,9 +504,9 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                   </div>
 
                   {/* 追加設定の余白 */}
-                  <div className="bg-gray-50 rounded-lg p-4">
-                    <h4 className="font-medium text-gray-900 mb-2">今後の機能予定</h4>
-                    <ul className="text-sm text-gray-600 space-y-1">
+                  <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4">
+                    <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">今後の機能予定</h4>
+                    <ul className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
                       <li>• 受講制限の設定</li>
                       <li>• タグ付け機能</li>
                       <li>• 前提条件の設定</li>
@@ -517,12 +517,12 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
               )}
 
               {/* ボタン */}
-              <div className="flex space-x-3 pt-6 border-t border-gray-200">
+              <div className="flex space-x-3 pt-6 border-t border-gray-200 dark:border-gray-700">
                 <button
                   type="button"
                   onClick={handleClose}
                   disabled={isSubmitting}
-                  className="flex-1 px-4 py-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors disabled:opacity-50"
+                  className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors disabled:opacity-50"
                 >
                   キャンセル
                 </button>
@@ -545,16 +545,16 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
           </div>
 
           {/* 右側: リアルタイムプレビュー */}
-          <div className="lg:w-80 border-l border-gray-200 p-6 bg-gray-50">
-            <h3 className="font-semibold text-gray-900 mb-4 flex items-center">
+          <div className="lg:w-80 border-l border-gray-200 dark:border-gray-700 p-6 bg-gray-50 dark:bg-gray-700">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
               <Eye className="w-4 h-4 mr-2" />
               リアルタイムプレビュー
             </h3>
             
             {/* 講義カードプレビュー */}
-            <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
               {/* サムネイル部分 */}
-              <div className="relative h-32 bg-gray-200">
+              <div className="relative h-32 bg-gray-200 dark:bg-gray-600">
                 {thumbnailPreview || formData.thumbnail ? (
                   <img 
                     src={thumbnailPreview || formData.thumbnail} 
@@ -563,7 +563,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                   />
                 ) : (
                   <div className="flex items-center justify-center h-full">
-                    <BookOpen className="w-8 h-8 text-gray-400" />
+                    <BookOpen className="w-8 h-8 text-gray-400 dark:text-gray-500" />
                   </div>
                 )}
                 
@@ -592,10 +592,10 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
               {/* カード内容 */}
               <div className="p-4">
-                <h4 className="font-semibold text-gray-900 mb-2 line-clamp-2">
+                <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
                   {formData.title || '講義タイトルを入力してください'}
                 </h4>
-                <p className="text-sm text-gray-600 mb-3 line-clamp-3">
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-3 line-clamp-3">
                   {formData.description || '講義の説明を入力してください'}
                 </p>
                 
@@ -607,7 +607,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                     {selectedDepartment?.name || '学部を選択'}
                   </span>
                   
-                  <div className="flex items-center text-xs text-gray-500">
+                  <div className="flex items-center text-xs text-gray-500 dark:text-gray-400">
                     {formData.status === 'published' ? (
                       <><Eye className="w-3 h-3 mr-1" /> 公開</>
                     ) : (
@@ -621,23 +621,23 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
             {/* プレビュー詳細情報 */}
             <div className="mt-4 space-y-3 text-sm">
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">状態:</span>
-                <span className={formData.status === 'published' ? 'text-green-600' : 'text-yellow-600'}>
+                <span className="text-gray-600 dark:text-gray-300">状態:</span>
+                <span className={formData.status === 'published' ? 'text-green-600 dark:text-green-400' : 'text-yellow-600 dark:text-yellow-400'}>
                   {formData.status === 'published' ? '公開' : '下書き'}
                 </span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">難易度:</span>
-                <span>{difficultyConfig[formData.difficulty].label}</span>
+                <span className="text-gray-600 dark:text-gray-300">難易度:</span>
+                <span className="text-gray-900 dark:text-gray-100">{difficultyConfig[formData.difficulty].label}</span>
               </div>
               <div className="flex items-center justify-between">
-                <span className="text-gray-600">所要時間:</span>
-                <span>{formatDuration(formData.duration)}</span>
+                <span className="text-gray-600 dark:text-gray-300">所要時間:</span>
+                <span className="text-gray-900 dark:text-gray-100">{formatDuration(formData.duration)}</span>
               </div>
               {formData.videoUrl && isVideoUrlValid && (
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-600">動画:</span>
-                  <span className="text-green-600">設定済み</span>
+                  <span className="text-gray-600 dark:text-gray-300">動画:</span>
+                  <span className="text-green-600 dark:text-green-400">設定済み</span>
                 </div>
               )}
             </div>
