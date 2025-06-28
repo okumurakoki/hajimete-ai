@@ -37,14 +37,14 @@ export default function PopularCourses({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       {/* ヘッダー */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <Trophy className="w-6 h-6 text-yellow-500 mr-2" />
-          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{title}</h3>
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           リアルタイム更新
         </div>
       </div>
@@ -56,7 +56,7 @@ export default function PopularCourses({
           return (
             <div 
               key={course.id} 
-              className="flex items-center justify-between p-4 rounded-lg border hover:bg-gray-50 transition-colors"
+              className="flex items-center justify-between p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               {/* ランキングとコース情報 */}
               <div className="flex items-center space-x-4 flex-1">
@@ -67,15 +67,15 @@ export default function PopularCourses({
 
                 {/* コース詳細 */}
                 <div className="flex-1 min-w-0">
-                  <h4 className="font-semibold text-gray-900 truncate">
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100 truncate">
                     {course.title}
                   </h4>
                   <div className="flex items-center space-x-4 mt-1">
-                    <span className="text-sm text-gray-600 flex items-center">
+                    <span className="text-sm text-gray-600 dark:text-gray-300 flex items-center">
                       <Users className="w-3 h-3 mr-1" />
                       {course.enrolledCount.toLocaleString()}人
                     </span>
-                    <span className="text-xs px-2 py-1 rounded-full bg-blue-100 text-blue-700">
+                    <span className="text-xs px-2 py-1 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300">
                       {course.department}
                     </span>
                   </div>
@@ -85,7 +85,7 @@ export default function PopularCourses({
               {/* 成長率 */}
               <div className="flex items-center space-x-2">
                 <TrendingUp className="w-4 h-4 text-green-500" />
-                <span className={`text-sm font-semibold px-2 py-1 rounded-full ${getDifficultyColor(course.growth)}`}>
+                <span className={`text-sm font-semibold px-2 py-1 rounded-full ${getDifficultyColor(course.growth)} dark:bg-opacity-80`}>
                   +{course.growth}%
                 </span>
               </div>
@@ -95,15 +95,15 @@ export default function PopularCourses({
       </div>
 
       {/* フッター統計 */}
-      <div className="mt-6 pt-4 border-t grid grid-cols-2 gap-4">
+      <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-2 gap-4">
         <div className="text-center">
-          <p className="text-sm text-gray-600">平均受講者数</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">平均受講者数</p>
           <p className="text-lg font-bold text-blue-600">
             {Math.round(courses.reduce((sum, course) => sum + course.enrolledCount, 0) / courses.length).toLocaleString()}人
           </p>
         </div>
         <div className="text-center">
-          <p className="text-sm text-gray-600">平均成長率</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">平均成長率</p>
           <p className="text-lg font-bold text-green-600">
             +{Math.round(courses.reduce((sum, course) => sum + course.growth, 0) / courses.length)}%
           </p>
@@ -111,7 +111,7 @@ export default function PopularCourses({
       </div>
 
       {/* 更新時刻 */}
-      <div className="mt-4 text-xs text-gray-400 text-center">
+      <div className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
         最終更新: {new Date().toLocaleTimeString('ja-JP')}
       </div>
     </div>

@@ -103,26 +103,26 @@ export default function AnalyticsDashboard() {
 
   if (loading && Object.keys(data).length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">統計データを読み込み中...</p>
+          <p className="text-gray-600 dark:text-gray-400">統計データを読み込み中...</p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 p-6">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900 p-6">
       {/* ヘッダー */}
       <div className="mb-8">
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-gray-900 flex items-center">
-              <BarChart3 className="w-8 h-8 mr-3 text-blue-600" />
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 flex items-center">
+              <BarChart3 className="w-8 h-8 mr-3 text-blue-600 dark:text-blue-400" />
               📊 リアルタイム統計ダッシュボード
             </h1>
-            <p className="text-gray-600 mt-2">
+            <p className="text-gray-600 dark:text-gray-400 mt-2">
               受講者数、人気コース、部門別統計を確認できます
             </p>
           </div>
@@ -130,7 +130,7 @@ export default function AnalyticsDashboard() {
           {/* コントロールパネル */}
           <div className="flex items-center space-x-4">
             {/* 最終更新時刻 */}
-            <div className="flex items-center text-sm text-gray-500">
+            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
               <Clock className="w-4 h-4 mr-1" />
               {lastUpdate.toLocaleTimeString('ja-JP')}
             </div>
@@ -140,8 +140,8 @@ export default function AnalyticsDashboard() {
               onClick={toggleAutoRefresh}
               className={`px-3 py-1 rounded-full text-xs font-medium transition-colors ${
                 autoRefresh
-                  ? 'bg-green-100 text-green-700 hover:bg-green-200'
-                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                  ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300 hover:bg-green-200 dark:hover:bg-green-900/70'
+                  : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
               }`}
             >
               {autoRefresh ? '自動更新: ON' : '自動更新: OFF'}
@@ -215,11 +215,11 @@ export default function AnalyticsDashboard() {
       <div className="fixed bottom-6 right-6">
         <div className={`flex items-center px-3 py-2 rounded-full text-sm ${
           autoRefresh 
-            ? 'bg-green-100 text-green-700' 
-            : 'bg-gray-100 text-gray-700'
+            ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' 
+            : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
         }`}>
           <div className={`w-2 h-2 rounded-full mr-2 ${
-            autoRefresh ? 'bg-green-500 animate-pulse' : 'bg-gray-400'
+            autoRefresh ? 'bg-green-500 animate-pulse' : 'bg-gray-400 dark:bg-gray-500'
           }`} />
           {autoRefresh ? 'リアルタイム更新中' : '手動更新モード'}
         </div>

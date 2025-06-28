@@ -178,7 +178,7 @@ export default function CourseManagement({
     <div className="space-y-6">
       {/* ヘッダー */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <h2 className="text-2xl font-bold text-gray-900">講義管理</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">講義管理</h2>
         <button
           onClick={onCreateCourse}
           className="bg-green-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center"
@@ -189,17 +189,17 @@ export default function CourseManagement({
       </div>
 
       {/* 検索・フィルター */}
-      <div className="bg-white rounded-xl shadow-sm border p-6">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
           {/* 検索 */}
           <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-4 h-4" />
             <input
               type="text"
               placeholder="講義を検索..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
             />
           </div>
 
@@ -207,7 +207,7 @@ export default function CourseManagement({
           <select
             value={selectedDepartment}
             onChange={(e) => setSelectedDepartment(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">全学部</option>
             {departments.map(dept => (
@@ -219,7 +219,7 @@ export default function CourseManagement({
           <select
             value={selectedStatus}
             onChange={(e) => setSelectedStatus(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">全ステータス</option>
             <option value="published">公開</option>
@@ -230,7 +230,7 @@ export default function CourseManagement({
           <select
             value={selectedDifficulty}
             onChange={(e) => setSelectedDifficulty(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="">全難易度</option>
             <option value="beginner">初級</option>
@@ -242,7 +242,7 @@ export default function CourseManagement({
           <select
             value={sortBy}
             onChange={(e) => setSortBy(e.target.value)}
-            className="px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="createdAt">作成日順</option>
             <option value="title">タイトル順</option>
@@ -252,20 +252,20 @@ export default function CourseManagement({
         </div>
 
         {/* 表示モード切り替え */}
-        <div className="flex justify-between items-center mt-4 pt-4 border-t">
-          <div className="text-sm text-gray-600">
+        <div className="flex justify-between items-center mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <div className="text-sm text-gray-600 dark:text-gray-400">
             {filteredAndSortedCourses.length}件の講義
           </div>
           <div className="flex items-center space-x-2">
             <button
               onClick={() => setViewMode('list')}
-              className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`p-2 rounded-lg ${viewMode === 'list' ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
             >
               <List className="w-4 h-4" />
             </button>
             <button
               onClick={() => setViewMode('grid')}
-              className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-blue-100 text-blue-600' : 'text-gray-400 hover:text-gray-600'}`}
+              className={`p-2 rounded-lg ${viewMode === 'grid' ? 'bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400' : 'text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300'}`}
             >
               <Grid className="w-4 h-4" />
             </button>
@@ -274,14 +274,14 @@ export default function CourseManagement({
       </div>
 
       {/* 講義一覧 */}
-      <div className="bg-white rounded-xl shadow-sm border overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden">
         {filteredAndSortedCourses.length === 0 ? (
           <div className="text-center py-12">
-            <Video className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-gray-900 mb-2">
+            <Video className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+            <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">
               {courses.length === 0 ? '講義がありません' : '条件に一致する講義がありません'}
             </h3>
-            <p className="text-gray-600 mb-4">
+            <p className="text-gray-600 dark:text-gray-400 mb-4">
               {courses.length === 0 ? '最初の講義を作成して始めましょう' : '検索条件を変更してください'}
             </p>
             {courses.length === 0 && (
@@ -294,12 +294,12 @@ export default function CourseManagement({
             )}
           </div>
         ) : viewMode === 'list' ? (
-          <div className="divide-y">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
             {filteredAndSortedCourses.map((course) => (
-              <div key={course.id} className="p-6 hover:bg-gray-50 transition-colors">
+              <div key={course.id} className="p-6 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="flex items-start justify-between">
                   <div className="flex items-start space-x-4">
-                    <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center overflow-hidden">
+                    <div className="w-16 h-16 bg-gray-200 dark:bg-gray-700 rounded-lg flex items-center justify-center overflow-hidden">
                       {course.thumbnail || course.thumbnailFile ? (
                         <img
                           src={course.thumbnail || course.thumbnailFile}
@@ -307,17 +307,17 @@ export default function CourseManagement({
                           className="w-full h-full object-cover rounded-lg"
                         />
                       ) : (
-                        <Video className="w-6 h-6 text-gray-400" />
+                        <Video className="w-6 h-6 text-gray-400 dark:text-gray-500" />
                       )}
                     </div>
                     <div className="flex-1">
                       <div className="flex items-start justify-between mb-2">
-                        <h4 className="font-semibold text-gray-900">{course.title}</h4>
+                        <h4 className="font-semibold text-gray-900 dark:text-gray-100">{course.title}</h4>
                         <div className="flex items-center space-x-2">
                           <span className={`px-2 py-1 text-xs rounded-full flex items-center ${
                             course.status === 'published' 
-                              ? 'bg-green-100 text-green-700' 
-                              : 'bg-yellow-100 text-yellow-700'
+                              ? 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300' 
+                              : 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
                           }`}>
                             {course.status === 'published' ? (
                               <>
@@ -333,11 +333,11 @@ export default function CourseManagement({
                           </span>
                         </div>
                       </div>
-                      <p className="text-sm text-gray-600 mb-3">
+                      <p className="text-sm text-gray-600 dark:text-gray-400 mb-3">
                         {course.description || '説明なし'}
                       </p>
-                      <div className="flex items-center gap-3 text-xs text-gray-500">
-                        <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded font-medium">
+                      <div className="flex items-center gap-3 text-xs text-gray-500 dark:text-gray-400">
+                        <span className="bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 px-2 py-1 rounded font-medium">
                           {course.department?.name || '未分類'}
                         </span>
                         <span className={`px-2 py-1 rounded font-medium ${getDifficultyClass(course.difficulty)}`}>
@@ -365,23 +365,23 @@ export default function CourseManagement({
                   <div className="relative">
                     <button
                       onClick={() => setOpenMenuId(openMenuId === course.id ? null : course.id)}
-                      className="text-gray-400 hover:text-gray-600 p-1"
+                      className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 p-1"
                     >
                       <MoreVertical className="w-4 h-4" />
                     </button>
                     
                     {openMenuId === course.id && (
-                      <div className="absolute right-0 top-8 bg-white rounded-lg shadow-lg border py-1 z-10 min-w-[160px]">
+                      <div className="absolute right-0 top-8 bg-white dark:bg-gray-800 rounded-lg shadow-lg border border-gray-200 dark:border-gray-700 py-1 z-10 min-w-[160px]">
                         <button
                           onClick={() => handleEditClick(course)}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center"
                         >
                           <Edit className="w-4 h-4 mr-2" />
                           編集
                         </button>
                         <button
                           onClick={() => handleToggleStatusClick(course.id, course.status)}
-                          className="w-full px-4 py-2 text-left text-sm text-gray-700 hover:bg-gray-50 flex items-center"
+                          className="w-full px-4 py-2 text-left text-sm text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center"
                         >
                           {course.status === 'published' ? (
                             <>
@@ -397,7 +397,7 @@ export default function CourseManagement({
                         </button>
                         <button
                           onClick={() => handleDeleteClick(course.id)}
-                          className="w-full px-4 py-2 text-left text-sm text-red-600 hover:bg-red-50 flex items-center"
+                          className="w-full px-4 py-2 text-left text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/50 flex items-center"
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
                           削除

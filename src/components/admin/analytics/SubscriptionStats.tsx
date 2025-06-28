@@ -109,12 +109,12 @@ export default function SubscriptionStats({
   const averageRevenuePerUser = Math.round(monthlyRevenue / data.active)
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       {/* ヘッダー */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <Star className="w-6 h-6 text-purple-500 mr-2" />
-          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{title}</h3>
         </div>
         <div className={`flex items-center text-sm px-3 py-1 rounded-full ${
           data.monthlyGrowth >= 0 
@@ -140,24 +140,24 @@ export default function SubscriptionStats({
             <div className={`text-lg font-bold ${metric.color}`}>
               {metric.value}<span className="text-sm ml-1">{metric.unit}</span>
             </div>
-            <div className="text-xs text-gray-600">{metric.label}</div>
+            <div className="text-xs text-gray-600 dark:text-gray-300">{metric.label}</div>
           </div>
         ))}
       </div>
 
       {/* プラン別内訳 */}
       <div className="mb-6">
-        <h4 className="text-md font-semibold text-gray-900 mb-4">プラン別内訳</h4>
+        <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-4">プラン別内訳</h4>
         <div className="space-y-3">
           {subscriptionPlans.map((plan, index) => (
-            <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
+            <div key={index} className="flex items-center justify-between p-3 border border-gray-200 dark:border-gray-700 rounded-lg">
               <div className="flex items-center">
                 <div className={`p-2 rounded-lg ${plan.bgColor} mr-3`}>
                   <plan.icon className={`w-4 h-4 ${plan.textColor}`} />
                 </div>
                 <div>
-                  <div className="font-semibold text-gray-900">{plan.name}</div>
-                  <div className="text-sm text-gray-600">¥{plan.price.toLocaleString()}/月</div>
+                  <div className="font-semibold text-gray-900 dark:text-gray-100">{plan.name}</div>
+                  <div className="text-sm text-gray-600 dark:text-gray-300">¥{plan.price.toLocaleString()}/月</div>
                 </div>
               </div>
               
@@ -165,7 +165,7 @@ export default function SubscriptionStats({
                 <div className={`text-lg font-bold ${plan.textColor}`}>
                   {plan.count.toLocaleString()}人
                 </div>
-                <div className="text-xs text-gray-600">{plan.percentage}%</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">{plan.percentage}%</div>
               </div>
             </div>
           ))}
@@ -173,52 +173,52 @@ export default function SubscriptionStats({
       </div>
 
       {/* 収益メトリクス */}
-      <div className="pt-4 border-t">
-        <h4 className="text-md font-semibold text-gray-900 mb-4 flex items-center">
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
           <DollarSign className="w-4 h-4 mr-2" />
           収益指標
         </h4>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="text-center p-3 bg-green-50 rounded-lg">
+          <div className="text-center p-3 bg-green-50 dark:bg-green-900/30 rounded-lg">
             <div className="text-lg font-bold text-green-600">
               ¥{monthlyRevenue.toLocaleString()}
             </div>
-            <div className="text-sm text-gray-600">月間定期収益 (MRR)</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">月間定期収益 (MRR)</div>
           </div>
           
-          <div className="text-center p-3 bg-blue-50 rounded-lg">
+          <div className="text-center p-3 bg-blue-50 dark:bg-blue-900/30 rounded-lg">
             <div className="text-lg font-bold text-blue-600">
               ¥{averageRevenuePerUser.toLocaleString()}
             </div>
-            <div className="text-sm text-gray-600">ユーザー単価 (ARPU)</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">ユーザー単価 (ARPU)</div>
           </div>
           
-          <div className="text-center p-3 bg-purple-50 rounded-lg">
+          <div className="text-center p-3 bg-purple-50 dark:bg-purple-900/30 rounded-lg">
             <div className="text-lg font-bold text-purple-600">
               {data.averageLifetime.toFixed(1)}ヶ月
             </div>
-            <div className="text-sm text-gray-600">平均利用期間</div>
+            <div className="text-sm text-gray-600 dark:text-gray-300">平均利用期間</div>
           </div>
         </div>
       </div>
 
       {/* 健全性指標 */}
-      <div className="mt-6 pt-4 border-t">
-        <h4 className="text-md font-semibold text-gray-900 mb-3 flex items-center">
+      <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
           <Target className="w-4 h-4 mr-2" />
           ビジネス健全性
         </h4>
         
         <div className="grid grid-cols-2 gap-4 text-sm">
           <div className="flex justify-between">
-            <span className="text-gray-600">有料化率:</span>
+            <span className="text-gray-600 dark:text-gray-300">有料化率:</span>
             <span className="font-semibold">
               {((data.active / data.total) * 100).toFixed(1)}%
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">解約率:</span>
+            <span className="text-gray-600 dark:text-gray-300">解約率:</span>
             <span className={`font-semibold ${
               data.churnRate < 3 ? 'text-green-600' : 'text-red-600'
             }`}>
@@ -226,13 +226,13 @@ export default function SubscriptionStats({
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">LTV:</span>
+            <span className="text-gray-600 dark:text-gray-300">LTV:</span>
             <span className="font-semibold">
               ¥{Math.round(averageRevenuePerUser * data.averageLifetime).toLocaleString()}
             </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">成長率:</span>
+            <span className="text-gray-600 dark:text-gray-300">成長率:</span>
             <span className={`font-semibold ${
               data.monthlyGrowth >= 0 ? 'text-green-600' : 'text-red-600'
             }`}>
@@ -243,7 +243,7 @@ export default function SubscriptionStats({
       </div>
 
       {/* 更新時刻 */}
-      <div className="mt-4 text-xs text-gray-400 text-center">
+      <div className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
         最終更新: {new Date().toLocaleString('ja-JP')}
       </div>
     </div>

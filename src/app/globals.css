@@ -91,6 +91,62 @@
     @apply bg-yellow-900/50 text-yellow-300;
   }
 
+  /* セミナー・イベント関連の追加修正 */
+  .dark .event-card,
+  .dark .seminar-card {
+    @apply bg-gray-800 border-gray-700 text-gray-100;
+  }
+
+  .dark .event-meta,
+  .dark .seminar-meta {
+    @apply text-gray-400;
+  }
+
+  /* 検索結果の追加修正 */
+  .dark .search-result-item {
+    @apply bg-gray-800 border-gray-700 hover:bg-gray-700;
+  }
+
+  .dark .search-filter-panel {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  /* フィルターボックス強化 */
+  .dark .filter-dropdown {
+    @apply bg-gray-800 border-gray-600 text-gray-100;
+  }
+
+  .dark .filter-option:hover {
+    @apply bg-gray-700;
+  }
+
+  /* 管理画面の包括的修正 */
+  .dark .admin-panel h1,
+  .dark .admin-panel h2,
+  .dark .admin-panel h3 {
+    @apply text-gray-100;
+  }
+
+  .dark .admin-panel .auto-update {
+    @apply bg-gray-700 text-gray-300;
+  }
+
+  .dark .admin-table {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .dark .admin-table th {
+    @apply bg-gray-700 text-gray-200 border-gray-600;
+  }
+
+  .dark .admin-table td {
+    @apply text-gray-300 border-gray-700;
+  }
+
+  .dark .admin-table tr:hover {
+    @apply bg-gray-700;
+  }
+
   /* Clerk認証コンポーネント用スタイル */
   .clerk-loaded {
     --clerk-font-family: 'Noto Sans JP', system-ui, sans-serif;

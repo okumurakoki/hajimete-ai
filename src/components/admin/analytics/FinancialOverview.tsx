@@ -83,14 +83,14 @@ export default function FinancialOverview({
   const paybackPeriod = Math.round(data.ltv / data.averageRevenuePerUser) // 投資回収期間（月）
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       {/* ヘッダー */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <BarChart3 className="w-6 h-6 text-indigo-500 mr-2" />
-          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{title}</h3>
         </div>
-        <div className="text-sm text-gray-500">
+        <div className="text-sm text-gray-500 dark:text-gray-400">
           リアルタイム財務指標
         </div>
       </div>
@@ -98,7 +98,7 @@ export default function FinancialOverview({
       {/* 主要メトリクス */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
         {keyMetrics.map((metric, index) => (
-          <div key={index} className="p-4 border rounded-lg hover:shadow-md transition-shadow">
+          <div key={index} className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow">
             <div className="flex items-center justify-between mb-3">
               <div className={`p-2 rounded-lg ${metric.bgColor}`}>
                 <metric.icon className={`w-5 h-5 ${metric.textColor}`} />
@@ -112,7 +112,7 @@ export default function FinancialOverview({
               {metric.value}
             </div>
             
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 dark:text-gray-300">
               <div className="font-medium">{metric.label}</div>
               <div className="text-xs">{metric.sublabel}</div>
             </div>
@@ -124,16 +124,16 @@ export default function FinancialOverview({
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
         {/* 左側: 重要指標 */}
         <div>
-          <h4 className="text-md font-semibold text-gray-900 mb-4 flex items-center">
+          <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
             <Zap className="w-4 h-4 mr-2" />
             ビジネス健全性
           </h4>
           
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div>
-                <div className="text-sm font-medium text-gray-900">有料化率</div>
-                <div className="text-xs text-gray-600">Trial → Paid 転換率</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">有料化率</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Trial → Paid 転換率</div>
               </div>
               <div className="text-right">
                 <div className="text-lg font-bold text-blue-600">{conversionRate}%</div>
@@ -141,10 +141,10 @@ export default function FinancialOverview({
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div>
-                <div className="text-sm font-medium text-gray-900">解約率</div>
-                <div className="text-xs text-gray-600">Monthly Churn Rate</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">解約率</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Monthly Churn Rate</div>
               </div>
               <div className="text-right">
                 <div className={`text-lg font-bold ${
@@ -156,10 +156,10 @@ export default function FinancialOverview({
               </div>
             </div>
 
-            <div className="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+            <div className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
               <div>
-                <div className="text-sm font-medium text-gray-900">投資回収期間</div>
-                <div className="text-xs text-gray-600">Customer Payback Period</div>
+                <div className="text-sm font-medium text-gray-900 dark:text-gray-100">投資回収期間</div>
+                <div className="text-xs text-gray-600 dark:text-gray-300">Customer Payback Period</div>
               </div>
               <div className="text-right">
                 <div className="text-lg font-bold text-purple-600">{paybackPeriod}ヶ月</div>
@@ -171,7 +171,7 @@ export default function FinancialOverview({
 
         {/* 右側: 顧客セグメント */}
         <div>
-          <h4 className="text-md font-semibold text-gray-900 mb-4 flex items-center">
+          <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
             <PieChart className="w-4 h-4 mr-2" />
             顧客セグメント
           </h4>
@@ -180,11 +180,11 @@ export default function FinancialOverview({
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
-                <span className="text-sm text-gray-700">有料会員</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">有料会員</span>
               </div>
               <div className="text-right">
                 <span className="font-semibold">{data.paidSubscribers.toLocaleString()}</span>
-                <span className="text-sm text-gray-600 ml-1">
+                <span className="text-sm text-gray-600 dark:text-gray-300 ml-1">
                   ({((data.paidSubscribers / data.totalSubscribers) * 100).toFixed(1)}%)
                 </span>
               </div>
@@ -193,11 +193,11 @@ export default function FinancialOverview({
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-yellow-500 rounded-full mr-2"></div>
-                <span className="text-sm text-gray-700">トライアル</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">トライアル</span>
               </div>
               <div className="text-right">
                 <span className="font-semibold">{data.trialUsers.toLocaleString()}</span>
-                <span className="text-sm text-gray-600 ml-1">
+                <span className="text-sm text-gray-600 dark:text-gray-300 ml-1">
                   ({((data.trialUsers / data.totalSubscribers) * 100).toFixed(1)}%)
                 </span>
               </div>
@@ -206,13 +206,13 @@ export default function FinancialOverview({
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <div className="w-3 h-3 bg-gray-400 rounded-full mr-2"></div>
-                <span className="text-sm text-gray-700">無料会員</span>
+                <span className="text-sm text-gray-700 dark:text-gray-300">無料会員</span>
               </div>
               <div className="text-right">
                 <span className="font-semibold">
                   {(data.totalSubscribers - data.paidSubscribers - data.trialUsers).toLocaleString()}
                 </span>
-                <span className="text-sm text-gray-600 ml-1">
+                <span className="text-sm text-gray-600 dark:text-gray-300 ml-1">
                   ({(((data.totalSubscribers - data.paidSubscribers - data.trialUsers) / data.totalSubscribers) * 100).toFixed(1)}%)
                 </span>
               </div>
@@ -221,13 +221,13 @@ export default function FinancialOverview({
 
           {/* プログレスバー */}
           <div className="mt-4 space-y-2">
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-200 dark:bg-gray-600 rounded-full h-2">
               <div 
                 className="bg-blue-500 h-2 rounded-l-full" 
                 style={{ width: `${(data.paidSubscribers / data.totalSubscribers) * 100}%` }}
               ></div>
             </div>
-            <div className="text-xs text-gray-600 text-center">
+            <div className="text-xs text-gray-600 dark:text-gray-300 text-center">
               {data.paidSubscribers.toLocaleString()} / {data.totalSubscribers.toLocaleString()} 人が有料会員
             </div>
           </div>
@@ -235,12 +235,12 @@ export default function FinancialOverview({
       </div>
 
       {/* アラート・注意事項 */}
-      <div className="pt-4 border-t">
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className="flex items-start space-x-3">
           <AlertCircle className="w-5 h-5 text-blue-500 mt-0.5" />
           <div>
-            <h5 className="text-sm font-medium text-gray-900 mb-1">財務健全性の評価</h5>
-            <div className="text-sm text-gray-600 space-y-1">
+            <h5 className="text-sm font-medium text-gray-900 dark:text-gray-100 mb-1">財務健全性の評価</h5>
+            <div className="text-sm text-gray-600 dark:text-gray-300 space-y-1">
               <p>✅ 解約率が業界平均（5%）を下回っており健全</p>
               <p>✅ LTV/CAC比率が3:1を超えており収益性良好</p>
               <p>⚠️ トライアル転換率の改善余地あり（目標: 25%）</p>
@@ -250,7 +250,7 @@ export default function FinancialOverview({
       </div>
 
       {/* 更新時刻 */}
-      <div className="mt-4 text-xs text-gray-400 text-center">
+      <div className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
         最終更新: {new Date().toLocaleString('ja-JP')}
       </div>
     </div>

@@ -75,12 +75,12 @@ export default function SearchHistory({
   }
 
   return (
-    <div className="bg-white rounded-lg border border-gray-200 shadow-sm">
+    <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
       {/* ヘッダー */}
-      <div className="p-4 border-b border-gray-200">
+      <div className="p-4 border-b border-gray-200 dark:border-gray-700">
         <div className="flex items-center justify-between">
-          <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-            <Clock className="w-5 h-5 mr-2 text-blue-600" />
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 flex items-center">
+            <Clock className="w-5 h-5 mr-2 text-blue-600 dark:text-blue-400" />
             検索履歴・保存
           </h3>
           
@@ -88,7 +88,7 @@ export default function SearchHistory({
           {currentQuery && (
             <button
               onClick={() => setShowSaveDialog(true)}
-              className="flex items-center px-3 py-1 text-sm bg-blue-50 text-blue-700 rounded-lg hover:bg-blue-100 transition-colors"
+              className="flex items-center px-3 py-1 text-sm bg-blue-50 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-100 dark:hover:bg-blue-900/70 transition-colors"
             >
               <Bookmark className="w-4 h-4 mr-1" />
               保存
@@ -98,13 +98,13 @@ export default function SearchHistory({
       </div>
 
       {/* タブナビゲーション */}
-      <div className="flex border-b border-gray-200">
+      <div className="flex border-b border-gray-200 dark:border-gray-700">
         <button
           onClick={() => setActiveTab('recent')}
           className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
             activeTab === 'recent'
-              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+              ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/50'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}
         >
           <Clock className="w-4 h-4 inline mr-2" />
@@ -114,8 +114,8 @@ export default function SearchHistory({
           onClick={() => setActiveTab('saved')}
           className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
             activeTab === 'saved'
-              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+              ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/50'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}
         >
           <Bookmark className="w-4 h-4 inline mr-2" />
@@ -125,8 +125,8 @@ export default function SearchHistory({
           onClick={() => setActiveTab('popular')}
           className={`flex-1 px-4 py-3 text-sm font-medium transition-colors ${
             activeTab === 'popular'
-              ? 'text-blue-600 border-b-2 border-blue-600 bg-blue-50'
-              : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+              ? 'text-blue-600 dark:text-blue-400 border-b-2 border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/50'
+              : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 hover:bg-gray-50 dark:hover:bg-gray-700'
           }`}
         >
           <TrendingUp className="w-4 h-4 inline mr-2" />
@@ -140,8 +140,8 @@ export default function SearchHistory({
         {activeTab === 'recent' && (
           <div className="p-2">
             {recentSearches.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Search className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <Search className="w-8 h-8 mx-auto mb-2 text-gray-400 dark:text-gray-500" />
                 <p className="text-sm">まだ検索履歴がありません</p>
               </div>
             ) : (
@@ -150,17 +150,17 @@ export default function SearchHistory({
                   {recentSearches.map((item) => (
                     <div
                       key={item.id}
-                      className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg group"
+                      className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg group"
                     >
                       <button
                         onClick={() => onSelectSearch(item.query, item.filters)}
                         className="flex-1 text-left"
                       >
                         <div className="flex items-center">
-                          <Clock className="w-4 h-4 text-gray-400 mr-2" />
+                          <Clock className="w-4 h-4 text-gray-400 dark:text-gray-500 mr-2" />
                           <div>
-                            <div className="font-medium text-gray-900">{item.query}</div>
-                            <div className="text-xs text-gray-500">
+                            <div className="font-medium text-gray-900 dark:text-gray-100">{item.query}</div>
+                            <div className="text-xs text-gray-500 dark:text-gray-400">
                               {item.timestamp.toLocaleDateString('ja-JP')} • {item.resultCount}件
                               {getFilterDescription(item.filters)}
                             </div>
@@ -169,7 +169,7 @@ export default function SearchHistory({
                       </button>
                       <button
                         onClick={() => removeFromHistory(item.id)}
-                        className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-red-600 transition-all"
+                        className="opacity-0 group-hover:opacity-100 p-1 text-gray-400 dark:text-gray-500 hover:text-red-600 transition-all"
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
@@ -178,10 +178,10 @@ export default function SearchHistory({
                 </div>
                 
                 {searchHistory.length > 0 && (
-                  <div className="mt-4 pt-4 border-t border-gray-200">
+                  <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
                     <button
                       onClick={clearHistory}
-                      className="w-full text-sm text-red-600 hover:text-red-800 py-2"
+                      className="w-full text-sm text-red-600 dark:text-red-400 hover:text-red-800 dark:hover:text-red-300 py-2"
                     >
                       <Trash2 className="w-4 h-4 inline mr-1" />
                       履歴をすべて削除
@@ -197,8 +197,8 @@ export default function SearchHistory({
         {activeTab === 'saved' && (
           <div className="p-2">
             {savedSearches.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <Bookmark className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <Bookmark className="w-8 h-8 mx-auto mb-2 text-gray-400 dark:text-gray-500" />
                 <p className="text-sm">保存された検索がありません</p>
                 <p className="text-xs mt-1">よく使う検索条件を保存しておくと便利です</p>
               </div>
@@ -207,7 +207,7 @@ export default function SearchHistory({
                 {savedSearches.map((item) => (
                   <div
                     key={item.id}
-                    className="flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg group"
+                    className="flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg group"
                   >
                     <button
                       onClick={() => {
@@ -219,11 +219,11 @@ export default function SearchHistory({
                       className="flex-1 text-left"
                     >
                       <div className="flex items-center">
-                        <Star className="w-4 h-4 text-amber-500 mr-2" />
+                        <Star className="w-4 h-4 text-amber-500 dark:text-amber-400 mr-2" />
                         <div>
-                          <div className="font-medium text-gray-900">{item.name}</div>
-                          <div className="text-sm text-gray-600">{item.query}</div>
-                          <div className="text-xs text-gray-500">
+                          <div className="font-medium text-gray-900 dark:text-gray-100">{item.name}</div>
+                          <div className="text-sm text-gray-600 dark:text-gray-300">{item.query}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400">
                             最終使用: {item.lastUsed.toLocaleDateString('ja-JP')}
                             {getFilterDescription(item.filters)}
                           </div>
@@ -247,8 +247,8 @@ export default function SearchHistory({
         {activeTab === 'popular' && (
           <div className="p-2">
             {popularSearches.length === 0 ? (
-              <div className="text-center py-8 text-gray-500">
-                <TrendingUp className="w-8 h-8 mx-auto mb-2 text-gray-400" />
+              <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                <TrendingUp className="w-8 h-8 mx-auto mb-2 text-gray-400 dark:text-gray-500" />
                 <p className="text-sm">人気の検索キーワードがありません</p>
                 <p className="text-xs mt-1">検索履歴が蓄積されると表示されます</p>
               </div>
@@ -258,20 +258,20 @@ export default function SearchHistory({
                   <button
                     key={item.query}
                     onClick={() => onSelectSearch(item.query)}
-                    className="w-full flex items-center justify-between p-3 hover:bg-gray-50 rounded-lg text-left"
+                    className="w-full flex items-center justify-between p-3 hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg text-left"
                   >
                     <div className="flex items-center">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center text-xs font-bold mr-3 ${
-                        index === 0 ? 'bg-yellow-100 text-yellow-700' :
-                        index === 1 ? 'bg-gray-100 text-gray-700' :
-                        index === 2 ? 'bg-orange-100 text-orange-700' :
-                        'bg-blue-100 text-blue-700'
+                        index === 0 ? 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300' :
+                        index === 1 ? 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300' :
+                        index === 2 ? 'bg-orange-100 dark:bg-orange-900/50 text-orange-700 dark:text-orange-300' :
+                        'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
                       }`}>
                         {index + 1}
                       </div>
                       <div>
-                        <div className="font-medium text-gray-900">{item.query}</div>
-                        <div className="text-xs text-gray-500">{item.count}回検索</div>
+                        <div className="font-medium text-gray-900 dark:text-gray-100">{item.query}</div>
+                        <div className="text-xs text-gray-500 dark:text-gray-400">{item.count}回検索</div>
                       </div>
                     </div>
                   </button>
@@ -285,19 +285,19 @@ export default function SearchHistory({
       {/* 保存ダイアログ */}
       {showSaveDialog && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg p-6 w-full max-w-md mx-4">
+          <div className="bg-white dark:bg-gray-800 rounded-lg p-6 w-full max-w-md mx-4">
             <div className="flex items-center justify-between mb-4">
-              <h4 className="text-lg font-semibold text-gray-900">検索を保存</h4>
+              <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">検索を保存</h4>
               <button
                 onClick={() => setShowSaveDialog(false)}
-                className="text-gray-400 hover:text-gray-600"
+                className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
             <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 保存名
               </label>
               <input
@@ -305,16 +305,16 @@ export default function SearchHistory({
                 value={saveName}
                 onChange={(e) => setSaveName(e.target.value)}
                 placeholder="例: AI関連の上級コース"
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 autoFocus
               />
             </div>
 
-            <div className="mb-4 p-3 bg-gray-50 rounded-lg">
-              <div className="text-sm text-gray-600 mb-1">検索内容:</div>
-              <div className="font-medium text-gray-900">{currentQuery}</div>
+            <div className="mb-4 p-3 bg-gray-50 dark:bg-gray-700 rounded-lg">
+              <div className="text-sm text-gray-600 dark:text-gray-400 mb-1">検索内容:</div>
+              <div className="font-medium text-gray-900 dark:text-gray-100">{currentQuery}</div>
               {getFilterDescription(currentFilters) && (
-                <div className="text-xs text-gray-500 mt-1">
+                <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                   {getFilterDescription(currentFilters)}
                 </div>
               )}
@@ -323,7 +323,7 @@ export default function SearchHistory({
             <div className="flex justify-end space-x-3">
               <button
                 onClick={() => setShowSaveDialog(false)}
-                className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                className="px-4 py-2 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700"
               >
                 キャンセル
               </button>

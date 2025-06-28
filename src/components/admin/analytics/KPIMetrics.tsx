@@ -108,14 +108,14 @@ export default function KPIMetrics({
   ]
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       {/* ヘッダー */}
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center">
           <BarChart3 className="w-6 h-6 text-indigo-500 mr-2" />
-          <h3 className="text-lg font-bold text-gray-900">{title}</h3>
+          <h3 className="text-lg font-bold text-gray-900 dark:text-gray-100">{title}</h3>
         </div>
-        <div className="flex items-center text-sm text-gray-500">
+        <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
           <Calendar className="w-4 h-4 mr-1" />
           {new Date().toLocaleDateString('ja-JP')}
         </div>
@@ -126,7 +126,7 @@ export default function KPIMetrics({
         {kpiCards.map((kpi, index) => (
           <div 
             key={index}
-            className="p-4 border rounded-lg hover:shadow-md transition-shadow"
+            className="p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:shadow-md transition-shadow"
           >
             {/* アイコンとタイトル */}
             <div className="flex items-center justify-between mb-3">
@@ -151,7 +151,7 @@ export default function KPIMetrics({
             </div>
 
             {/* ラベル */}
-            <div className="text-sm text-gray-600">
+            <div className="text-sm text-gray-600 dark:text-gray-300">
               {kpi.title}
             </div>
           </div>
@@ -159,8 +159,8 @@ export default function KPIMetrics({
       </div>
 
       {/* パフォーマンス指標 */}
-      <div className="pt-4 border-t">
-        <h4 className="text-md font-semibold text-gray-900 mb-4 flex items-center">
+      <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-4 flex items-center">
           <Target className="w-4 h-4 mr-2" />
           パフォーマンス指標
         </h4>
@@ -171,7 +171,7 @@ export default function KPIMetrics({
             <div className="text-lg font-bold text-blue-600">
               {Math.round(data.totalStudents / data.totalCourses)}
             </div>
-            <div className="text-xs text-gray-600">平均受講者/コース</div>
+            <div className="text-xs text-gray-600 dark:text-gray-300">平均受講者/コース</div>
           </div>
 
           {/* コース充実度 */}
@@ -179,7 +179,7 @@ export default function KPIMetrics({
             <div className="text-lg font-bold text-green-600">
               {Math.round((data.activeCourses / data.totalCourses) * 100)}%
             </div>
-            <div className="text-xs text-gray-600">コース公開率</div>
+            <div className="text-xs text-gray-600 dark:text-gray-300">コース公開率</div>
           </div>
 
           {/* 成長速度 */}
@@ -187,7 +187,7 @@ export default function KPIMetrics({
             <div className="text-lg font-bold text-purple-600">
               {Math.round(data.monthlyGrowth * 30)}
             </div>
-            <div className="text-xs text-gray-600">月間新規受講者</div>
+            <div className="text-xs text-gray-600 dark:text-gray-300">月間新規受講者</div>
           </div>
 
           {/* 学習満足度 */}
@@ -195,36 +195,36 @@ export default function KPIMetrics({
             <div className="text-lg font-bold text-yellow-600">
               4.{Math.floor(Math.random() * 3) + 6}
             </div>
-            <div className="text-xs text-gray-600">平均評価 (5点満点)</div>
+            <div className="text-xs text-gray-600 dark:text-gray-300">平均評価 (5点満点)</div>
           </div>
         </div>
       </div>
 
       {/* アクティビティ指標 */}
-      <div className="mt-6 pt-4 border-t">
-        <h4 className="text-md font-semibold text-gray-900 mb-3 flex items-center">
+      <div className="mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+        <h4 className="text-md font-semibold text-gray-900 dark:text-gray-100 mb-3 flex items-center">
           <Activity className="w-4 h-4 mr-2" />
           今週のアクティビティ
         </h4>
         
         <div className="space-y-2">
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">新規受講者</span>
+            <span className="text-gray-600 dark:text-gray-300">新規受講者</span>
             <span className="font-semibold">+{Math.floor(Math.random() * 50) + 20}人</span>
           </div>
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">コース完了</span>
+            <span className="text-gray-600 dark:text-gray-300">コース完了</span>
             <span className="font-semibold">+{Math.floor(Math.random() * 30) + 15}件</span>
           </div>
           <div className="flex justify-between items-center text-sm">
-            <span className="text-gray-600">新規コース</span>
+            <span className="text-gray-600 dark:text-gray-300">新規コース</span>
             <span className="font-semibold">+{Math.floor(Math.random() * 3) + 1}コース</span>
           </div>
         </div>
       </div>
 
       {/* 更新時刻 */}
-      <div className="mt-4 text-xs text-gray-400 text-center">
+      <div className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
         最終更新: {new Date().toLocaleString('ja-JP')}
       </div>
     </div>

@@ -89,20 +89,20 @@ export default function CoursesPage() {
   // 難易度バッジの色
   const getDifficultyColor = (difficulty: string) => {
     switch (difficulty) {
-      case '初級': return 'bg-green-100 text-green-700'
-      case '中級': return 'bg-yellow-100 text-yellow-700'
-      case '上級': return 'bg-red-100 text-red-700'
-      default: return 'bg-gray-100 text-gray-700'
+      case '初級': return 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+      case '中級': return 'bg-yellow-100 dark:bg-yellow-900/50 text-yellow-700 dark:text-yellow-300'
+      case '上級': return 'bg-red-100 dark:bg-red-900/50 text-red-700 dark:text-red-300'
+      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
     }
   }
 
   // 価格バッジの色
   const getPriceColor = (price: string) => {
     switch (price) {
-      case '無料': return 'bg-green-100 text-green-700'
-      case 'ベーシック': return 'bg-blue-100 text-blue-700'
-      case 'プレミアム': return 'bg-purple-100 text-purple-700'
-      default: return 'bg-gray-100 text-gray-700'
+      case '無料': return 'bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-300'
+      case 'ベーシック': return 'bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300'
+      case 'プレミアム': return 'bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300'
+      default: return 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300'
     }
   }
 
@@ -112,7 +112,7 @@ export default function CoursesPage() {
       description="AIスキルを体系的に学べる豊富なコースをご用意しています"
       actions={
         <div className="flex items-center space-x-3">
-          <button className="flex items-center px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+          <button className="flex items-center px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300 bg-white dark:bg-gray-800">
             <Filter className="w-4 h-4 mr-2" />
             フィルター
           </button>
@@ -125,48 +125,48 @@ export default function CoursesPage() {
     >
       {/* 統計サマリー */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-        <div className="bg-white rounded-lg p-6 border shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center">
             <BookOpen className="w-8 h-8 text-blue-600 mr-3" />
             <div>
-              <div className="text-2xl font-bold text-gray-900">{courses.length}</div>
-              <div className="text-sm text-gray-600">総コース数</div>
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">{courses.length}</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">総コース数</div>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 border shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center">
             <Users className="w-8 h-8 text-green-600 mr-3" />
             <div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {courses.reduce((sum, course) => sum + course.enrolledCount, 0).toLocaleString()}
               </div>
-              <div className="text-sm text-gray-600">総受講者数</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">総受講者数</div>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 border shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center">
             <Star className="w-8 h-8 text-yellow-600 mr-3" />
             <div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {(courses.reduce((sum, course) => sum + course.rating, 0) / courses.length).toFixed(1)}
               </div>
-              <div className="text-sm text-gray-600">平均評価</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">平均評価</div>
             </div>
           </div>
         </div>
         
-        <div className="bg-white rounded-lg p-6 border shadow-sm">
+        <div className="bg-white dark:bg-gray-800 rounded-lg p-6 border border-gray-200 dark:border-gray-700 shadow-sm">
           <div className="flex items-center">
             <Clock className="w-8 h-8 text-purple-600 mr-3" />
             <div>
-              <div className="text-2xl font-bold text-gray-900">
+              <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                 {courses.filter(course => course.price === '無料').length}
               </div>
-              <div className="text-sm text-gray-600">無料コース</div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">無料コース</div>
             </div>
           </div>
         </div>
@@ -175,10 +175,10 @@ export default function CoursesPage() {
       {/* コース一覧 */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {courses.map((course) => (
-          <div key={course.id} className="bg-white rounded-xl border shadow-sm hover:shadow-md transition-shadow">
+          <div key={course.id} className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm hover:shadow-md transition-shadow">
             {/* コースサムネイル */}
             <div className="relative">
-              <div className="h-48 bg-gradient-to-br from-blue-50 to-purple-50 rounded-t-xl flex items-center justify-center">
+              <div className="h-48 bg-gradient-to-br from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-t-xl flex items-center justify-center">
                 <div className="text-6xl">{course.thumbnail}</div>
               </div>
               
@@ -207,17 +207,17 @@ export default function CoursesPage() {
             {/* コース情報 */}
             <div className="p-6">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-sm text-blue-600 font-medium">{course.department}</span>
+                <span className="text-sm text-blue-600 dark:text-blue-400 font-medium">{course.department}</span>
                 <span className={`text-xs px-2 py-1 rounded-full font-medium ${getDifficultyColor(course.difficulty)}`}>
                   {course.difficulty}
                 </span>
               </div>
               
-              <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-2">
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2 line-clamp-2">
                 {course.title}
               </h3>
               
-              <p className="text-sm text-gray-600 mb-4 line-clamp-3">
+              <p className="text-sm text-gray-600 dark:text-gray-400 mb-4 line-clamp-3">
                 {course.description}
               </p>
 
@@ -240,7 +240,7 @@ export default function CoursesPage() {
               {/* タグ */}
               <div className="flex flex-wrap gap-1 mb-4">
                 {course.tags.map((tag, index) => (
-                  <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                  <span key={index} className="text-xs bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-1 rounded">
                     {tag}
                   </span>
                 ))}

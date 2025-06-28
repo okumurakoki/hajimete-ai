@@ -385,7 +385,7 @@ function DashboardContent() {
                 </div>
               </div>
 
-              <div className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                 <div className="text-2xl mr-4">🎯</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">プロンプトエンジニアリング入門</h4>
@@ -405,7 +405,7 @@ function DashboardContent() {
                 </div>
               </div>
 
-              <div className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                 <div className="text-2xl mr-4">🤖</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">AIとは何か？基本概念の理解</h4>
@@ -463,7 +463,7 @@ function DashboardContent() {
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="text-2xl mr-4">🚀</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">ChatGPTで作業効率を上げる10のコツ</h4>
@@ -481,14 +481,14 @@ function DashboardContent() {
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="text-2xl mr-4">💡</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">AIツールでプレゼン資料作成</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">AI基礎学部 • 20分</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 text-red-500 hover:bg-red-50 rounded-full">
+                  <button className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-full">
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                     </svg>
@@ -499,7 +499,7 @@ function DashboardContent() {
                 </div>
               </div>
 
-              <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="text-2xl mr-4">📈</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">ビジネスメールをAIで效率化</h4>
@@ -526,7 +526,7 @@ function DashboardContent() {
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               {/* 無料プラン */}
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">無料プラン</h4>
                 <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">¥0</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">月額</p>
@@ -534,7 +534,7 @@ function DashboardContent() {
                   <li>• AI基礎学部のみアクセス</li>
                   <li>• 基本的な学習コンテンツ</li>
                 </ul>
-                <button className="w-full bg-gray-100 text-gray-800 py-2 px-4 rounded-md text-sm font-medium">
+                <button className="w-full bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 py-2 px-4 rounded-md text-sm font-medium">
                   現在のプラン
                 </button>
               </div>
@@ -563,7 +563,7 @@ function DashboardContent() {
               </div>
 
               {/* プレミアムプラン */}
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">プレミアムプラン</h4>
                 <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">¥5,500</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">月額</p>
@@ -589,14 +589,14 @@ function DashboardContent() {
               <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
                 学習進捗管理
               </h3>
-              <button className="bg-blue-50 hover:bg-blue-100 text-blue-600 px-3 py-1 rounded-md text-sm font-medium transition-colors">
+              <button className="bg-blue-50 dark:bg-blue-900/50 hover:bg-blue-100 dark:hover:bg-blue-900/70 text-blue-600 dark:text-blue-400 px-3 py-1 rounded-md text-sm font-medium transition-colors">
                 詳細表示
               </button>
             </div>
             
             <div className="space-y-6">
               {/* AI基礎学部 */}
-              <div className="border border-gray-200 rounded-lg p-4">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
                 <div className="flex justify-between items-center mb-3">
                   <div className="flex items-center">
                     <div className="text-2xl mr-3">🎓</div>
@@ -620,7 +620,7 @@ function DashboardContent() {
               </div>
 
               {/* 業務効率化学部 */}
-              <div className="border border-gray-200 rounded-lg p-4 opacity-60">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 opacity-60">
                 <div className="flex justify-between items-center mb-3">
                   <div className="flex items-center">
                     <div className="text-2xl mr-3">⚡</div>
@@ -630,7 +630,7 @@ function DashboardContent() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm font-medium text-orange-600 bg-orange-100 px-2 py-1 rounded-full">
+                    <span className="text-sm font-medium text-orange-600 dark:text-orange-300 bg-orange-100 dark:bg-orange-900/50 px-2 py-1 rounded-full">
                       プレミアム限定
                     </span>
                   </div>
@@ -645,7 +645,7 @@ function DashboardContent() {
               </div>
 
               {/* 実践応用学部 */}
-              <div className="border border-gray-200 rounded-lg p-4 opacity-60">
+              <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-4 opacity-60">
                 <div className="flex justify-between items-center mb-3">
                   <div className="flex items-center">
                     <div className="text-2xl mr-3">🚀</div>
@@ -655,7 +655,7 @@ function DashboardContent() {
                     </div>
                   </div>
                   <div className="text-right">
-                    <span className="text-sm font-medium text-purple-600 bg-purple-100 px-2 py-1 rounded-full">
+                    <span className="text-sm font-medium text-purple-600 dark:text-purple-300 bg-purple-100 dark:bg-purple-900/50 px-2 py-1 rounded-full">
                       プレミアム限定
                     </span>
                   </div>
@@ -671,7 +671,7 @@ function DashboardContent() {
             </div>
             
             {/* 今日の目標 */}
-            <div className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg p-4 border border-blue-100">
+            <div className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg p-4 border border-blue-100 dark:border-blue-800">
               <h4 className="font-semibold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
                 <div className="text-lg mr-2">🎯</div>
                 今日の学習目標

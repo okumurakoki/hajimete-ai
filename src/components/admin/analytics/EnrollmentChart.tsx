@@ -133,27 +133,27 @@ export default function EnrollmentChart({
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       <div style={{ height: `${height}px` }}>
         <Line data={data} options={options} />
       </div>
       
       {/* 統計サマリー */}
-      <div className="mt-4 pt-4 border-t grid grid-cols-3 gap-4 text-center">
+      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700 grid grid-cols-3 gap-4 text-center">
         <div>
-          <p className="text-sm text-gray-600">今月の新規受講者</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">今月の新規受講者</p>
           <p className="text-lg font-bold text-blue-600">
             {data.datasets[0]?.data.slice(-30).reduce((a, b) => a + b, 0) || 0}人
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-600">今週の平均</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">今週の平均</p>
           <p className="text-lg font-bold text-green-600">
             {Math.round((data.datasets[0]?.data.slice(-7).reduce((a, b) => a + b, 0) || 0) / 7)}人/日
           </p>
         </div>
         <div>
-          <p className="text-sm text-gray-600">前日比</p>
+          <p className="text-sm text-gray-600 dark:text-gray-300">前日比</p>
           <p className="text-lg font-bold text-purple-600">
             +{Math.floor(Math.random() * 10) + 1}%
           </p>

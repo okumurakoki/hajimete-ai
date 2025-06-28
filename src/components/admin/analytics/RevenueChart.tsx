@@ -154,18 +154,18 @@ export default function RevenueChart({
   const ChartComponent = chartType === 'line' ? Line : Bar
 
   return (
-    <div className="bg-white rounded-xl shadow-sm border p-6">
+    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 p-6">
       {/* チャート */}
       <div className="mb-6" style={{ height: '400px' }}>
         <ChartComponent data={chartData} options={options} />
       </div>
 
       {/* 収益メトリクス */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className="text-center">
           <div className="flex items-center justify-center mb-2">
             <DollarSign className="w-5 h-5 text-green-500 mr-1" />
-            <span className="text-sm text-gray-600">月間収益</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300">月間収益</span>
           </div>
           <div className="text-lg font-bold text-green-600">
             ¥{data.totalRevenue.toLocaleString()}
@@ -175,7 +175,7 @@ export default function RevenueChart({
         <div className="text-center">
           <div className="flex items-center justify-center mb-2">
             <Calendar className="w-5 h-5 text-blue-500 mr-1" />
-            <span className="text-sm text-gray-600">日平均</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300">日平均</span>
           </div>
           <div className="text-lg font-bold text-blue-600">
             ¥{data.avgDailyRevenue.toLocaleString()}
@@ -185,7 +185,7 @@ export default function RevenueChart({
         <div className="text-center">
           <div className="flex items-center justify-center mb-2">
             <Target className="w-5 h-5 text-purple-500 mr-1" />
-            <span className="text-sm text-gray-600">月末予測</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300">月末予測</span>
           </div>
           <div className="text-lg font-bold text-purple-600">
             ¥{data.monthlyProjection.toLocaleString()}
@@ -195,7 +195,7 @@ export default function RevenueChart({
         <div className="text-center">
           <div className="flex items-center justify-center mb-2">
             <TrendingUp className="w-5 h-5 text-yellow-500 mr-1" />
-            <span className="text-sm text-gray-600">成長率</span>
+            <span className="text-sm text-gray-600 dark:text-gray-300">成長率</span>
           </div>
           <div className={`text-lg font-bold ${
             data.growth >= 0 ? 'text-green-600' : 'text-red-600'
@@ -206,22 +206,22 @@ export default function RevenueChart({
       </div>
 
       {/* 追加の分析 */}
-      <div className="mt-4 pt-4 border-t">
+      <div className="mt-4 pt-4 border-t border-gray-200 dark:border-gray-700">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div>
-            <span className="text-gray-600">最高日次収益: </span>
+            <span className="text-gray-600 dark:text-gray-300">最高日次収益: </span>
             <span className="font-semibold text-green-600">
               ¥{Math.max(...data.daily.map(d => d.revenue)).toLocaleString()}
             </span>
           </div>
           <div>
-            <span className="text-gray-600">最低日次収益: </span>
+            <span className="text-gray-600 dark:text-gray-300">最低日次収益: </span>
             <span className="font-semibold text-red-600">
               ¥{Math.min(...data.daily.map(d => d.revenue)).toLocaleString()}
             </span>
           </div>
           <div>
-            <span className="text-gray-600">収益安定性: </span>
+            <span className="text-gray-600 dark:text-gray-300">収益安定性: </span>
             <span className="font-semibold text-blue-600">
               {((1 - (Math.max(...data.daily.map(d => d.revenue)) - Math.min(...data.daily.map(d => d.revenue))) / data.avgDailyRevenue) * 100).toFixed(1)}%
             </span>
@@ -230,7 +230,7 @@ export default function RevenueChart({
       </div>
 
       {/* 更新時刻 */}
-      <div className="mt-4 text-xs text-gray-400 text-center">
+      <div className="mt-4 text-xs text-gray-400 dark:text-gray-500 text-center">
         最終更新: {new Date().toLocaleString('ja-JP')}
       </div>
     </div>

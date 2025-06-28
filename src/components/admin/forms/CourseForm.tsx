@@ -195,16 +195,16 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-2xl w-full max-w-4xl max-h-[90vh] overflow-y-auto">
         {/* ヘッダー */}
-        <div className="flex items-center justify-between p-6 border-b border-gray-200 sticky top-0 bg-white">
-          <h2 className="text-xl font-bold text-gray-900">
+        <div className="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700 sticky top-0 bg-white dark:bg-gray-800">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-gray-100">
             {initialData ? '講義を編集' : '新しい講義を作成'}
           </h2>
           <button
             onClick={handleClose}
             disabled={isSubmitting}
-            className="text-gray-400 hover:text-gray-600 transition-colors disabled:opacity-50"
+            className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 transition-colors disabled:opacity-50"
           >
             <X size={24} />
           </button>
@@ -241,14 +241,14 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                 <div className="space-y-6">
                   {/* 講義タイトル */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       講義タイトル <span className="text-red-500">*</span>
                     </label>
                     <input
                       type="text"
                       value={formData.title}
                       onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-shadow"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent transition-shadow"
                       placeholder="例: ChatGPTによるプロンプトエンジニアリング入門"
                       required
                       disabled={isSubmitting}
@@ -257,13 +257,13 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
                   {/* 学部選択 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       所属学部 <span className="text-red-500">*</span>
                     </label>
                     <select
                       value={formData.departmentId}
                       onChange={(e) => setFormData({ ...formData, departmentId: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                       required
                       disabled={isSubmitting}
                     >
@@ -277,13 +277,13 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
                   {/* 説明 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                       講義の説明
                     </label>
                     <textarea
                       value={formData.description}
                       onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent h-32 resize-none"
+                      className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent h-32 resize-none"
                       placeholder="講義の内容、学習目標、対象者などを詳しく説明してください"
                       disabled={isSubmitting}
                     />
@@ -291,7 +291,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
                   {/* 難易度選択 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       <Star className="w-4 h-4 inline mr-1" />
                       難易度レベル
                     </label>
@@ -304,13 +304,13 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                           disabled={isSubmitting}
                           className={`p-4 rounded-lg border-2 transition-all text-center ${
                             formData.difficulty === key
-                              ? 'border-green-500 bg-green-50'
-                              : 'border-gray-200 hover:border-gray-300'
+                              ? 'border-green-500 bg-green-50 dark:bg-green-900/20'
+                              : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'
                           } disabled:opacity-50`}
                         >
                           <div className="text-2xl mb-1">{config.icon}</div>
-                          <div className="font-medium text-gray-900">{config.label}</div>
-                          <div className="text-xs text-gray-500 mt-1">
+                          <div className="font-medium text-gray-900 dark:text-gray-100">{config.label}</div>
+                          <div className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                             {key === 'beginner' && 'プログラミング未経験者向け'}
                             {key === 'intermediate' && '基本操作を理解している方向け'}
                             {key === 'advanced' && '実践的なスキルを求める方向け'}
@@ -322,7 +322,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
                   {/* 所要時間設定 */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       <Clock className="w-4 h-4 inline mr-1" />
                       所要時間（分）
                     </label>
@@ -337,11 +337,11 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                         className="flex-1"
                         disabled={isSubmitting}
                       />
-                      <div className="bg-gray-100 px-3 py-2 rounded-lg min-w-[80px] text-center font-medium">
+                      <div className="bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-gray-100 px-3 py-2 rounded-lg min-w-[80px] text-center font-medium">
                         {formatDuration(formData.duration)}
                       </div>
                     </div>
-                    <div className="flex justify-between text-xs text-gray-500 mt-1">
+                    <div className="flex justify-between text-xs text-gray-500 dark:text-gray-400 mt-1">
                       <span>15分</span>
                       <span>3時間</span>
                     </div>
@@ -354,12 +354,12 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                 <div className="space-y-6">
                   {/* サムネイル画像アップロード */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       <Image className="w-4 h-4 inline mr-1" />
                       サムネイル画像
                     </label>
                     
-                    <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-6 text-center">
                       {thumbnailPreview || formData.thumbnail ? (
                         <div className="space-y-4">
                           <img 
@@ -368,7 +368,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                             className="w-32 h-24 mx-auto rounded-lg object-cover"
                           />
                           <div className="space-y-2">
-                            <p className="text-sm text-gray-600">
+                            <p className="text-sm text-gray-600 dark:text-gray-300">
                               {thumbnailPreview ? 'アップロード済み' : 'URL画像'}
                             </p>
                             <label className="inline-block px-4 py-2 bg-green-600 text-white text-sm rounded cursor-pointer hover:bg-green-700">
@@ -385,9 +385,9 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                         </div>
                       ) : (
                         <div className="py-8">
-                          <Upload className="w-12 h-12 mx-auto text-gray-400 mb-4" />
-                          <p className="text-gray-600 mb-2">画像をアップロードしてください</p>
-                          <p className="text-xs text-gray-500 mb-4">PNG, JPG, GIF (最大5MB)</p>
+                          <Upload className="w-12 h-12 mx-auto text-gray-400 dark:text-gray-500 mb-4" />
+                          <p className="text-gray-600 dark:text-gray-300 mb-2">画像をアップロードしてください</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">PNG, JPG, GIF (最大5MB)</p>
                           <label className="inline-block px-4 py-2 bg-green-600 text-white rounded cursor-pointer hover:bg-green-700">
                             ファイルを選択
                             <input
@@ -404,7 +404,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
                     {/* サムネイルURL（代替手段） */}
                     <div className="mt-4">
-                      <label className="block text-sm text-gray-600 mb-2">
+                      <label className="block text-sm text-gray-600 dark:text-gray-300 mb-2">
                         または画像URLを入力:
                       </label>
                       <input
@@ -414,7 +414,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                           setFormData({ ...formData, thumbnail: e.target.value })
                           setThumbnailPreview(null)
                         }}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
                         placeholder="https://example.com/thumbnail.jpg"
                         disabled={isSubmitting}
                       />
@@ -423,7 +423,7 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
 
                   {/* 動画URL */}
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-3">
+                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                       <Play className="w-4 h-4 inline mr-1" />
                       動画URL（オプション）
                     </label>
@@ -432,19 +432,19 @@ export default function CourseForm({ isOpen, onClose, onSave, onSuccess, departm
                         type="url"
                         value={formData.videoUrl}
                         onChange={(e) => setFormData({ ...formData, videoUrl: e.target.value })}
-                        className={`w-full px-3 py-2 border rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent ${
+                        className={`w-full px-3 py-2 border rounded-lg bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100 placeholder-gray-400 dark:placeholder-gray-500 focus:ring-2 focus:ring-green-500 focus:border-transparent ${
                           formData.videoUrl && !isVideoUrlValid 
                             ? 'border-red-300 focus:ring-red-500' 
-                            : 'border-gray-300'
+                            : 'border-gray-300 dark:border-gray-600'
                         }`}
                         placeholder="https://youtube.com/watch?v=... または https://vimeo.com/..."
                         disabled={isSubmitting}
                       />
                       {formData.videoUrl && !isVideoUrlValid && (
-                        <p className="text-red-500 text-xs">YouTubeまたはVimeoのURLを入力してください</p>
+                        <p className="text-red-500 dark:text-red-400 text-xs">YouTubeまたはVimeoのURLを入力してください</p>
                       )}
                       {formData.videoUrl && isVideoUrlValid && (
-                        <p className="text-green-600 text-xs flex items-center">
+                        <p className="text-green-600 dark:text-green-400 text-xs flex items-center">
                           <Link className="w-3 h-3 mr-1" />
                           動画URLが正常に設定されました
                         </p>
