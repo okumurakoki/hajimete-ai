@@ -237,7 +237,7 @@ function FeaturesSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="bg-gray-50 rounded-xl p-8 hover:shadow-lg transition-shadow">
+            <div key={index} className="bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-200">
               <div className="text-4xl mb-4">{feature.icon}</div>
               <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
               <p className="text-gray-600 leading-relaxed">{feature.description}</p>
