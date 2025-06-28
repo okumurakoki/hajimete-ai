@@ -54,6 +54,43 @@
     @apply bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600;
   }
 
+  /* 包括的なダークモード修正 */
+  .dark input[type="text"],
+  .dark input[type="search"],
+  .dark input[type="email"],
+  .dark input[type="password"],
+  .dark select,
+  .dark textarea {
+    @apply bg-gray-800 border-gray-600 text-gray-100 placeholder-gray-400;
+  }
+
+  .dark input[type="text"]:focus,
+  .dark input[type="search"]:focus,
+  .dark input[type="email"]:focus,
+  .dark input[type="password"]:focus,
+  .dark select:focus,
+  .dark textarea:focus {
+    @apply ring-blue-500 border-blue-500;
+  }
+
+  /* ボタンの強制的なダークモード対応 */
+  .dark button:not(.btn-primary):not(.btn-secondary):not(.bg-blue-600):not(.bg-green-600):not(.bg-red-600):not(.bg-purple-600) {
+    @apply text-gray-100;
+  }
+
+  /* 管理画面専用の追加修正 */
+  .dark .admin-card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .dark .admin-stat-card {
+    @apply bg-gray-800 border-gray-700;
+  }
+
+  .dark mark {
+    @apply bg-yellow-900/50 text-yellow-300;
+  }
+
   /* Clerk認証コンポーネント用スタイル */
   .clerk-loaded {
     --clerk-font-family: 'Noto Sans JP', system-ui, sans-serif;

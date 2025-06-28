@@ -400,7 +400,7 @@ export default function AdminDashboard() {
 
                   <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 bg-purple-100 rounded-lg">
+                      <div className="p-3 bg-purple-100 dark:bg-purple-900/20 rounded-lg">
                         <Users className="w-6 h-6 text-purple-600" />
                       </div>
                       <div className="ml-4">
@@ -414,22 +414,22 @@ export default function AdminDashboard() {
                 </div>
 
                 {/* クイックアクション */}
-                <div className="bg-white rounded-xl shadow-sm p-6 border">
-                  <h3 className="text-lg font-semibold mb-4">クイックアクション</h3>
+                <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
+                  <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">クイックアクション</h3>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       onClick={() => setActiveTab('departments')}
                       className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg hover:bg-blue-100 dark:bg-blue-900/20 transition-colors"
                     >
                       <Plus className="w-5 h-5 text-blue-600 mr-3" />
-                      <span className="font-medium text-blue-700">新しい学部を作成</span>
+                      <span className="font-medium text-blue-700 dark:text-blue-300">新しい学部を作成</span>
                     </button>
                     <button
                       onClick={() => setShowCourseForm(true)}
                       className="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg hover:bg-green-100 dark:bg-green-900/20 transition-colors"
                     >
                       <Plus className="w-5 h-5 text-green-600 mr-3" />
-                      <span className="font-medium text-green-700">新しい講義を作成</span>
+                      <span className="font-medium text-green-700 dark:text-green-300">新しい講義を作成</span>
                     </button>
                   </div>
                 </div>

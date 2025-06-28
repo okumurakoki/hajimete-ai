@@ -173,7 +173,7 @@ function DashboardContent() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {/* おすすめレッスン1 */}
-              <div className="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+              <div className="bg-gradient-to-br from-blue-50 to-blue-100 dark:from-blue-900/20 dark:to-blue-800/30 rounded-lg p-6 border border-blue-200 dark:border-blue-800 hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <div className="flex justify-between items-start mb-4">
                   <div className="text-3xl">🚀</div>
                   <span className="bg-blue-600 text-white text-xs px-2 py-1 rounded-full font-medium">
@@ -203,7 +203,7 @@ function DashboardContent() {
               </div>
 
               {/* おすすめレッスン2 */}
-              <div className="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+              <div className="bg-gradient-to-br from-green-50 to-green-100 dark:from-green-900/20 dark:to-green-800/30 rounded-lg p-6 border border-green-200 dark:border-green-800 hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <div className="flex justify-between items-start mb-4">
                   <div className="text-3xl">💡</div>
                   <span className="bg-green-600 text-white text-xs px-2 py-1 rounded-full font-medium">
@@ -233,7 +233,7 @@ function DashboardContent() {
               </div>
 
               {/* おすすめレッスン3 */}
-              <div className="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200 hover:shadow-lg transition-all duration-300 cursor-pointer">
+              <div className="bg-gradient-to-br from-purple-50 to-purple-100 dark:from-purple-900/20 dark:to-purple-800/30 rounded-lg p-6 border border-purple-200 dark:border-purple-800 hover:shadow-lg transition-all duration-300 cursor-pointer">
                 <div className="flex justify-between items-start mb-4">
                   <div className="text-3xl">📊</div>
                   <span className="bg-purple-600 text-white text-xs px-2 py-1 rounded-full font-medium">
@@ -365,7 +365,7 @@ function DashboardContent() {
             
             <div className="space-y-4">
               {/* 学習履歴アイテム */}
-              <div className="flex items-center p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition-colors">
+              <div className="flex items-center p-4 bg-gray-50 dark:bg-gray-700 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-600 transition-colors">
                 <div className="text-2xl mr-4">📚</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">ChatGPTの基本操作</h4>
@@ -434,10 +434,10 @@ function DashboardContent() {
                 お気に入り・後で見る
               </h3>
               <div className="flex space-x-2">
-                <button className="text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-full font-medium">
+                <button className="text-sm px-3 py-1 bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 rounded-full font-medium">
                   お気に入り (3)
                 </button>
-                <button className="text-sm px-3 py-1 bg-gray-100 text-gray-700 rounded-full font-medium">
+                <button className="text-sm px-3 py-1 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-full font-medium">
                   後で見る (2)
                 </button>
               </div>
@@ -445,14 +445,14 @@ function DashboardContent() {
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {/* お気に入りアイテム */}
-              <div className="flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
+              <div className="flex items-center p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
                 <div className="text-2xl mr-4">📊</div>
                 <div className="flex-1">
                   <h4 className="font-medium text-gray-900 dark:text-gray-100">データ分析でビジネスを改善</h4>
                   <p className="text-sm text-gray-600 dark:text-gray-400">AI基礎学部 • 25分</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 text-red-500 hover:bg-red-50 rounded-full">
+                  <button className="p-2 text-red-500 hover:bg-red-50 dark:hover:bg-red-900/50 rounded-full">
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                       <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
                     </svg>
@@ -470,7 +470,7 @@ function DashboardContent() {
                   <p className="text-sm text-gray-600 dark:text-gray-400">AI基礎学部 • 15分</p>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <button className="p-2 text-yellow-500 hover:bg-yellow-50 rounded-full">
+                  <button className="p-2 text-yellow-500 hover:bg-yellow-50 dark:hover:bg-yellow-900/50 rounded-full">
                     <svg className="w-5 h-5 fill-current" viewBox="0 0 20 20">
                       <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
                     </svg>

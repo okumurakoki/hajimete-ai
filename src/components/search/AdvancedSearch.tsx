@@ -270,11 +270,11 @@ export default function AdvancedSearch() {
     <div className="max-w-6xl mx-auto p-6">
       {/* 検索ヘッダー */}
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-900 mb-2 flex items-center">
-          <Search className="w-8 h-8 mr-3 text-blue-600" />
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-2 flex items-center">
+          <Search className="w-8 h-8 mr-3 text-blue-600 dark:text-blue-400" />
           🔍 高度な検索機能
         </h1>
-        <p className="text-gray-600">
+        <p className="text-gray-600 dark:text-gray-400">
           コース名、説明、学部、難易度から詳細検索できます
         </p>
       </div>
@@ -291,7 +291,7 @@ export default function AdvancedSearch() {
             onFocus={() => setShowSuggestions(true)}
             onBlur={() => setTimeout(() => setShowSuggestions(false), 200)}
             placeholder="コース名、説明、学部で検索..."
-            className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400"
           />
           {query && (
             <button
@@ -305,7 +305,7 @@ export default function AdvancedSearch() {
 
         {/* サジェスト */}
         {showSuggestions && suggestions.length > 0 && (
-          <div className="absolute top-full left-0 right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg z-10">
+          <div className="absolute top-full left-0 right-0 mt-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg z-10">
             {suggestions.map((suggestion, index) => (
               <button
                 key={index}
@@ -314,7 +314,7 @@ export default function AdvancedSearch() {
                   setShowSuggestions(false)
                   searchInputRef.current?.focus()
                 }}
-                className="w-full text-left px-4 py-3 hover:bg-gray-50 flex items-center"
+                className="w-full text-left px-4 py-3 hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center text-gray-900 dark:text-gray-100"
               >
                 <Clock className="w-4 h-4 text-gray-400 mr-3" />
                 {suggestion}
@@ -332,8 +332,8 @@ export default function AdvancedSearch() {
             onClick={() => setShowFilters(!showFilters)}
             className={`flex items-center px-4 py-2 rounded-lg border transition-colors ${
               showFilters 
-                ? 'bg-blue-50 border-blue-200 text-blue-700' 
-                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-blue-50 dark:bg-blue-900/50 border-blue-200 dark:border-blue-800 text-blue-700 dark:text-blue-300' 
+                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}
           >
             <Filter className="w-4 h-4 mr-2" />
@@ -345,8 +345,8 @@ export default function AdvancedSearch() {
             onClick={() => setShowHistory(!showHistory)}
             className={`flex items-center px-4 py-2 rounded-lg border transition-colors ${
               showHistory 
-                ? 'bg-purple-50 border-purple-200 text-purple-700' 
-                : 'bg-white border-gray-300 text-gray-700 hover:bg-gray-50'
+                ? 'bg-purple-50 dark:bg-purple-900/50 border-purple-200 dark:border-purple-800 text-purple-700 dark:text-purple-300' 
+                : 'bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-700'
             }`}
           >
             <History className="w-4 h-4 mr-2" />
