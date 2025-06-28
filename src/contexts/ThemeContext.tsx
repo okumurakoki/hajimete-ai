@@ -234,9 +234,16 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     // ダークモード
     if (themeSettings.mode === 'dark') {
       root.classList.add('dark')
+      // Force CSS re-evaluation
+      root.style.colorScheme = 'dark'
     } else {
       root.classList.remove('dark')
+      // Force CSS re-evaluation
+      root.style.colorScheme = 'light'
     }
+    
+    // Force a reflow to ensure CSS changes are applied
+    root.offsetHeight
 
     // カラーテーマ
     const theme = colorThemes[themeSettings.colorTheme]
