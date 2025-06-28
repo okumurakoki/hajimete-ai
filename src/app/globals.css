@@ -13,13 +13,23 @@
     font-feature-settings: "palt";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    @apply bg-white text-gray-900 transition-colors duration-300;
+  }
+  
+  /* ダークモード用ベーススタイル */
+  .dark body {
+    @apply bg-gray-900 text-gray-100;
+  }
+  
+  .dark {
+    color-scheme: dark;
   }
 }
 
 @layer components {
   /* Schoo風カードスタイル */
   .schoo-card {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 hover:shadow-md transition-shadow duration-200;
+    @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200;
   }
 
   /* Clerk認証コンポーネント用スタイル */
@@ -37,7 +47,7 @@
   }
 
   .schoo-btn-secondary {
-    @apply bg-gray-100 text-gray-700 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 transition-colors duration-200;
+    @apply bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 px-6 py-3 rounded-lg font-medium hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors duration-200;
   }
 
   .schoo-btn-premium {
@@ -103,6 +113,11 @@
     backdrop-filter: blur(10px);
     background: rgba(255, 255, 255, 0.8);
     border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  
+  .dark .glass-effect {
+    background: rgba(17, 24, 39, 0.8);
+    border: 1px solid rgba(75, 85, 99, 0.2);
   }
 
   .line-clamp-2 {
@@ -170,4 +185,17 @@
 
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
+}
+
+/* ダークモード用スクロールバー */
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
 }
