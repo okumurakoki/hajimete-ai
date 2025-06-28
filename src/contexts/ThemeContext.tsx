@@ -217,6 +217,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 
   // 設定をLocalStorageに保存
   useEffect(() => {
+    console.log('useEffect triggered, mounted:', mounted, 'settings:', settings)
     if (mounted) {
       try {
         localStorage.setItem('hajimete-ai-theme', JSON.stringify(settings))
@@ -231,11 +232,15 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const updateDocumentTheme = (themeSettings: ExtendedThemeSettings) => {
     const root = document.documentElement
     
+    console.log('updateDocumentTheme called with mode:', themeSettings.mode)
+    
     // ダークモード
     if (themeSettings.mode === 'dark') {
       root.classList.add('dark')
+      console.log('Added dark class, classes now:', root.className)
     } else {
       root.classList.remove('dark')
+      console.log('Removed dark class, classes now:', root.className)
     }
 
     // カラーテーマ
@@ -281,10 +286,14 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   }
 
   const toggleMode = () => {
-    setSettings(prev => ({
-      ...prev,
-      mode: prev.mode === 'light' ? 'dark' : 'light'
-    }))
+    setSettings(prev => {
+      const newMode = prev.mode === 'light' ? 'dark' : 'light'
+      console.log('toggleMode called, changing to:', newMode)
+      return {
+        ...prev,
+        mode: newMode
+      }
+    })
   }
 
   const toggleAnimations = () => {
