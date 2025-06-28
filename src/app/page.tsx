@@ -4,7 +4,6 @@ import { useUser } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
 
 export default function HomePage() {
-  const { isSignedIn } = useUser()
   const [mounted, setMounted] = useState(false)
 
   useEffect(() => {
@@ -18,6 +17,12 @@ export default function HomePage() {
       </div>
     )
   }
+
+  return <HomePageContent />
+}
+
+function HomePageContent() {
+  const { isSignedIn } = useUser()
 
   return (
     <div className="min-h-screen bg-white">

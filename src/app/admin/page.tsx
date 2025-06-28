@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play } from 'lucide-react'
+import { AdminLayout } from '@/components/layout/Layout'
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 import CourseForm from '@/components/admin/forms/CourseForm'
 import CourseManagement from '@/components/admin/CourseManagement'
@@ -313,9 +314,9 @@ export default function AdminDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* ヘッダー */}
-      <header className="bg-white shadow-sm border-b">
+    <AdminLayout>
+      {/* 管理者ヘッダー */}
+      <div className="bg-white shadow-sm border-b border-purple-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -325,13 +326,13 @@ export default function AdminDashboard() {
             </div>
             <div className="flex items-center space-x-4">
               <span className="text-sm text-gray-600">管理者モード</span>
-              <div className="w-8 h-8 bg-blue-600 rounded-full flex items-center justify-center">
+              <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">A</span>
               </div>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* ナビゲーション */}
       <nav className="bg-white shadow-sm">
@@ -539,6 +540,6 @@ export default function AdminDashboard() {
         }))}
         initialData={editingCourse}
       />
-    </div>
+    </AdminLayout>
   )
 }

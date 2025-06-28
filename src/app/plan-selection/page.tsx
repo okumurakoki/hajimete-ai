@@ -1,11 +1,40 @@
 'use client'
 
 import { useUser } from '@clerk/nextjs'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function PlanSelectionPage() {
-  const { user } = useUser()
   const [loading, setLoading] = useState(false)
+  const [mounted, setMounted] = useState(false)
+
+  // SSR対応
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // マウント前はローディング表示
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
+
+  return <PlanSelectionContent loading={loading} setLoading={setLoading} />
+}
+
+function PlanSelectionContent({ loading, setLoading }: { loading: boolean, setLoading: (loading: boolean) => void }) {
+  const { user, isLoaded } = useUser()
+
+  // Clerk未ロード時はローディング表示
+  if (!isLoaded) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    )
+  }
 
   // 決済処理（一時的に無効化）
   const handlePlanSelection = async (planType: string) => {

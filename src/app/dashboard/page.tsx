@@ -3,13 +3,27 @@
 import { useUser, useAuth } from '@clerk/nextjs'
 import { useEffect, useState } from 'react'
 import { redirect } from 'next/navigation'
+import { DashboardLayout } from '@/components/layout/Layout'
 
 export const dynamic = 'force-dynamic'
 
 export default function DashboardPage() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return <div>Loading...</div>
+  }
+
+  return <DashboardContent />
+}
+
+function DashboardContent() {
   const { isLoaded, isSignedIn, user } = useUser()
   const { getToken } = useAuth()
-  const [mounted, setMounted] = useState(false)
   const [authChecked, setAuthChecked] = useState(false)
   const [userStats, setUserStats] = useState({
     totalLessonsCompleted: 0,
@@ -21,8 +35,6 @@ export default function DashboardPage() {
   })
 
   useEffect(() => {
-    setMounted(true)
-    
     // ページ固有のエラーハンドリング
     const handlePageError = (error: ErrorEvent) => {
       if (error.message.includes('message channel closed') ||
@@ -41,7 +53,7 @@ export default function DashboardPage() {
 
   // 認証状態をチェック
   useEffect(() => {
-    if (mounted && isLoaded) {
+    if (isLoaded) {
       setAuthChecked(true)
       if (!isSignedIn) {
         redirect('/sign-in')
@@ -57,16 +69,7 @@ export default function DashboardPage() {
         })
       }
     }
-  }, [mounted, isLoaded, isSignedIn, user])
-
-  // マウント前のローディング
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
-      </div>
-    )
-  }
+  }, [isLoaded, isSignedIn, user])
 
   // 認証チェック中
   if (!authChecked || !isLoaded) {
@@ -86,30 +89,15 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* ヘッダー */}
-      <div className="bg-white shadow">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-6">
-            <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-gray-900">
-                ダッシュボード
-              </h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-700">
-                こんにちは、{user?.firstName || user?.emailAddresses?.[0]?.emailAddress}さん
-              </span>
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
-                設定
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="max-w-7xl mx-auto py-8 sm:px-6 lg:px-8">
-        <div className="px-4 sm:px-0">
+    <DashboardLayout 
+      title="ダッシュボード"
+      description={`こんにちは、${user?.firstName || user?.emailAddresses?.[0]?.emailAddress}さん`}
+      actions={
+        <button className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm font-medium">
+          設定
+        </button>
+      }
+    >
           
           {/* ユーザー統計セクション */}
           <div className="mb-8">
@@ -700,8 +688,6 @@ export default function DashboardPage() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    </div>
+    </DashboardLayout>
   )
 }

@@ -1,8 +1,22 @@
 'use client'
 
 import { SignUp } from '@clerk/nextjs'
+import { useState, useEffect } from 'react'
 
 export default function AuthSignUpPage() {
+  const [mounted, setMounted] = useState(false)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  if (!mounted) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600"></div>
+      </div>
+    )
+  }
   return (
     <div className="min-h-screen bg-gradient-to-br from-purple-50 via-white to-blue-50 relative">
       {/* 装飾的な背景 */}

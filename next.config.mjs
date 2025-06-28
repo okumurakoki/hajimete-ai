@@ -39,7 +39,7 @@ const nextConfig = {
         headers: [
           {
             key: 'Access-Control-Allow-Origin',
-            value: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
+            value: process.env.NEXT_PUBLIC_APP_URL || 'https://app.oku-ai.co.jp',
           },
           {
             key: 'Access-Control-Allow-Methods',
@@ -56,7 +56,7 @@ const nextConfig = {
 
   // Image optimization
   images: {
-    domains: ['images.unsplash.com', 'via.placeholder.com'],
+    domains: ['images.unsplash.com', 'via.placeholder.com', 'app.oku-ai.co.jp'],
     formats: ['image/webp', 'image/avif'],
   },
 
