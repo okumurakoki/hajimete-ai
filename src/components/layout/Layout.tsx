@@ -52,8 +52,8 @@ export function AdminLayout({ children, className = '' }: { children: React.Reac
   return (
     <Layout
       className={className}
-      containerClassName="bg-gray-50"
-      headerClassName="border-b-2 border-purple-200"
+      containerClassName="bg-gray-50 dark:bg-gray-900"
+      headerClassName="border-b-2 border-purple-200 dark:border-purple-800"
     >
       {children}
     </Layout>

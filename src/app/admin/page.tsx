@@ -316,7 +316,7 @@ export default function AdminDashboard() {
   return (
     <AdminLayout>
       {/* 管理者ヘッダー */}
-      <div className="bg-white shadow-sm border-b border-purple-200">
+      <div className="bg-white dark:bg-gray-800 shadow-sm border-b border-purple-200 dark:border-purple-800">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center h-16">
             <div className="flex items-center">
@@ -325,7 +325,7 @@ export default function AdminDashboard() {
               </h1>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm text-gray-600">管理者モード</span>
+              <span className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">管理者モード</span>
               <div className="w-8 h-8 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full flex items-center justify-center">
                 <span className="text-white text-sm font-medium">A</span>
               </div>
@@ -335,7 +335,7 @@ export default function AdminDashboard() {
       </div>
 
       {/* ナビゲーション */}
-      <nav className="bg-white shadow-sm">
+      <nav className="bg-white dark:bg-gray-800 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex space-x-8">
             {[
@@ -350,7 +350,7 @@ export default function AdminDashboard() {
                 className={`flex items-center px-3 py-4 text-sm font-medium border-b-2 transition-colors ${
                   activeTab === tab.id
                     ? 'border-blue-600 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                    : 'border-transparent text-gray-500 dark:text-gray-400 dark:text-gray-500 hover:text-gray-700 dark:hover:text-gray-200 hover:border-gray-300'
                 }`}
               >
                 <tab.icon className="w-4 h-4 mr-2" />
@@ -374,38 +374,38 @@ export default function AdminDashboard() {
               <div className="space-y-6">
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   {/* 統計カード */}
-                  <div className="bg-white rounded-xl shadow-sm p-6 border">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 bg-blue-100 rounded-lg">
+                      <div className="p-3 bg-blue-100 dark:bg-blue-900/20 rounded-lg">
                         <BookOpen className="w-6 h-6 text-blue-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm text-gray-600">学部数</p>
-                        <p className="text-2xl font-bold text-gray-900">{departments.length}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">学部数</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{departments.length}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-sm p-6 border">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center">
-                      <div className="p-3 bg-green-100 rounded-lg">
+                      <div className="p-3 bg-green-100 dark:bg-green-900/20 rounded-lg">
                         <Video className="w-6 h-6 text-green-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm text-gray-600">講義数</p>
-                        <p className="text-2xl font-bold text-gray-900">{courses.length}</p>
+                        <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">講義数</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">{courses.length}</p>
                       </div>
                     </div>
                   </div>
 
-                  <div className="bg-white rounded-xl shadow-sm p-6 border">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                     <div className="flex items-center">
                       <div className="p-3 bg-purple-100 rounded-lg">
                         <Users className="w-6 h-6 text-purple-600" />
                       </div>
                       <div className="ml-4">
-                        <p className="text-sm text-gray-600">総レッスン数</p>
-                        <p className="text-2xl font-bold text-gray-900">
+                        <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500">総レッスン数</p>
+                        <p className="text-2xl font-bold text-gray-900 dark:text-gray-100">
                           {courses.reduce((sum, course) => sum + (course.lessonsCount || 0), 0)}
                         </p>
                       </div>
@@ -419,14 +419,14 @@ export default function AdminDashboard() {
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                     <button
                       onClick={() => setActiveTab('departments')}
-                      className="flex items-center p-4 bg-blue-50 rounded-lg hover:bg-blue-100 transition-colors"
+                      className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg hover:bg-blue-100 dark:bg-blue-900/20 transition-colors"
                     >
                       <Plus className="w-5 h-5 text-blue-600 mr-3" />
                       <span className="font-medium text-blue-700">新しい学部を作成</span>
                     </button>
                     <button
                       onClick={() => setShowCourseForm(true)}
-                      className="flex items-center p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors"
+                      className="flex items-center p-4 bg-green-50 dark:bg-green-900/10 rounded-lg hover:bg-green-100 dark:bg-green-900/20 transition-colors"
                     >
                       <Plus className="w-5 h-5 text-green-600 mr-3" />
                       <span className="font-medium text-green-700">新しい講義を作成</span>
@@ -445,7 +445,7 @@ export default function AdminDashboard() {
             {activeTab === 'departments' && (
               <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                  <h2 className="text-2xl font-bold text-gray-900">学部管理</h2>
+                  <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100">学部管理</h2>
                   <button 
                     onClick={() => setShowDepartmentForm(true)}
                     className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center"
@@ -457,7 +457,7 @@ export default function AdminDashboard() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                   {departments.map((dept) => (
-                    <div key={dept.id} className="bg-white rounded-xl shadow-sm p-6 border hover:shadow-md transition-shadow">
+                    <div key={dept.id} className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700 hover:shadow-md transition-shadow">
                       <div className="flex items-start justify-between mb-4">
                         <div
                           className="w-12 h-12 rounded-lg flex items-center justify-center"
@@ -465,13 +465,13 @@ export default function AdminDashboard() {
                         >
                           {renderDepartmentIcon(dept)}
                         </div>
-                        <button className="text-gray-400 hover:text-gray-600">
+                        <button className="text-gray-400 dark:text-gray-500 hover:text-gray-600 dark:hover:text-gray-300 dark:text-gray-400 dark:text-gray-500">
                           <Settings className="w-4 h-4" />
                         </button>
                       </div>
-                      <h3 className="font-semibold text-gray-900 mb-2">{dept.name}</h3>
-                      <p className="text-sm text-gray-600 mb-4">{dept.description || '説明なし'}</p>
-                      <div className="flex items-center text-sm text-gray-500">
+                      <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">{dept.name}</h3>
+                      <p className="text-sm text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">{dept.description || '説明なし'}</p>
+                      <div className="flex items-center text-sm text-gray-500 dark:text-gray-400 dark:text-gray-500">
                         <Video className="w-4 h-4 mr-1" />
                         <span>{dept.coursesCount || 0} 講義</span>
                       </div>
@@ -480,9 +480,9 @@ export default function AdminDashboard() {
 
                   {departments.length === 0 && (
                     <div className="col-span-full text-center py-12">
-                      <BookOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                      <h3 className="text-lg font-medium text-gray-900 mb-2">学部がありません</h3>
-                      <p className="text-gray-600 mb-4">最初の学部を作成して始めましょう</p>
+                      <BookOpen className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-4" />
+                      <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100 mb-2">学部がありません</h3>
+                      <p className="text-gray-600 dark:text-gray-400 dark:text-gray-500 mb-4">最初の学部を作成して始めましょう</p>
                       <button 
                         onClick={() => setShowDepartmentForm(true)}
                         className="bg-blue-600 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-700 transition-colors"
