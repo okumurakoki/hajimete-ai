@@ -3,6 +3,7 @@
 import { ClerkProvider } from '@clerk/nextjs'
 import { jaJP } from '@clerk/localizations'
 import { ErrorBoundary } from '@/components/ErrorBoundary'
+import { ThemeProvider } from '@/contexts/ThemeContext'
 import { useState, useEffect } from 'react'
 
 export const dynamic = 'force-dynamic'
@@ -31,9 +32,11 @@ export default function ClientLayout({
 
   return (
     <ClerkProvider localization={jaJP}>
-      <ErrorBoundary>
-        {children}
-      </ErrorBoundary>
+      <ThemeProvider>
+        <ErrorBoundary>
+          {children}
+        </ErrorBoundary>
+      </ThemeProvider>
     </ClerkProvider>
   )
 }
