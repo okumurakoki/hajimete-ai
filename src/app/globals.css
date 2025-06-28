@@ -32,6 +32,28 @@
     @apply bg-white dark:bg-gray-800 rounded-xl shadow-sm border border-gray-100 dark:border-gray-700 hover:shadow-md transition-shadow duration-200;
   }
 
+  /* 学習関連カードの強制的なダークモード対応 */
+  .dark .bg-gray-50 {
+    @apply bg-gray-700;
+  }
+  
+  .dark .bg-gray-100 {
+    @apply bg-gray-600;
+  }
+
+  /* 学習履歴・進捗カード専用スタイル */
+  .learning-history-card {
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+  }
+  
+  .progress-card {
+    @apply bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700;
+  }
+  
+  .history-item {
+    @apply bg-gray-50 dark:bg-gray-700 border border-gray-200 dark:border-gray-600;
+  }
+
   /* Clerk認証コンポーネント用スタイル */
   .clerk-loaded {
     --clerk-font-family: 'Noto Sans JP', system-ui, sans-serif;
