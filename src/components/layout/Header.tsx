@@ -18,7 +18,8 @@ import {
   UserCircle,
   Crown,
   Moon,
-  Sun
+  Sun,
+  Calendar
 } from 'lucide-react'
 import GlobalSearch from '@/components/search/GlobalSearch'
 import { useTheme } from '@/contexts/ThemeContext'
@@ -65,6 +66,12 @@ function HeaderWithoutTheme({ className }: { className: string }) {
       href: '/seminars',
       icon: Users,
       description: 'ライブセミナー'
+    },
+    {
+      name: 'AI講座申し込み',
+      href: '/courses/live',
+      icon: Calendar,
+      description: 'ライブAI講座申し込み'
     },
     {
       name: '検索',
@@ -336,6 +343,12 @@ function HeaderWithTheme({ className }: { className: string }) {
       href: '/seminars',
       icon: Users,
       description: 'ライブセミナー'
+    },
+    {
+      name: 'AI講座申し込み',
+      href: '/courses/live',
+      icon: Calendar,
+      description: 'ライブAI講座申し込み'
     },
     {
       name: '検索',

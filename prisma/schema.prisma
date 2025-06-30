@@ -3,7 +3,7 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "sqlite"
   url      = env("DATABASE_URL")
 }
 
@@ -36,7 +36,7 @@ model Course {
   videoUrl    String?
   duration    Int?     // 分単位
   level       Level    @default(BEGINNER)
-  tags        String[] // タグ配列
+  tags        String? // タグ（カンマ区切り文字列）
   order       Int      @default(0)
   isActive    Boolean  @default(true)
   isFree      Boolean  @default(false)
@@ -70,6 +70,7 @@ model Lesson {
   course      Course      @relation(fields: [courseId], references: [id], onDelete: Cascade)
   courseId    String
   progress    Progress[]
+  videoContents VideoContent[]
   
   // タイムスタンプ
   createdAt   DateTime    @default(now())
@@ -88,6 +89,7 @@ model Progress {
   lastPosition Int      @default(0) // 最後の視聴位置（秒）
   
   // リレーション
+  user         User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   lesson       Lesson   @relation(fields: [lessonId], references: [id], onDelete: Cascade)
   
   // タイムスタンプ
@@ -105,6 +107,7 @@ model Enrollment {
   courseId  String
   
   // リレーション
+  user      User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   course    Course   @relation(fields: [courseId], references: [id], onDelete: Cascade)
   
   // タイムスタンプ
@@ -115,11 +118,66 @@ model Enrollment {
   @@map("enrollments")
 }
 
+// ユーザーモデル
+model User {
+  id              String    @id @default(cuid())
+  clerkId         String    @unique // ClerkユーザーID
+  email           String    @unique
+  firstName       String?
+  lastName        String?
+  imageUrl        String?
+  
+  // ユーザー設定・プリファレンス
+  displayName     String?   // 表示名（カスタマイズ可能）
+  bio             String?   // 自己紹介
+  theme           Theme     @default(SYSTEM) // テーマ設定
+  language        String    @default("ja")    // 言語設定
+  timezone        String    @default("Asia/Tokyo") // タイムゾーン
+  
+  // 通知設定
+  emailNotifications    Boolean @default(true)
+  courseNotifications   Boolean @default(true)
+  marketingEmails       Boolean @default(false)
+  
+  // プランと課金情報
+  plan                  UserPlan @default(FREE)
+  stripeCustomerId      String?  @unique
+  subscriptionId        String?  @unique
+  subscriptionStatus    SubscriptionStatus?
+  planExpiresAt         DateTime?
+  
+  // 学習統計
+  totalStudyTime        Int      @default(0) // 総学習時間（分）
+  currentStreak         Int      @default(0) // 連続学習日数
+  longestStreak         Int      @default(0) // 最長連続学習日数
+  totalCoursesCompleted Int      @default(0) // 完了コース数
+  lastActiveAt          DateTime @default(now()) // 最終アクティブ日時
+  
+  // リレーション
+  progress      Progress[]
+  enrollments   Enrollment[]
+  admin         Admin?
+  payments      Payment[]
+  registrations Registration[]
+  watchSessions WatchSession[]
+  videoRatings  VideoRating[]
+  uploadTasks   UploadTask[]
+  
+  // タイムスタンプ
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("users")
+}
+
 // 管理者モデル
 model Admin {
   id        String   @id @default(cuid())
   userId    String   @unique // ClerkユーザーID
   role      Role     @default(ADMIN)
+  
+  // リレーション
+  user      User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
   
   // タイムスタンプ
   createdAt DateTime @default(now())
@@ -146,4 +204,362 @@ enum Role {
   SUPER_ADMIN
   ADMIN
   EDITOR
+}
+
+enum Theme {
+  LIGHT
+  DARK
+  SYSTEM
+}
+
+enum UserPlan {
+  FREE
+  BASIC
+  PREMIUM
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  CANCELED
+  PAST_DUE
+  TRIALING
+}
+
+// AI講座決済システム用のモデル
+
+// ライブ講座
+model LiveCourse {
+  id          String   @id @default(cuid())
+  title       String   // 講座名（例：「Notion AIマスター講座」）
+  description String?  // 講座説明
+  instructor  String   // 講師名
+  
+  // 日程・時間
+  startDate   DateTime // 開始日時
+  endDate     DateTime // 終了日時
+  duration    Int      // 継続時間（分）
+  
+  // 料金設定
+  price       Int      // 基本料金（円）
+  level       CourseLevel @default(BEGINNER)
+  category    String   // カテゴリ（AI、ツール、ビジネス等）
+  
+  // 講座情報
+  maxParticipants Int  @default(50) // 最大参加者数
+  currentParticipants Int @default(0) // 現在の参加者数
+  zoomUrl     String?  // Zoom URL
+  zoomId      String?  // Zoom ID
+  zoomPassword String? // Zoom パスワード
+  
+  // 講座内容
+  curriculum  String?  // カリキュラム（JSON文字列）
+  materials   String?  // 教材リンク（JSON文字列）
+  tags        String?  // タグ（カンマ区切り）
+  
+  // 状態管理
+  isActive    Boolean  @default(true)
+  isPublished Boolean  @default(false)
+  
+  // リレーション
+  registrations Registration[]
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("live_courses")
+}
+
+// 講座登録
+model Registration {
+  id          String   @id @default(cuid())
+  userId      String   // ClerkユーザーID
+  courseId    String   // 講座ID
+  
+  // 登録状態
+  status      RegistrationStatus @default(PENDING)
+  
+  // 決済情報
+  paymentId   String?  // Stripe決済ID
+  amount      Int      // 支払い額（円）
+  appliedDiscount Int @default(0) // 適用された割引額
+  
+  // 参加情報
+  attendanceStatus AttendanceStatus @default(REGISTERED)
+  joinedAt    DateTime? // 参加時刻
+  leftAt      DateTime? // 退出時刻
+  
+  // リレーション
+  user        User       @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  course      LiveCourse @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  payment     Payment?   @relation(fields: [paymentId], references: [id])
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, courseId])
+  @@map("registrations")
+}
+
+// 決済情報
+model Payment {
+  id            String   @id @default(cuid())
+  userId        String   // ClerkユーザーID
+  
+  // Stripe情報
+  stripePaymentIntentId String @unique // Stripe PaymentIntent ID
+  stripeCustomerId      String? // Stripe Customer ID
+  
+  // 決済詳細
+  amount        Int      // 決済金額（円）
+  currency      String   @default("JPY")
+  status        PaymentStatus @default(PENDING)
+  
+  // 決済内容
+  courseIds     String   // 講座ID配列（JSON文字列）
+  courseCount   Int      // 講座数
+  baseAmount    Int      // 基本金額
+  discountAmount Int     @default(0) // 割引金額
+  finalAmount   Int      // 最終金額
+  
+  // メタデータ
+  metadata      String?  // 追加情報（JSON文字列）
+  receiptUrl    String?  // 領収書URL
+  
+  // リレーション
+  user          User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  registrations Registration[]
+  
+  // タイムスタンプ
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  
+  @@map("payments")
+}
+
+// 割引ルール
+model DiscountRule {
+  id          String   @id @default(cuid())
+  name        String   // ルール名
+  description String?  // 説明
+  
+  // 適用条件
+  minCourses  Int      // 最小講座数
+  maxCourses  Int?     // 最大講座数
+  
+  // 割引設定
+  discountType DiscountType // 割引タイプ
+  discountValue Int        // 割引値（固定額または％）
+  
+  // 適用期間
+  validFrom   DateTime?    // 適用開始日
+  validUntil  DateTime?    // 適用終了日
+  
+  // 状態
+  isActive    Boolean  @default(true)
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("discount_rules")
+}
+
+// 新しいEnum
+enum CourseLevel {
+  BEGINNER
+  INTERMEDIATE
+  ADVANCED
+}
+
+enum RegistrationStatus {
+  PENDING      // 登録待ち
+  CONFIRMED    // 確定
+  CANCELLED    // キャンセル
+  WAITLIST     // キャンセル待ち
+}
+
+enum AttendanceStatus {
+  REGISTERED   // 登録済み
+  ATTENDED     // 参加済み
+  ABSENT       // 欠席
+  PARTIAL      // 途中参加/退出
+}
+
+enum PaymentStatus {
+  PENDING      // 決済待ち
+  PROCESSING   // 処理中
+  SUCCEEDED    // 成功
+  FAILED       // 失敗
+  CANCELLED    // キャンセル
+  REFUNDED     // 返金済み
+}
+
+enum DiscountType {
+  FIXED        // 固定額割引
+  PERCENTAGE   // パーセント割引
+}
+
+// Vimeo統合 & コンテンツ管理用のモデル
+
+// 動画コンテンツ
+model VideoContent {
+  id          String   @id @default(cuid())
+  
+  // Vimeo情報
+  vimeoId     String   @unique // Vimeo動画ID
+  vimeoUri    String   // Vimeo URI (/videos/123456789)
+  embedUrl    String   // 埋め込みURL
+  
+  // 動画メタデータ
+  title       String   // 動画タイトル
+  description String?  // 動画説明
+  duration    Int      // 継続時間（秒）
+  thumbnailUrl String? // サムネイルURL
+  
+  // 動画設定
+  privacy     VideoPrivacy @default(UNLISTED) // 公開設定
+  quality     String?  // 動画品質設定
+  status      VideoStatus @default(PROCESSING) // 処理状況
+  
+  // アップロード情報
+  uploadedBy  String   // アップロードユーザーID
+  uploadDate  DateTime @default(now())
+  fileSize    Int?     // ファイルサイズ（bytes）
+  originalFilename String? // 元ファイル名
+  
+  // 学習関連
+  lessonId    String?  // 関連レッスンID
+  chapterIndex Int?    // チャプター順序
+  isRequired  Boolean  @default(true) // 必修かどうか
+  
+  // 統計情報
+  viewCount   Int      @default(0) // 総視聴回数
+  avgRating   Float?   // 平均評価
+  
+  // リレーション
+  lesson      Lesson?  @relation(fields: [lessonId], references: [id], onDelete: SetNull)
+  watchSessions WatchSession[]
+  videoRatings VideoRating[]
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("video_contents")
+}
+
+// 動画視聴セッション
+model WatchSession {
+  id          String   @id @default(cuid())
+  userId      String   // ClerkユーザーID
+  videoId     String   // 動画ID
+  
+  // 視聴情報
+  watchTime   Int      @default(0) // 視聴時間（秒）
+  lastPosition Int     @default(0) // 最後の視聴位置（秒）
+  completed   Boolean  @default(false) // 完了フラグ
+  completedAt DateTime? // 完了日時
+  
+  // セッション情報
+  sessionStart DateTime @default(now()) // セッション開始時刻
+  sessionEnd  DateTime? // セッション終了時刻
+  deviceType  String?  // デバイス種別
+  ipAddress   String?  // IPアドレス
+  
+  // 進捗率計算用
+  progressPercent Float @default(0) // 進捗率（0-100）
+  
+  // リレーション
+  user        User         @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  video       VideoContent @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@unique([userId, videoId])
+  @@map("watch_sessions")
+}
+
+// 動画評価
+model VideoRating {
+  id        String   @id @default(cuid())
+  userId    String   // ClerkユーザーID
+  videoId   String   // 動画ID
+  
+  // 評価情報
+  rating    Int      // 評価（1-5）
+  comment   String?  // コメント
+  
+  // リレーション
+  user      User         @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  video     VideoContent @relation(fields: [videoId], references: [id], onDelete: Cascade)
+  
+  // タイムスタンプ
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  @@unique([userId, videoId])
+  @@map("video_ratings")
+}
+
+// アップロードタスク（非同期処理用）
+model UploadTask {
+  id          String   @id @default(cuid())
+  userId      String   // アップロードユーザーID
+  
+  // タスク情報
+  filename    String   // ファイル名
+  fileSize    Int      // ファイルサイズ
+  mimeType    String   // MIMEタイプ
+  
+  // Vimeo情報
+  vimeoUploadUrl String? // Vimeoアップロードリンク
+  vimeoTicket String?    // Vimeoアップロードチケット
+  vimeoVideoId String?   // 作成されたVimeo動画ID
+  
+  // ステータス
+  status      UploadStatus @default(PENDING)
+  progress    Float    @default(0) // 進捗率（0-100）
+  errorMessage String?  // エラーメッセージ
+  
+  // メタデータ
+  title       String?  // 動画タイトル
+  description String?  // 動画説明
+  lessonId    String?  // 関連レッスンID
+  
+  // リレーション
+  user        User     @relation(fields: [userId], references: [clerkId], onDelete: Cascade)
+  
+  // タイムスタンプ
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  @@map("upload_tasks")
+}
+
+// 新しいEnum
+enum VideoPrivacy {
+  PUBLIC     // 公開
+  UNLISTED   // 限定公開
+  PRIVATE    // 非公開
+  PASSWORD   // パスワード保護
+}
+
+enum VideoStatus {
+  PROCESSING // 処理中
+  READY      // 視聴可能
+  ERROR      // エラー
+  DELETED    // 削除済み
+}
+
+enum UploadStatus {
+  PENDING    // 待機中
+  UPLOADING  // アップロード中
+  PROCESSING // 処理中
+  COMPLETED  // 完了
+  FAILED     // 失敗
 }

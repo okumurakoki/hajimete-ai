@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play } from 'lucide-react'
+import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play, Mail } from 'lucide-react'
 import { AdminLayout } from '@/components/layout/Layout'
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 import CourseForm from '@/components/admin/forms/CourseForm'
@@ -416,7 +416,7 @@ export default function AdminDashboard() {
                 {/* クイックアクション */}
                 <div className="bg-white dark:bg-gray-800 rounded-xl shadow-sm p-6 border border-gray-200 dark:border-gray-700">
                   <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">クイックアクション</h3>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                     <button
                       onClick={() => setActiveTab('departments')}
                       className="flex items-center p-4 bg-blue-50 dark:bg-blue-900/10 rounded-lg hover:bg-blue-100 dark:bg-blue-900/20 transition-colors"
@@ -430,6 +430,13 @@ export default function AdminDashboard() {
                     >
                       <Plus className="w-5 h-5 text-green-600 mr-3" />
                       <span className="font-medium text-green-700 dark:text-green-300">新しい講義を作成</span>
+                    </button>
+                    <button
+                      onClick={() => window.location.href = '/admin/emails'}
+                      className="flex items-center p-4 bg-purple-50 dark:bg-purple-900/10 rounded-lg hover:bg-purple-100 dark:bg-purple-900/20 transition-colors"
+                    >
+                      <Mail className="w-5 h-5 text-purple-600 mr-3" />
+                      <span className="font-medium text-purple-700 dark:text-purple-300">メール管理</span>
                     </button>
                   </div>
                 </div>
