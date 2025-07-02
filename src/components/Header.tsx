@@ -51,9 +51,6 @@ export default function Header() {
           </Link>
           
           <nav className="hidden lg:flex items-center space-x-8">
-            <Link href="/demo" className="text-gray-600 hover:text-blue-600 transition-colors">
-              デモ
-            </Link>
             <Link href="/privacy" className="text-gray-600 hover:text-blue-600 transition-colors">
               プライバシー
             </Link>
@@ -110,9 +107,6 @@ export default function Header() {
         {showMobileMenu && (
           <div className="lg:hidden border-t bg-white py-4">
             <nav className="flex flex-col space-y-4">
-              <Link href="/demo" className="text-gray-600 hover:text-blue-600 transition-colors px-4">
-                デモ
-              </Link>
               <Link href="/privacy" className="text-gray-600 hover:text-blue-600 transition-colors px-4">
                 プライバシー
               </Link>

@@ -160,6 +160,63 @@ function DashboardContent() {
             </div>
           </div>
 
+          {/* 返金・キャンセル管理 */}
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-6">
+              返金・キャンセル管理
+            </h2>
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6">
+              <div className="flex items-center justify-between mb-4">
+                <div className="flex items-center">
+                  <div className="text-2xl mr-3">💰</div>
+                  <div>
+                    <h3 className="text-lg font-medium text-gray-900 dark:text-gray-100">
+                      返金リクエスト
+                    </h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400">
+                      講座のキャンセルや返金については、決済完了ページから申請できます
+                    </p>
+                  </div>
+                </div>
+                <button
+                  onClick={() => window.location.href = '/payment/success'}
+                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-sm transition-colors"
+                >
+                  返金申請
+                </button>
+              </div>
+              
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
+                <div className="bg-yellow-50 dark:bg-yellow-900/20 p-4 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                  <h4 className="font-medium text-yellow-800 dark:text-yellow-200 mb-1">
+                    返金条件
+                  </h4>
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300">
+                    講座開始24時間前までキャンセル可能
+                  </p>
+                </div>
+                
+                <div className="bg-green-50 dark:bg-green-900/20 p-4 rounded-lg border border-green-200 dark:border-green-800">
+                  <h4 className="font-medium text-green-800 dark:text-green-200 mb-1">
+                    返金期間
+                  </h4>
+                  <p className="text-sm text-green-700 dark:text-green-300">
+                    申請後3-5営業日で返金完了
+                  </p>
+                </div>
+                
+                <div className="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-1">
+                    返金方法
+                  </h4>
+                  <p className="text-sm text-blue-700 dark:text-blue-300">
+                    決済時と同じカードに返金
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* おすすめコンテンツ */}
           <div className="mb-8">
             <div className="flex justify-between items-center mb-6">

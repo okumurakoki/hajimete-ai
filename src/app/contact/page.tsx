@@ -5,9 +5,9 @@ export default function ContactPage() {
   return (
     <ContentLayout>
       <div className="text-center mb-12">
-        <MessageCircle className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">お問い合わせ</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <MessageCircle className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">お問い合わせ</h1>
+        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           ご質問やご要望がございましたら、お気軽にお問い合わせください。専門スタッフが迅速にサポートいたします。
         </p>
       </div>
@@ -22,17 +22,17 @@ export default function ContactPage() {
               <Mail className="w-6 h-6 text-blue-600 mr-4 mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">メール</h3>
-                <p className="text-gray-600">contact@hajimete-ai.com</p>
+                <p className="text-gray-600 dark:text-gray-400">info@oku-ai.co.jp</p>
                 <p className="text-sm text-gray-500">24時間以内に返信いたします</p>
               </div>
             </div>
 
             <div className="flex items-start">
-              <Phone className="w-6 h-6 text-blue-600 mr-4 mt-1" />
+              <Phone className="w-6 h-6 text-gray-600 mr-4 mt-1" />
               <div>
-                <h3 className="font-semibold text-gray-900 mb-1">電話</h3>
-                <p className="text-gray-600">03-1234-5678</p>
-                <p className="text-sm text-gray-500">平日 9:00-18:00</p>
+                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">電話</h3>
+                <p className="text-gray-600 dark:text-gray-400">お電話でのお問い合わせは承っておりません</p>
+                <p className="text-sm text-gray-500">メールまたはフォームをご利用ください</p>
               </div>
             </div>
 
@@ -40,10 +40,9 @@ export default function ContactPage() {
               <MapPin className="w-6 h-6 text-blue-600 mr-4 mt-1" />
               <div>
                 <h3 className="font-semibold text-gray-900 mb-1">住所</h3>
-                <p className="text-gray-600">
-                  〒150-0001<br />
-                  東京都渋谷区神宮前1-1-1<br />
-                  はじめてAIビル 10F
+                <p className="text-gray-600 dark:text-gray-400">
+                  〒451-0045<br />
+                  愛知県名古屋市西区名駅2-34-17-1101
                 </p>
               </div>
             </div>
@@ -207,17 +206,17 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* 緊急時の連絡先 */}
-      <div className="bg-red-50 border border-red-200 rounded-lg p-6 text-center">
-        <h3 className="font-semibold text-red-800 mb-2">緊急時のお問い合わせ</h3>
-        <p className="text-sm text-red-600 mb-4">
-          システム障害やセキュリティに関する緊急事態の場合は、下記の緊急連絡先までお電話ください。
+      {/* 緊急時の対応 */}
+      <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 text-center">
+        <h3 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">緊急時のお問い合わせ</h3>
+        <p className="text-sm text-orange-600 dark:text-orange-300 mb-4">
+          システム障害やセキュリティに関する緊急事態の場合は、メールの件名に【緊急】を記載してお送りください。
         </p>
         <div className="flex items-center justify-center">
-          <Phone className="w-5 h-5 text-red-600 mr-2" />
-          <span className="font-bold text-red-800">緊急ダイヤル: 03-1234-9999</span>
+          <Mail className="w-5 h-5 text-orange-600 dark:text-orange-400 mr-2" />
+          <span className="font-bold text-orange-800 dark:text-orange-200">緊急時: 【緊急】+ info@oku-ai.co.jp</span>
         </div>
-        <p className="text-xs text-red-500 mt-2">24時間対応</p>
+        <p className="text-xs text-orange-500 dark:text-orange-400 mt-2">優先的に対応いたします</p>
       </div>
     </ContentLayout>
   )

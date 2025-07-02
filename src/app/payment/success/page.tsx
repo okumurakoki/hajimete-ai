@@ -12,7 +12,9 @@ import {
   Download,
   ArrowRight,
   Loader2,
-  AlertCircle
+  AlertCircle,
+  RotateCcw,
+  X
 } from 'lucide-react'
 
 interface Registration {
@@ -44,6 +46,10 @@ export default function PaymentSuccessPage() {
   const [registrations, setRegistrations] = useState<Registration[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string>('')
+  const [showRefundModal, setShowRefundModal] = useState(false)
+  const [selectedRegistration, setSelectedRegistration] = useState<Registration | null>(null)
+  const [refundReason, setRefundReason] = useState('')
+  const [refundLoading, setRefundLoading] = useState(false)
 
   useEffect(() => {
     if (!isLoaded) return
@@ -116,6 +122,50 @@ export default function PaymentSuccessPage() {
       hour: '2-digit',
       minute: '2-digit'
     })
+  }
+
+  const canCancelRegistration = (registration: Registration) => {
+    const courseStart = new Date(registration.course.startDate)
+    const now = new Date()
+    const hoursUntilStart = (courseStart.getTime() - now.getTime()) / (1000 * 60 * 60)
+    
+    // 24時間前まではキャンセル可能
+    return hoursUntilStart > 24 && registration.status === 'CONFIRMED'
+  }
+
+  const handleRequestRefund = async () => {
+    if (!selectedRegistration || !refundReason.trim()) return
+    
+    setRefundLoading(true)
+    try {
+      const response = await fetch('/api/payment/refund', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          registrationId: selectedRegistration.id,
+          reason: refundReason
+        })
+      })
+      
+      if (response.ok) {
+        // 成功時の処理
+        alert('返金リクエストを受け付けました。確認後、3-5営業日でご返金いたします。')
+        setShowRefundModal(false)
+        setRefundReason('')
+        // 登録状況を再取得
+        window.location.reload()
+      } else {
+        const error = await response.json()
+        alert(error.message || '返金リクエストに失敗しました')
+      }
+    } catch (error) {
+      console.error('Refund request error:', error)
+      alert('返金リクエストに失敗しました')
+    } finally {
+      setRefundLoading(false)
+    }
   }
 
   if (!isLoaded || loading) {
@@ -222,9 +272,25 @@ export default function PaymentSuccessPage() {
                   </div>
                 </div>
                 <div className="text-right">
-                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
-                    申込完了
-                  </span>
+                  <div className="flex flex-col items-end gap-2">
+                    <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-300">
+                      申込完了
+                    </span>
+                    
+                    {/* キャンセル・返金ボタン */}
+                    {canCancelRegistration(registration) && (
+                      <button
+                        onClick={() => {
+                          setSelectedRegistration(registration)
+                          setShowRefundModal(true)
+                        }}
+                        className="text-xs text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 flex items-center gap-1"
+                      >
+                        <X className="w-3 h-3" />
+                        キャンセル
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
 
@@ -343,6 +409,78 @@ export default function PaymentSuccessPage() {
             <ArrowRight className="w-4 h-4" />
           </button>
         </div>
+        
+        {/* 返金・キャンセルモーダル */}
+        {showRefundModal && selectedRegistration && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100 flex items-center gap-2">
+                <RotateCcw className="w-5 h-5" />
+                講座のキャンセル・返金
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg border border-yellow-200 dark:border-yellow-800">
+                  <p className="text-sm text-yellow-800 dark:text-yellow-200">
+                    <strong>キャンセル対象:</strong> {selectedRegistration.course.title}
+                  </p>
+                  <p className="text-sm text-yellow-700 dark:text-yellow-300 mt-1">
+                    返金額: ¥{selectedRegistration.payment.amount.toLocaleString()}
+                  </p>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    キャンセル理由（必須）
+                  </label>
+                  <textarea
+                    value={refundReason}
+                    onChange={(e) => setRefundReason(e.target.value)}
+                    placeholder="キャンセルの理由をお聞かせください..."
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                    rows={3}
+                    required
+                  />
+                </div>
+                
+                <div className="p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+                  <h4 className="text-sm font-medium text-blue-900 dark:text-blue-100 mb-1">返金について</h4>
+                  <ul className="text-xs text-blue-700 dark:text-blue-300 space-y-1">
+                    <li>• 返金処理には3-5営業日お時間をいただきます</li>
+                    <li>• 決済時と同じカードに返金いたします</li>
+                    <li>• 講座開始24時間前までキャンセル可能です</li>
+                  </ul>
+                </div>
+              </div>
+              
+              <div className="flex justify-end space-x-3 mt-6">
+                <button
+                  onClick={() => {
+                    setShowRefundModal(false)
+                    setRefundReason('')
+                    setSelectedRegistration(null)
+                  }}
+                  disabled={refundLoading}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors disabled:opacity-50"
+                >
+                  キャンセル
+                </button>
+                <button
+                  onClick={handleRequestRefund}
+                  disabled={!refundReason.trim() || refundLoading}
+                  className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+                >
+                  {refundLoading ? (
+                    <Loader2 className="w-4 h-4 animate-spin" />
+                  ) : (
+                    <RotateCcw className="w-4 h-4" />
+                  )}
+                  {refundLoading ? '処理中...' : '返金をリクエスト'}
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )

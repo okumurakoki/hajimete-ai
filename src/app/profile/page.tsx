@@ -53,6 +53,8 @@ export default function ProfilePage() {
     courseNotifications: true,
     marketingEmails: false
   })
+  const [imageUploading, setImageUploading] = useState(false)
+  const [showImageModal, setShowImageModal] = useState(false)
 
   // ユーザープロフィールデータを取得
   useEffect(() => {
@@ -106,6 +108,52 @@ export default function ProfilePage() {
     }
   }
 
+  const handleImageUpload = async (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file) return
+
+    // Check file size (max 5MB)
+    if (file.size > 5 * 1024 * 1024) {
+      alert('ファイルサイズは5MB以下にしてください')
+      return
+    }
+
+    // Check file type
+    if (!file.type.startsWith('image/')) {
+      alert('画像ファイルを選択してください')
+      return
+    }
+
+    setImageUploading(true)
+    
+    try {
+      const formData = new FormData()
+      formData.append('image', file)
+      
+      const response = await fetch('/api/user/upload-image', {
+        method: 'POST',
+        body: formData,
+      })
+      
+      if (response.ok) {
+        const { imageUrl } = await response.json()
+        // Update Clerk user profile
+        await user?.setProfileImage({ file })
+        // Refresh profile data
+        await fetchUserProfile()
+        setShowImageModal(false)
+      } else {
+        console.error('Failed to upload image')
+        alert('画像のアップロードに失敗しました')
+      }
+    } catch (error) {
+      console.error('Error uploading image:', error)
+      alert('画像のアップロードに失敗しました')
+    } finally {
+      setImageUploading(false)
+    }
+  }
+
   if (!isLoaded || loading) {
     return (
       <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
@@ -146,7 +194,10 @@ export default function ProfilePage() {
                   alt="プロフィール画像"
                   className="w-24 h-24 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900"
                 />
-                <button className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors">
+                <button 
+                  onClick={() => setShowImageModal(true)}
+                  className="absolute bottom-0 right-0 bg-blue-600 hover:bg-blue-700 text-white p-2 rounded-full shadow-lg transition-colors"
+                >
                   <Camera className="w-4 h-4" />
                 </button>
               </div>
@@ -361,6 +412,60 @@ export default function ProfilePage() {
             </div>
           </div>
         </div>
+
+        {/* 画像アップロードモーダル */}
+        {showImageModal && (
+          <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+            <div className="bg-white dark:bg-gray-800 rounded-lg max-w-md w-full p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+                プロフィール画像を変更
+              </h3>
+              
+              <div className="space-y-4">
+                <div className="flex justify-center">
+                  <img
+                    src={user?.imageUrl || '/default-avatar.png'}
+                    alt="現在のプロフィール画像"
+                    className="w-24 h-24 rounded-full object-cover border-4 border-blue-100 dark:border-blue-900"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                    新しい画像を選択
+                  </label>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    disabled={imageUploading}
+                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-gray-100"
+                  />
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+                    JPG, PNG, GIF形式、5MB以下
+                  </p>
+                </div>
+                
+                {imageUploading && (
+                  <div className="flex items-center justify-center py-4">
+                    <div className="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-600"></div>
+                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-400">アップロード中...</span>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex justify-end space-x-3 mt-6">
+                <button
+                  onClick={() => setShowImageModal(false)}
+                  disabled={imageUploading}
+                  className="px-4 py-2 text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 transition-colors disabled:opacity-50"
+                >
+                  キャンセル
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
     </DashboardLayout>
   )

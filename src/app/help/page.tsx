@@ -71,9 +71,9 @@ export default function HelpPage() {
   return (
     <ContentLayout>
       <div className="text-center mb-12">
-        <HelpCircle className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">ヘルプセンター</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <HelpCircle className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">ヘルプセンター</h1>
+        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           ご不明な点やお困りのことがございましたら、こちらからサポート情報をご確認ください
         </p>
       </div>
@@ -85,7 +85,7 @@ export default function HelpPage() {
           <input
             type="text"
             placeholder="質問やキーワードで検索..."
-            className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
         </div>
       </div>
@@ -93,10 +93,10 @@ export default function HelpPage() {
       {/* ヘルプカテゴリ */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
         {helpCategories.map((category, index) => (
-          <div key={index} className="bg-white rounded-lg border shadow-sm p-6 hover:shadow-md transition-shadow">
-            <category.icon className="w-8 h-8 text-blue-600 mb-4" />
-            <h3 className="text-lg font-semibold text-gray-900 mb-2">{category.title}</h3>
-            <p className="text-gray-600 text-sm mb-4">{category.description}</p>
+          <div key={index} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6 hover:shadow-md transition-shadow">
+            <category.icon className="w-8 h-8 text-blue-600 dark:text-blue-400 mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-2">{category.title}</h3>
+            <p className="text-gray-600 dark:text-gray-400 text-sm mb-4">{category.description}</p>
             <ul className="space-y-2">
               {category.articles.map((article, articleIndex) => (
                 <li key={articleIndex}>
@@ -112,17 +112,17 @@ export default function HelpPage() {
 
       {/* よくある質問 */}
       <div className="mb-16">
-        <h2 className="text-2xl font-bold text-gray-900 mb-8 text-center">よくある質問</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">よくある質問</h2>
         <div className="max-w-3xl mx-auto space-y-4">
           {popularQuestions.map((faq, index) => (
-            <div key={index} className="bg-white rounded-lg border shadow-sm">
+            <div key={index} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
               <details className="group">
-                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50">
-                  <h3 className="font-medium text-gray-900">{faq.question}</h3>
+                <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
+                  <h3 className="font-medium text-gray-900 dark:text-gray-100">{faq.question}</h3>
                   <HelpCircle className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
                 </summary>
                 <div className="px-6 pb-6">
-                  <p className="text-gray-600">{faq.answer}</p>
+                  <p className="text-gray-600 dark:text-gray-400">{faq.answer}</p>
                 </div>
               </details>
             </div>
@@ -131,10 +131,10 @@ export default function HelpPage() {
       </div>
 
       {/* お問い合わせ */}
-      <div className="bg-blue-50 rounded-xl p-8 text-center">
-        <MessageCircle className="w-12 h-12 text-blue-600 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 mb-4">解決しませんでしたか？</h2>
-        <p className="text-gray-600 mb-6">
+      <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-8 text-center border border-blue-200 dark:border-blue-800">
+        <MessageCircle className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">解決しませんでしたか？</h2>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">
           お探しの情報が見つからない場合は、お気軽にお問い合わせください。<br />
           専門スタッフが丁寧にサポートいたします。
         </p>
@@ -148,7 +148,7 @@ export default function HelpPage() {
           </a>
           <a
             href="/community"
-            className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+            className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 dark:text-blue-400 dark:border-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
           >
             コミュニティに質問
           </a>

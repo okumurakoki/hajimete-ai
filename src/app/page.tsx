@@ -12,7 +12,7 @@ export default function HomePage() {
 
   if (!mounted) {
     return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
+      <div className="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
       </div>
     )
@@ -25,7 +25,7 @@ function HomePageContent() {
   const { isSignedIn } = useUser()
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       {/* ナビゲーション */}
       <Navigation isSignedIn={isSignedIn || false} />
       
@@ -61,28 +61,25 @@ function Navigation({ isSignedIn }: { isSignedIn: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
 
   return (
-    <nav className="bg-white shadow-sm border-b border-gray-200 sticky top-0 z-50">
+    <nav className="bg-white dark:bg-gray-800 shadow-sm border-b border-gray-200 dark:border-gray-700 sticky top-0 z-50">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center py-4">
           {/* ロゴ */}
           <div className="flex items-center">
             <div className="text-2xl mr-2">🤖</div>
-            <h1 className="text-2xl font-bold text-blue-600">はじめて.AI</h1>
+            <h1 className="text-2xl font-bold text-blue-600 dark:text-blue-400">はじめて.AI</h1>
           </div>
 
           {/* デスクトップナビゲーション */}
           <div className="hidden md:flex items-center space-x-8">
-            <a href="#features" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               特徴
             </a>
-            <a href="#departments" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            <a href="#departments" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               学部紹介
             </a>
-            <a href="#pricing" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
+            <a href="#pricing" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
               料金
-            </a>
-            <a href="/demo" className="text-gray-600 hover:text-blue-600 font-medium transition-colors">
-              デモ
             </a>
             
             {isSignedIn ? (
@@ -96,7 +93,7 @@ function Navigation({ isSignedIn }: { isSignedIn: boolean }) {
               <div className="flex items-center space-x-4">
                 <a
                   href="/auth/sign-in"
-                  className="text-gray-600 hover:text-blue-600 font-medium transition-colors"
+                  className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors"
                 >
                   サインイン
                 </a>
@@ -152,16 +149,16 @@ function Navigation({ isSignedIn }: { isSignedIn: boolean }) {
 // ヒーローセクション
 function HeroSection() {
   return (
-    <section className="bg-gradient-to-br from-blue-50 to-indigo-100 py-20">
+    <section className="bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-800 dark:to-gray-900 py-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
-          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 mb-6">
+          <h1 className="text-4xl md:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6">
             AI学習の
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
               新しいスタンダード
             </span>
           </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-300 mb-8 max-w-3xl mx-auto leading-relaxed">
             ChatGPTから実践的なAI活用まで、あなたのペースで学べる包括的なAI学習プラットフォーム。
             <br />
             初心者から上級者まで、段階的にスキルアップできます。
@@ -175,15 +172,15 @@ function HeroSection() {
               🚀 今すぐ無料で始める
             </a>
             <a
-              href="/demo"
-              className="bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-lg text-lg font-semibold border border-gray-300 transition-colors shadow-lg hover:shadow-xl"
+              href="/about"
+              className="bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-900 dark:text-gray-100 px-8 py-4 rounded-lg text-lg font-semibold border border-gray-300 dark:border-gray-600 transition-colors shadow-lg hover:shadow-xl"
             >
-              📺 デモを見る
+              📖 詳しく見る
             </a>
           </div>
 
           {/* 信頼性インジケーター */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-600">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-gray-600 dark:text-gray-400">
             <div className="flex items-center">
               <span className="text-2xl mr-2">✅</span>
               <span>無料プランあり</span>
@@ -224,23 +221,23 @@ function FeaturesSection() {
   ]
 
   return (
-    <section id="features" className="py-20 bg-white">
+    <section id="features" className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             なぜはじめて.AIが選ばれるのか
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             効果的なAI学習を実現する特徴
           </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div key={index} className="bg-white rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-200">
+            <div key={index} className="bg-white dark:bg-gray-800 rounded-xl p-8 hover:shadow-lg transition-shadow border border-gray-200 dark:border-gray-700">
               <div className="text-4xl mb-4">{feature.icon}</div>
-              <h3 className="text-xl font-semibold text-gray-900 mb-3">{feature.title}</h3>
-              <p className="text-gray-600 leading-relaxed">{feature.description}</p>
+              <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-3">{feature.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{feature.description}</p>
             </div>
           ))}
         </div>
@@ -251,13 +248,13 @@ function FeaturesSection() {
 
 function DepartmentsSection() {
   return (
-    <section id="departments" className="py-20 bg-white">
+    <section id="departments" className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             4つの学部で体系的に学習
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
             あなたの目標とレベルに合わせて選択できる学習プログラム
           </p>
         </div>
@@ -269,12 +266,12 @@ function DepartmentsSection() {
             { icon: '🚀', name: '実践応用学部', description: 'プログラミングとAI開発' },
             { icon: '⭐', name: 'キャッチアップ学部', description: '最新AI技術とトレンド' }
           ].map((dept, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow">
+            <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 hover:shadow-xl transition-shadow border border-gray-200 dark:border-gray-700">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">{dept.icon}</div>
                 <div>
-                  <h3 className="text-2xl font-bold text-gray-900">{dept.name}</h3>
-                  <p className="text-gray-600">{dept.description}</p>
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">{dept.name}</h3>
+                  <p className="text-gray-600 dark:text-gray-400">{dept.description}</p>
                 </div>
               </div>
               <button
@@ -323,18 +320,18 @@ function StatsSection() {
 
 function PricingSection() {
   return (
-    <section id="pricing" className="py-20 bg-white">
+    <section id="pricing" className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             シンプルで明確な料金プラン
           </h2>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          <div className="rounded-xl shadow-lg p-8 border border-gray-200">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">無料プラン</h3>
-            <div className="text-4xl font-bold text-gray-900 mb-4">¥0<span className="text-lg text-gray-600">/月</span></div>
+          <div className="rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">無料プラン</h3>
+            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">¥0<span className="text-lg text-gray-600 dark:text-gray-400">/月</span></div>
             <button
               onClick={() => window.location.href = '/auth/sign-up'}
               className="w-full bg-gray-600 hover:bg-gray-700 text-white py-3 px-6 rounded-lg font-semibold"
@@ -343,12 +340,12 @@ function PricingSection() {
             </button>
           </div>
           
-          <div className="rounded-xl shadow-lg p-8 border-2 border-blue-500 relative">
+          <div className="rounded-xl shadow-lg p-8 border-2 border-blue-500 bg-white dark:bg-gray-800 relative">
             <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-blue-500 text-white px-4 py-2 rounded-full text-sm font-medium">
               おすすめ
             </div>
-            <h3 className="text-xl font-bold text-gray-900 mb-4">ベーシックプラン</h3>
-            <div className="text-4xl font-bold text-gray-900 mb-4">¥3,500<span className="text-lg text-gray-600">/月</span></div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">ベーシックプラン</h3>
+            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">¥3,500<span className="text-lg text-gray-600 dark:text-gray-400">/月</span></div>
             <button
               onClick={() => window.location.href = '/auth/sign-up'}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-semibold"
@@ -358,8 +355,8 @@ function PricingSection() {
           </div>
           
           <div className="rounded-xl shadow-lg p-8 border border-gray-200">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">プレミアムプラン</h3>
-            <div className="text-4xl font-bold text-gray-900 mb-4">¥5,500<span className="text-lg text-gray-600">/月</span></div>
+            <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-4">プレミアムプラン</h3>
+            <div className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">¥5,500<span className="text-lg text-gray-600 dark:text-gray-400">/月</span></div>
             <button
               onClick={() => window.location.href = '/auth/sign-up'}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-semibold"
@@ -375,10 +372,10 @@ function PricingSection() {
 
 function TestimonialsSection() {
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-white dark:bg-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
+          <h2 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">
             受講生の声
           </h2>
         </div>
@@ -388,15 +385,15 @@ function TestimonialsSection() {
             { name: '佐藤 花子', role: 'データアナリスト', content: 'AI基礎から応用まで体系的に学べて、実際のプロジェクトですぐに活用できています。' },
             { name: '山田 次郎', role: 'フリーランス', content: '無料プランから始めて、今ではクライアントワークでAIを積極的に活用しています。' }
           ].map((testimonial, index) => (
-            <div key={index} className="bg-white rounded-xl shadow-lg p-8">
+            <div key={index} className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8 border border-gray-200 dark:border-gray-700">
               <div className="flex items-center mb-6">
                 <div className="text-4xl mr-4">👨‍💼</div>
                 <div>
-                  <h4 className="font-semibold text-gray-900">{testimonial.name}</h4>
-                  <p className="text-gray-600 text-sm">{testimonial.role}</p>
+                  <h4 className="font-semibold text-gray-900 dark:text-gray-100">{testimonial.name}</h4>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm">{testimonial.role}</p>
                 </div>
               </div>
-              <p className="text-gray-600 leading-relaxed">"{testimonial.content}"</p>
+              <p className="text-gray-600 dark:text-gray-400 leading-relaxed">"{testimonial.content}"</p>
             </div>
           ))}
         </div>
