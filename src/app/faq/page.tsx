@@ -101,9 +101,9 @@ export default function FAQPage() {
   return (
     <ContentLayout>
       <div className="text-center mb-12">
-        <HelpCircle className="w-16 h-16 text-blue-600 mx-auto mb-4" />
-        <h1 className="text-4xl font-bold text-gray-900 mb-4">よくある質問</h1>
-        <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+        <HelpCircle className="w-16 h-16 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
+        <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100 mb-4">よくある質問</h1>
+        <p className="text-xl text-gray-600 dark:text-gray-400 max-w-2xl mx-auto">
           はじめて.AIについてよくいただく質問をまとめました。お探しの回答が見つからない場合は、お気軽にお問い合わせください。
         </p>
       </div>
@@ -111,11 +111,11 @@ export default function FAQPage() {
       {/* 検索バー */}
       <div className="max-w-2xl mx-auto mb-12">
         <div className="relative">
-          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 dark:text-gray-500 w-5 h-5" />
           <input
             type="text"
             placeholder="質問やキーワードで検索..."
-            className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            className="w-full pl-12 pr-4 py-4 text-lg border border-gray-300 dark:border-gray-600 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
           />
         </div>
       </div>
@@ -124,20 +124,20 @@ export default function FAQPage() {
       <div className="max-w-4xl mx-auto">
         {faqCategories.map((category, categoryIndex) => (
           <div key={categoryIndex} className="mb-12">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6 pb-2 border-b border-gray-200">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-6 pb-2 border-b border-gray-200 dark:border-gray-700">
               {category.title}
             </h2>
             <div className="space-y-4">
               {category.faqs.map((faq, faqIndex) => (
-                <div key={faqIndex} className="bg-white rounded-lg border shadow-sm">
+                <div key={faqIndex} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm">
                   <details className="group">
-                    <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 rounded-lg">
-                      <h3 className="font-medium text-gray-900 pr-4">{faq.question}</h3>
-                      <ChevronDown className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform flex-shrink-0" />
+                    <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700 rounded-lg">
+                      <h3 className="font-medium text-gray-900 dark:text-gray-100 pr-4">{faq.question}</h3>
+                      <ChevronDown className="w-5 h-5 text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform flex-shrink-0" />
                     </summary>
                     <div className="px-6 pb-6">
-                      <div className="pt-4 border-t border-gray-100">
-                        <p className="text-gray-600 leading-relaxed">{faq.answer}</p>
+                      <div className="pt-4 border-t border-gray-100 dark:border-gray-700">
+                        <p className="text-gray-600 dark:text-gray-400 leading-relaxed">{faq.answer}</p>
                       </div>
                     </div>
                   </details>
@@ -150,9 +150,9 @@ export default function FAQPage() {
 
       {/* まだ解決しない場合 */}
       <div className="max-w-4xl mx-auto mt-16">
-        <div className="bg-blue-50 rounded-xl p-8 text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">まだ解決しませんでしたか？</h2>
-          <p className="text-gray-600 mb-6">
+        <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-8 text-center border border-blue-200 dark:border-blue-800">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">まだ解決しませんでしたか？</h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             お探しの情報が見つからない場合は、以下の方法でサポートを受けることができます。
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -164,13 +164,13 @@ export default function FAQPage() {
             </a>
             <a
               href="/help"
-              className="inline-flex items-center px-6 py-3 border border-blue-600 text-blue-600 rounded-lg hover:bg-blue-50 transition-colors"
+              className="inline-flex items-center px-6 py-3 border border-blue-600 dark:border-blue-400 text-blue-600 dark:text-blue-400 rounded-lg hover:bg-blue-50 dark:hover:bg-blue-900/20 transition-colors"
             >
               ヘルプセンター
             </a>
             <a
               href="/community"
-              className="inline-flex items-center px-6 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+              className="inline-flex items-center px-6 py-3 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               コミュニティで質問
             </a>

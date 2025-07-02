@@ -192,7 +192,7 @@ export default function AboutPage() {
       </div>
 
       {/* お問い合わせCTA */}
-      <div className="bg-blue-600 dark:bg-blue-700 rounded-2xl p-8 md:p-12 text-center text-white">
+      <div className="bg-blue-700 dark:bg-blue-800 rounded-2xl p-8 md:p-12 text-center text-white">
         <h2 className="text-3xl font-bold mb-4">一緒に未来を創りませんか？</h2>
         <p className="text-xl text-blue-100 dark:text-blue-200 mb-8 max-w-2xl mx-auto">
           はじめて.AIでは、教育の未来を変える仲間を募集しています。<br />

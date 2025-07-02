@@ -275,20 +275,20 @@ export default function NewsPage() {
       </div>
 
       {/* ニュースレター購読CTA */}
-      <div className="mt-16 bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-center text-white">
+      <div className="mt-16 bg-gradient-to-r from-blue-700 to-purple-700 rounded-2xl p-8 text-center text-white">
         <h2 className="text-2xl font-bold mb-4">
           最新情報をお見逃しなく
         </h2>
-        <p className="text-lg text-blue-100 dark:text-blue-200 mb-6">
+        <p className="text-lg text-blue-100 mb-6">
           重要なお知らせや新機能情報をメールでお届けします
         </p>
         <div className="max-w-md mx-auto flex gap-3">
           <input
             type="email"
             placeholder="メールアドレス"
-            className="flex-1 px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white"
+            className="flex-1 px-4 py-2 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-white placeholder-gray-500"
           />
-          <button className="px-6 py-2 bg-white text-blue-600 rounded-lg font-medium hover:bg-gray-100 transition-colors">
+          <button className="px-6 py-2 bg-white text-blue-700 rounded-lg font-medium hover:bg-gray-100 transition-colors">
             購読
           </button>
         </div>

@@ -42,14 +42,14 @@ export default function ContactPage() {
           </div>
 
           {/* よくある質問へのリンク */}
-          <div className="mt-8 p-6 bg-blue-50 rounded-lg">
-            <h3 className="font-semibold text-gray-900 mb-2">お問い合わせ前に</h3>
-            <p className="text-sm text-gray-600 mb-4">
+          <div className="mt-8 p-6 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-2">お問い合わせ前に</h3>
+            <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
               よくある質問をご確認いただくと、すぐに解決するかもしれません。
             </p>
             <a 
               href="/faq" 
-              className="inline-flex items-center text-blue-600 hover:text-blue-800 font-medium"
+              className="inline-flex items-center text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 font-medium"
             >
               よくある質問を見る →
             </a>
@@ -63,7 +63,7 @@ export default function ContactPage() {
           <form className="space-y-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   お名前（姓）*
                 </label>
                 <input
@@ -71,12 +71,12 @@ export default function ContactPage() {
                   id="firstName"
                   name="firstName"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 />
               </div>
               
               <div>
-                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="lastName" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   お名前（名）*
                 </label>
                 <input
@@ -84,13 +84,13 @@ export default function ContactPage() {
                   id="lastName"
                   name="lastName"
                   required
-                  className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
                 />
               </div>
             </div>
 
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 メールアドレス *
               </label>
               <input
@@ -103,7 +103,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="phone" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 電話番号
               </label>
               <input
@@ -115,7 +115,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="category" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 お問い合わせ種別 *
               </label>
               <select
@@ -135,7 +135,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="subject" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 件名 *
               </label>
               <input
@@ -149,7 +149,7 @@ export default function ContactPage() {
             </div>
 
             <div>
-              <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
+              <label htmlFor="message" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 メッセージ *
               </label>
               <textarea
@@ -170,7 +170,7 @@ export default function ContactPage() {
                 required
                 className="mt-1 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
               />
-              <label htmlFor="privacy" className="ml-3 text-sm text-gray-600">
+              <label htmlFor="privacy" className="ml-3 text-sm text-gray-600 dark:text-gray-400">
                 <a href="/privacy" className="text-blue-600 hover:text-blue-800 underline">プライバシーポリシー</a>
                 に同意します *
               </label>
@@ -187,18 +187,6 @@ export default function ContactPage() {
         </div>
       </div>
 
-      {/* 緊急時の対応 */}
-      <div className="bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg p-6 text-center">
-        <h3 className="font-semibold text-orange-800 dark:text-orange-200 mb-2">緊急時のお問い合わせ</h3>
-        <p className="text-sm text-orange-600 dark:text-orange-300 mb-4">
-          システム障害やセキュリティに関する緊急事態の場合は、メールの件名に【緊急】を記載してお送りください。
-        </p>
-        <div className="flex items-center justify-center">
-          <Mail className="w-5 h-5 text-orange-600 dark:text-orange-400 mr-2" />
-          <span className="font-bold text-orange-800 dark:text-orange-200">緊急時: 【緊急】+ info@oku-ai.co.jp</span>
-        </div>
-        <p className="text-xs text-orange-500 dark:text-orange-400 mt-2">優先的に対応いたします</p>
-      </div>
     </ContentLayout>
   )
 }
