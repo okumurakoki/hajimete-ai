@@ -119,7 +119,7 @@ export default function HelpPage() {
               <details className="group">
                 <summary className="flex justify-between items-center p-6 cursor-pointer hover:bg-gray-50 dark:hover:bg-gray-700">
                   <h3 className="font-medium text-gray-900 dark:text-gray-100">{faq.question}</h3>
-                  <HelpCircle className="w-5 h-5 text-gray-400 group-open:rotate-180 transition-transform" />
+                  <HelpCircle className="w-5 h-5 text-gray-400 dark:text-gray-500 group-open:rotate-180 transition-transform" />
                 </summary>
                 <div className="px-6 pb-6">
                   <p className="text-gray-600 dark:text-gray-400">{faq.answer}</p>
@@ -133,7 +133,7 @@ export default function HelpPage() {
       {/* お問い合わせ */}
       <div className="bg-blue-50 dark:bg-blue-900/20 rounded-xl p-8 text-center border border-blue-200 dark:border-blue-800">
         <MessageCircle className="w-12 h-12 text-blue-600 dark:text-blue-400 mx-auto mb-4" />
-        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">解決しませんでしたか？</h2>
+        <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">まだ解決しませんでしたか？</h2>
         <p className="text-gray-600 dark:text-gray-400 mb-6">
           お探しの情報が見つからない場合は、お気軽にお問い合わせください。<br />
           専門スタッフが丁寧にサポートいたします。

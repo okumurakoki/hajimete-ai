@@ -27,25 +27,6 @@ export default function ContactPage() {
               </div>
             </div>
 
-            <div className="flex items-start">
-              <Phone className="w-6 h-6 text-gray-600 mr-4 mt-1" />
-              <div>
-                <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-1">電話</h3>
-                <p className="text-gray-600 dark:text-gray-400">お電話でのお問い合わせは承っておりません</p>
-                <p className="text-sm text-gray-500">メールまたはフォームをご利用ください</p>
-              </div>
-            </div>
-
-            <div className="flex items-start">
-              <MapPin className="w-6 h-6 text-blue-600 mr-4 mt-1" />
-              <div>
-                <h3 className="font-semibold text-gray-900 mb-1">住所</h3>
-                <p className="text-gray-600 dark:text-gray-400">
-                  〒451-0045<br />
-                  愛知県名古屋市西区名駅2-34-17-1101
-                </p>
-              </div>
-            </div>
 
             <div className="flex items-start">
               <Clock className="w-6 h-6 text-blue-600 mr-4 mt-1" />

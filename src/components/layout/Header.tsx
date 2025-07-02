@@ -68,12 +68,6 @@ function HeaderWithoutTheme({ className }: { className: string }) {
       description: 'ライブセミナー'
     },
     {
-      name: 'AI講座申し込み',
-      href: '/courses/live',
-      icon: Calendar,
-      description: 'ライブAI講座申し込み'
-    },
-    {
       name: '検索',
       href: '/search',
       icon: Search,
@@ -343,12 +337,6 @@ function HeaderWithTheme({ className }: { className: string }) {
       href: '/seminars',
       icon: Users,
       description: 'ライブセミナー'
-    },
-    {
-      name: 'AI講座申し込み',
-      href: '/courses/live',
-      icon: Calendar,
-      description: 'ライブAI講座申し込み'
     },
     {
       name: '検索',

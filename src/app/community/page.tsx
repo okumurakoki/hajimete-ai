@@ -3,11 +3,11 @@ import { Users, MessageCircle, ThumbsUp, Eye, Clock, Star, Plus, Filter, Search 
 
 export default function CommunityPage() {
   const categories = [
-    { name: '一般質問', count: 234, color: 'bg-blue-100 text-blue-700' },
-    { name: 'AI基礎', count: 189, color: 'bg-green-100 text-green-700' },
-    { name: '技術相談', count: 156, color: 'bg-purple-100 text-purple-700' },
-    { name: 'キャリア', count: 98, color: 'bg-orange-100 text-orange-700' },
-    { name: '雑談', count: 67, color: 'bg-pink-100 text-pink-700' }
+    { name: '一般質問', count: 234, color: 'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300' },
+    { name: 'AI基礎', count: 189, color: 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300' },
+    { name: '技術相談', count: 156, color: 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' },
+    { name: 'キャリア', count: 98, color: 'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300' },
+    { name: '雑談', count: 67, color: 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300' }
   ]
 
   const discussions = [
@@ -148,10 +148,10 @@ export default function CommunityPage() {
               <input
                 type="text"
                 placeholder="投稿を検索..."
-                className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                className="w-full pl-10 pr-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100"
               />
             </div>
-            <button className="flex items-center px-4 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
+            <button className="flex items-center px-4 py-3 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors text-gray-700 dark:text-gray-300">
               <Filter className="w-4 h-4 mr-2" />
               フィルター
             </button>
@@ -160,34 +160,34 @@ export default function CommunityPage() {
           {/* ディスカッション一覧 */}
           <div className="space-y-4">
             {discussions.map((discussion) => (
-              <div key={discussion.id} className="bg-white rounded-lg border shadow-sm p-6 hover:shadow-md transition-shadow">
+              <div key={discussion.id} className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6 hover:shadow-md transition-shadow">
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex items-center space-x-3">
                     <div className="text-2xl">{discussion.avatar}</div>
                     <div>
-                      <div className="font-medium text-gray-900">{discussion.author}</div>
-                      <div className="text-sm text-gray-500">{discussion.timeAgo}</div>
+                      <div className="font-medium text-gray-900 dark:text-gray-100">{discussion.author}</div>
+                      <div className="text-sm text-gray-500 dark:text-gray-400">{discussion.timeAgo}</div>
                     </div>
                   </div>
                   {discussion.isAnswered && (
-                    <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-medium">
+                    <span className="bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300 text-xs px-2 py-1 rounded-full font-medium">
                       解決済み
                     </span>
                   )}
                 </div>
 
-                <h3 className="text-lg font-semibold text-gray-900 mb-3 hover:text-blue-600 cursor-pointer">
+                <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100 mb-3 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer">
                   {discussion.title}
                 </h3>
 
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center space-x-4 text-sm text-gray-500">
+                  <div className="flex items-center space-x-4 text-sm text-gray-500 dark:text-gray-400">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      discussion.category === 'AI基礎' ? 'bg-green-100 text-green-700' :
-                      discussion.category === '技術相談' ? 'bg-purple-100 text-purple-700' :
-                      discussion.category === 'キャリア' ? 'bg-orange-100 text-orange-700' :
-                      discussion.category === '雑談' ? 'bg-pink-100 text-pink-700' :
-                      'bg-blue-100 text-blue-700'
+                      discussion.category === 'AI基礎' ? 'bg-green-100 text-green-700 dark:bg-green-900/50 dark:text-green-300' :
+                      discussion.category === '技術相談' ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' :
+                      discussion.category === 'キャリア' ? 'bg-orange-100 text-orange-700 dark:bg-orange-900/50 dark:text-orange-300' :
+                      discussion.category === '雑談' ? 'bg-pink-100 text-pink-700 dark:bg-pink-900/50 dark:text-pink-300' :
+                      'bg-blue-100 text-blue-700 dark:bg-blue-900/50 dark:text-blue-300'
                     }`}>
                       {discussion.category}
                     </span>
@@ -207,7 +207,7 @@ export default function CommunityPage() {
 
                   <div className="flex space-x-1">
                     {discussion.tags.map((tag, index) => (
-                      <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      <span key={index} className="text-xs bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-gray-300 px-2 py-1 rounded">
                         {tag}
                       </span>
                     ))}
@@ -220,7 +220,7 @@ export default function CommunityPage() {
           {/* ページネーション */}
           <div className="mt-8 flex justify-center">
             <div className="flex items-center space-x-2">
-              <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+              <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
                 前へ
               </button>
               {[1, 2, 3, 4, 5].map((page) => (
@@ -229,13 +229,13 @@ export default function CommunityPage() {
                   className={`px-3 py-2 rounded-lg ${
                     page === 1 
                       ? 'bg-blue-600 text-white' 
-                      : 'border border-gray-300 hover:bg-gray-50'
+                      : 'border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300'
                   }`}
                 >
                   {page}
                 </button>
               ))}
-              <button className="px-3 py-2 border border-gray-300 rounded-lg hover:bg-gray-50">
+              <button className="px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300">
                 次へ
               </button>
             </div>
@@ -245,12 +245,12 @@ export default function CommunityPage() {
         {/* サイドバー */}
         <div className="lg:col-span-1">
           {/* カテゴリ */}
-          <div className="bg-white rounded-lg border shadow-sm p-6 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-4">カテゴリ</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">カテゴリ</h3>
             <div className="space-y-2">
               {categories.map((category, index) => (
                 <div key={index} className="flex items-center justify-between">
-                  <span className="text-gray-700">{category.name}</span>
+                  <span className="text-gray-700 dark:text-gray-300">{category.name}</span>
                   <span className={`text-xs px-2 py-1 rounded-full font-medium ${category.color}`}>
                     {category.count}
                   </span>
@@ -260,16 +260,16 @@ export default function CommunityPage() {
           </div>
 
           {/* トップコントリビューター */}
-          <div className="bg-white rounded-lg border shadow-sm p-6 mb-6">
-            <h3 className="font-semibold text-gray-900 mb-4">今月のトップコントリビューター</h3>
+          <div className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm p-6 mb-6">
+            <h3 className="font-semibold text-gray-900 dark:text-gray-100 mb-4">今月のトップコントリビューター</h3>
             <div className="space-y-4">
               {topContributors.map((contributor, index) => (
                 <div key={index} className="flex items-center">
                   <div className="text-2xl mr-3">{contributor.avatar}</div>
                   <div className="flex-1">
-                    <div className="font-medium text-gray-900">{contributor.name}</div>
-                    <div className="text-xs text-blue-600">{contributor.badge}</div>
-                    <div className="text-sm text-gray-500">
+                    <div className="font-medium text-gray-900 dark:text-gray-100">{contributor.name}</div>
+                    <div className="text-xs text-blue-600 dark:text-blue-400">{contributor.badge}</div>
+                    <div className="text-sm text-gray-500 dark:text-gray-400">
                       {contributor.posts}投稿 • {contributor.likes}いいね
                     </div>
                   </div>
@@ -279,15 +279,15 @@ export default function CommunityPage() {
           </div>
 
           {/* コミュニティガイドライン */}
-          <div className="bg-blue-50 rounded-lg border border-blue-200 p-6">
-            <h3 className="font-semibold text-blue-900 mb-3">コミュニティガイドライン</h3>
-            <ul className="text-sm text-blue-700 space-y-2">
+          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-800 p-6">
+            <h3 className="font-semibold text-blue-900 dark:text-blue-100 mb-3">コミュニティガイドライン</h3>
+            <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-2">
               <li>• 建設的で敬意のある議論を心がけましょう</li>
               <li>• 質問は具体的で分かりやすく</li>
               <li>• 他の人の回答に感謝の気持ちを示しましょう</li>
               <li>• スパムや宣伝目的の投稿は禁止です</li>
             </ul>
-            <a href="/community/guidelines" className="text-blue-600 hover:text-blue-800 text-sm font-medium mt-3 inline-block">
+            <a href="/community/guidelines" className="text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium mt-3 inline-block">
               詳細を読む →
             </a>
           </div>

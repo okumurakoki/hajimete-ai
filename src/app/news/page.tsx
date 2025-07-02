@@ -279,7 +279,7 @@ export default function NewsPage() {
         <h2 className="text-2xl font-bold mb-4">
           最新情報をお見逃しなく
         </h2>
-        <p className="text-lg text-blue-100 mb-6">
+        <p className="text-lg text-blue-100 dark:text-blue-200 mb-6">
           重要なお知らせや新機能情報をメールでお届けします
         </p>
         <div className="max-w-md mx-auto flex gap-3">

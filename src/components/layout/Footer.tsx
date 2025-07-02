@@ -76,7 +76,7 @@ export default function Footer({ className = '' }: FooterProps) {
     { name: 'Twitter', href: 'https://twitter.com', icon: Twitter, color: 'hover:text-blue-400' },
     { name: 'GitHub', href: 'https://github.com', icon: Github, color: 'hover:text-gray-600' },
     { name: 'YouTube', href: 'https://youtube.com', icon: Youtube, color: 'hover:text-red-500' },
-    { name: 'Email', href: 'mailto:contact@hajimete-ai.com', icon: Mail, color: 'hover:text-green-500' },
+    { name: 'Email', href: 'mailto:info@oku-ai.co.jp', icon: Mail, color: 'hover:text-green-500' },
   ]
 
   return (
@@ -102,16 +102,8 @@ export default function Footer({ className = '' }: FooterProps) {
             {/* 連絡先情報 */}
             <div className="space-y-2 text-sm text-gray-400">
               <div className="flex items-center">
-                <MapPin className="w-4 h-4 mr-2" />
-                <span>東京都渋谷区 1-1-1</span>
-              </div>
-              <div className="flex items-center">
-                <Phone className="w-4 h-4 mr-2" />
-                <span>03-1234-5678</span>
-              </div>
-              <div className="flex items-center">
                 <Mail className="w-4 h-4 mr-2" />
-                <span>contact@hajimete-ai.com</span>
+                <span>info@oku-ai.co.jp</span>
               </div>
             </div>
           </div>
