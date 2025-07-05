@@ -1,34 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play, Mail } from 'lucide-react'
+import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play, Mail, Calendar } from 'lucide-react'
 import { AdminLayout } from '@/components/layout/Layout'
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 import CourseForm from '@/components/admin/forms/CourseForm'
+import SeminarForm from '@/components/admin/forms/SeminarForm'
 import CourseManagement from '@/components/admin/CourseManagement'
+import SeminarManagement from '@/components/admin/SeminarManagement'
 import AnalyticsDashboard from '@/components/admin/analytics/AnalyticsDashboard'
+import { Seminar, SeminarFormData, Department, Course } from '@/types'
+import toast, { Toaster } from 'react-hot-toast'
 
-interface Department {
-  id: string
-  name: string
-  description: string | null
-  image: string | null
-  color: string | null
-  iconType?: 'lucide' | 'gradient' | 'upload'
-  iconValue?: string
-  uploadedImage?: string | null
-  coursesCount?: number
-}
-
-interface Course {
-  id: string
-  title: string
-  description: string | null
-  thumbnail: string | null
-  departmentId: string
-  department?: { name: string }
-  lessonsCount?: number
-}
+// 型定義は /types/index.ts から import
 
 // アイコンセット（DepartmentFormと同じ）
 const iconSets = {
@@ -104,11 +88,14 @@ const gradientIcons = {
 export default function AdminDashboard() {
   const [departments, setDepartments] = useState<Department[]>([])
   const [courses, setCourses] = useState<Course[]>([])
+  const [seminars, setSeminars] = useState<Seminar[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'departments' | 'courses'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'departments' | 'courses' | 'seminars'>('overview')
   const [showDepartmentForm, setShowDepartmentForm] = useState(false)
   const [showCourseForm, setShowCourseForm] = useState(false)
+  const [showSeminarForm, setShowSeminarForm] = useState(false)
   const [editingCourse, setEditingCourse] = useState<any>(null)
+  const [editingSeminar, setEditingSeminar] = useState<Seminar | null>(null)
 
   // アイコンレンダリング関数
   const renderDepartmentIcon = (dept: Department) => {
@@ -153,9 +140,10 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true)
-      const [deptRes, courseRes] = await Promise.all([
+      const [deptRes, courseRes, seminarRes] = await Promise.all([
         fetch('/api/admin/departments'),
-        fetch('/api/admin/courses')
+        fetch('/api/admin/courses'),
+        fetch('/api/admin/seminars')
       ])
       
       if (deptRes.ok) {
@@ -166,6 +154,11 @@ export default function AdminDashboard() {
       if (courseRes.ok) {
         const courseData = await courseRes.json()
         setCourses(courseData)
+      }
+
+      if (seminarRes.ok) {
+        const seminarData = await seminarRes.json()
+        setSeminars(seminarData)
       }
     } catch (error) {
       console.error('データ取得エラー:', error)
@@ -313,6 +306,87 @@ export default function AdminDashboard() {
     }
   }
 
+  // セミナー管理関数
+  const handleCreateSeminar = async (formData: SeminarFormData) => {
+    try {
+      const response = await fetch('/api/admin/seminars', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        const newSeminar = await response.json()
+        setSeminars(prev => [newSeminar, ...prev])
+        setShowSeminarForm(false)
+        setEditingSeminar(null)
+        await fetchData()
+        toast.success('セミナーを作成しました')
+      } else {
+        const errorData = await response.json()
+        throw new Error(errorData.error || 'Failed to create seminar')
+      }
+    } catch (error) {
+      console.error('セミナー作成エラー:', error)
+      toast.error('セミナーの作成に失敗しました')
+    }
+  }
+
+  const handleEditSeminar = (seminar: Seminar) => {
+    setEditingSeminar(seminar)
+    setShowSeminarForm(true)
+  }
+
+  const handleDeleteSeminar = async (seminarId: string) => {
+    try {
+      const response = await fetch(`/api/admin/seminars/${seminarId}`, {
+        method: 'DELETE',
+      })
+
+      if (response.ok) {
+        setSeminars(prev => prev.filter(seminar => seminar.id !== seminarId))
+        await fetchData()
+        toast.success('セミナーを削除しました')
+      } else {
+        const errorData = await response.json()
+        toast.error(`削除に失敗しました: ${errorData.error || '不明なエラー'}`)
+      }
+    } catch (error) {
+      console.error('セミナー削除エラー:', error)
+      toast.error('セミナーの削除中にエラーが発生しました')
+    }
+  }
+
+  const handleToggleSeminarStatus = async (seminarId: string, newStatus: boolean) => {
+    try {
+      const response = await fetch(`/api/admin/seminars/${seminarId}`, {
+        method: 'PATCH',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isPublished: newStatus }),
+      })
+
+      if (response.ok) {
+        setSeminars(prev => prev.map(seminar => 
+          seminar.id === seminarId 
+            ? { ...seminar, isPublished: newStatus }
+            : seminar
+        ))
+        await fetchData()
+        toast.success(`セミナーを${newStatus ? '公開' : '非公開'}にしました`)
+      } else {
+        const errorData = await response.json()
+        toast.error(`ステータス更新に失敗しました: ${errorData.error || '不明なエラー'}`)
+      }
+    } catch (error) {
+      console.error('Error updating seminar status:', error)
+      toast.error('ステータス更新中にエラーが発生しました')
+    }
+  }
+
   return (
     <AdminLayout>
       {/* 管理者ヘッダー */}
@@ -342,7 +416,8 @@ export default function AdminDashboard() {
               { id: 'overview', label: '概要', icon: BarChart3 },
               { id: 'analytics', label: '統計分析', icon: BarChart3 },
               { id: 'departments', label: '学部管理', icon: BookOpen },
-              { id: 'courses', label: '講義管理', icon: Video }
+              { id: 'courses', label: '講義管理', icon: Video },
+              { id: 'seminars', label: 'セミナー管理', icon: Calendar }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -430,6 +505,13 @@ export default function AdminDashboard() {
                     >
                       <Plus className="w-5 h-5 text-green-600 mr-3" />
                       <span className="font-medium text-green-700 dark:text-green-300">新しい講義を作成</span>
+                    </button>
+                    <button
+                      onClick={() => setShowSeminarForm(true)}
+                      className="flex items-center p-4 bg-orange-50 dark:bg-orange-900/10 rounded-lg hover:bg-orange-100 dark:bg-orange-900/20 transition-colors"
+                    >
+                      <Plus className="w-5 h-5 text-orange-600 mr-3" />
+                      <span className="font-medium text-orange-700 dark:text-orange-300">新しいセミナーを作成</span>
                     </button>
                     <button
                       onClick={() => window.location.href = '/admin/emails'}
@@ -520,6 +602,20 @@ export default function AdminDashboard() {
                 onToggleStatus={handleToggleStatus}
               />
             )}
+
+            {/* セミナー管理タブ */}
+            {activeTab === 'seminars' && (
+              <SeminarManagement
+                seminars={seminars}
+                onCreateSeminar={() => {
+                  setEditingSeminar(null)
+                  setShowSeminarForm(true)
+                }}
+                onEditSeminar={handleEditSeminar}
+                onDeleteSeminar={handleDeleteSeminar}
+                onToggleStatus={handleToggleSeminarStatus}
+              />
+            )}
           </>
         )}
       </main>
@@ -546,6 +642,29 @@ export default function AdminDashboard() {
           color: dept.color || undefined
         }))}
         initialData={editingCourse}
+      />
+
+      {/* セミナー作成フォーム */}
+      <SeminarForm
+        isOpen={showSeminarForm}
+        onClose={() => {
+          setShowSeminarForm(false)
+          setEditingSeminar(null)
+        }}
+        onSave={handleCreateSeminar}
+        initialData={editingSeminar}
+      />
+      
+      {/* Toast通知 */}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: 'var(--background)',
+            color: 'var(--foreground)',
+          }
+        }}
       />
     </AdminLayout>
   )
