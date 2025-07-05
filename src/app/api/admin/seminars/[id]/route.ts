@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { auth } from '@clerk/nextjs/server'
 
+// Next.js 15 compatible route handlers
+
 export async function PATCH(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
