@@ -4,7 +4,7 @@ import { auth } from '@clerk/nextjs/server'
 
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth()
@@ -23,6 +23,7 @@ export async function PATCH(
     }
 
     const data = await request.json()
+    const params = await context.params
     const { id } = params
 
     // セミナーの存在確認
@@ -63,7 +64,7 @@ export async function PATCH(
 
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { userId } = await auth()
@@ -74,13 +75,14 @@ export async function DELETE(
 
     // 管理者権限チェック
     const admin = await prisma.admin.findUnique({
-      where: { userId }
+      where: { userId: userId }
     })
 
     if (!admin) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }
 
+    const params = await context.params
     const { id } = params
 
     // セミナーの存在確認
