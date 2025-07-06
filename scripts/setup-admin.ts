@@ -13,15 +13,27 @@ async function setupAdmin(clerkUserId: string) {
   }
 
   try {
+    console.log(`🔍 ユーザー検索中: ${clerkUserId}`)
+    
     // ユーザーの存在確認
-    const user = await prisma.user.findUnique({
+    let user = await prisma.user.findUnique({
       where: { clerkId: clerkUserId }
     })
 
     if (!user) {
-      console.error('❌ エラー: 指定されたClerk IDのユーザーが見つかりません')
-      console.log('ヒント: ユーザーが一度ログインしてからこのスクリプトを実行してください')
-      process.exit(1)
+      console.log('ℹ️ ユーザーがデータベースに存在しません。作成します...')
+      
+      // 基本的なユーザー情報で作成（実際のユーザー情報は次回ログイン時に更新される）
+      user = await prisma.user.create({
+        data: {
+          clerkId: clerkUserId,
+          email: `admin-${clerkUserId}@temp.local`, // 一時的なメール
+          firstName: 'Admin',
+          lastName: 'User'
+        }
+      })
+      
+      console.log('✅ ユーザーを作成しました')
     }
 
     // 既存の管理者権限確認
