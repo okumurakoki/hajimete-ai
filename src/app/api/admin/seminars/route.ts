@@ -3,13 +3,34 @@ import { prisma } from '@/lib/prisma'
 import { checkAdminAuth, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
 
 export async function GET() {
+  console.log('🔍 GET /api/admin/seminars - Request started')
+  
   try {
+    // 詳細ログ: リクエスト情報
+    console.log('Environment:', {
+      NODE_ENV: process.env.NODE_ENV,
+      CLERK_KEY_EXISTS: !!process.env.CLERK_SECRET_KEY,
+      CLERK_PUB_KEY_EXISTS: !!process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+      DATABASE_URL_EXISTS: !!process.env.DATABASE_URL
+    })
+
     // 管理者権限チェック
+    console.log('🔐 Checking admin authentication...')
     const { error, userId, isAdmin } = await checkAdminAuth()
-    if (error) return error
+    console.log('Auth result:', { error: !!error, userId, isAdmin })
+    
+    if (error) {
+      console.error('❌ Auth failed:', error)
+      return error
+    }
 
     // セミナー一覧取得
+    console.log('📊 Fetching seminars from database...')
     try {
+      // データベース接続テスト
+      await prisma.$connect()
+      console.log('✅ Prisma connected successfully')
+      
       const seminars = await prisma.liveCourse.findMany({
         orderBy: {
           createdAt: 'desc'
@@ -26,6 +47,8 @@ export async function GET() {
           }
         }
       })
+      
+      console.log(`📋 Found ${seminars.length} seminars`)
 
       // currentParticipants を計算して追加
       const seminarsWithParticipants = seminars.map(seminar => ({

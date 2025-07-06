@@ -46,7 +46,18 @@ export default function ClientLayout({
   }
 
   return (
-    <DynamicClerkProvider localization={jaJP}>
+    <DynamicClerkProvider 
+      localization={jaJP}
+      publishableKey={process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY}
+      appearance={{
+        baseTheme: undefined,
+        variables: {
+          colorPrimary: '#3B82F6',
+        }
+      }}
+      signInFallbackRedirectUrl="/"
+      signUpFallbackRedirectUrl="/plan-selection"
+    >
       <ThemeProvider>
         <ErrorBoundary>
           {children}

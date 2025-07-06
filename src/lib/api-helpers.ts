@@ -19,29 +19,58 @@ export function apiSuccess(data: any) {
 
 // 認証チェックヘルパー
 export async function checkAuth() {
-  const { userId } = await auth()
+  console.log('🔐 Checking Clerk authentication...')
   
-  if (!userId) {
-    return { error: apiError('Unauthorized', 401), userId: null }
+  try {
+    const authResult = await auth()
+    console.log('Clerk auth result:', {
+      userId: authResult?.userId,
+      sessionId: authResult?.sessionId,
+      hasAuth: !!authResult
+    })
+    
+    if (!authResult?.userId) {
+      console.log('❌ No user ID from Clerk auth')
+      return { error: apiError('Unauthorized - No user session', 401), userId: null }
+    }
+    
+    console.log('✅ Clerk auth successful:', authResult.userId)
+    return { error: null, userId: authResult.userId }
+  } catch (clerkError) {
+    console.error('💥 Clerk auth error:', clerkError)
+    return { 
+      error: apiError(`Clerk authentication failed: ${clerkError.message}`, 401), 
+      userId: null 
+    }
   }
-  
-  return { error: null, userId }
 }
 
 // 管理者権限チェックヘルパー
 export async function checkAdminAuth() {
+  console.log('👑 Checking admin authorization...')
+  
   const { error, userId } = await checkAuth()
   
   if (error) {
+    console.log('❌ Auth check failed, denying admin access')
     return { error, userId: null, isAdmin: false }
   }
+  
+  console.log(`🔍 Looking up admin record for user: ${userId}`)
   
   try {
     const admin = await prisma.admin.findUnique({
       where: { userId: userId! }
     })
     
+    console.log('Admin lookup result:', {
+      found: !!admin,
+      role: admin?.role,
+      createdAt: admin?.createdAt
+    })
+    
     if (!admin) {
+      console.log('❌ User is not an admin')
       return { 
         error: apiError('Forbidden - Admin access required', 403), 
         userId, 
@@ -49,10 +78,12 @@ export async function checkAdminAuth() {
       }
     }
     
+    console.log('✅ Admin access granted')
     return { error: null, userId, isAdmin: true }
   } catch (dbError) {
-    console.error('Admin check error:', dbError)
+    console.error('💥 Database error during admin check:', dbError)
     // DBエラーの場合は、一時的にアクセスを許可（本番環境の初期設定用）
+    console.log('⚠️ DB error - temporarily allowing access for setup')
     return { error: null, userId, isAdmin: true }
   }
 }

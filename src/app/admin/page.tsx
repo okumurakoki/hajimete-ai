@@ -174,9 +174,19 @@ export default function AdminDashboard() {
 
       if (seminarRes?.ok) {
         const seminarData = await seminarRes.json()
+        console.log('✅ Seminars loaded:', seminarData.length)
         setSeminars(seminarData)
       } else if (seminarRes) {
-        console.error('Seminar fetch failed:', await seminarRes.text())
+        const errorText = await seminarRes.text()
+        console.error('❌ Seminar API failed:', {
+          status: seminarRes.status,
+          statusText: seminarRes.statusText,
+          error: errorText,
+          url: seminarRes.url
+        })
+        
+        // エラー詳細をユーザーに表示
+        toast.error(`セミナーAPI エラー: ${seminarRes.status} - ${errorText}`)
         setSeminars([]) // エラー時は空配列
       }
     } catch (error) {
