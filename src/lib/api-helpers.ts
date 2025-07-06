@@ -38,8 +38,9 @@ export async function checkAuth() {
     return { error: null, userId: authResult.userId }
   } catch (clerkError) {
     console.error('💥 Clerk auth error:', clerkError)
+    const errorMessage = clerkError instanceof Error ? clerkError.message : 'Unknown error'
     return { 
-      error: apiError(`Clerk authentication failed: ${clerkError.message}`, 401), 
+      error: apiError(`Clerk authentication failed: ${errorMessage}`, 401), 
       userId: null 
     }
   }
