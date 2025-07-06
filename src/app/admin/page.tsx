@@ -140,28 +140,48 @@ export default function AdminDashboard() {
   const fetchData = async () => {
     try {
       setLoading(true)
+      
+      // 全APIを並行実行（エラーがあっても他は継続）
       const [deptRes, courseRes, seminarRes] = await Promise.all([
-        fetch('/api/admin/departments'),
-        fetch('/api/admin/courses'),
-        fetch('/api/admin/seminars')
+        fetch('/api/admin/departments').catch(err => {
+          console.error('Department API error:', err)
+          return null
+        }),
+        fetch('/api/admin/courses').catch(err => {
+          console.error('Course API error:', err)
+          return null
+        }),
+        fetch('/api/admin/seminars').catch(err => {
+          console.error('Seminar API error:', err)
+          return null
+        })
       ])
       
-      if (deptRes.ok) {
+      // 各レスポンスを処理
+      if (deptRes?.ok) {
         const deptData = await deptRes.json()
         setDepartments(deptData)
+      } else if (deptRes) {
+        console.error('Department fetch failed:', await deptRes.text())
       }
       
-      if (courseRes.ok) {
+      if (courseRes?.ok) {
         const courseData = await courseRes.json()
         setCourses(courseData)
+      } else if (courseRes) {
+        console.error('Course fetch failed:', await courseRes.text())
       }
 
-      if (seminarRes.ok) {
+      if (seminarRes?.ok) {
         const seminarData = await seminarRes.json()
         setSeminars(seminarData)
+      } else if (seminarRes) {
+        console.error('Seminar fetch failed:', await seminarRes.text())
+        setSeminars([]) // エラー時は空配列
       }
     } catch (error) {
       console.error('データ取得エラー:', error)
+      toast.error('データの取得中にエラーが発生しました')
     } finally {
       setLoading(false)
     }

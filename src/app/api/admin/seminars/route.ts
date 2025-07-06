@@ -1,90 +1,96 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { auth } from '@clerk/nextjs/server'
+import { checkAdminAuth, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
 
 export async function GET() {
   try {
-    const { userId } = await auth()
-    
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     // 管理者権限チェック
-    const admin = await prisma.admin.findUnique({
-      where: { userId: userId }
-    })
+    const { error, userId, isAdmin } = await checkAdminAuth()
+    if (error) return error
 
-    if (!admin) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    // セミナー一覧取得
+    try {
+      const seminars = await prisma.liveCourse.findMany({
+        orderBy: {
+          createdAt: 'desc'
+        },
+        include: {
+          _count: {
+            select: {
+              registrations: {
+                where: {
+                  status: 'CONFIRMED'
+                }
+              }
+            }
+          }
+        }
+      })
+
+      // currentParticipants を計算して追加
+      const seminarsWithParticipants = seminars.map(seminar => ({
+        ...seminar,
+        currentParticipants: seminar._count.registrations
+      }))
+
+      return apiSuccess(seminarsWithParticipants)
+    } catch (dbError) {
+      return handleDatabaseError(dbError, 'fetch seminars')
     }
-
-    const seminars = await prisma.liveCourse.findMany({
-      orderBy: {
-        createdAt: 'desc'
-      }
-    })
-
-    return NextResponse.json(seminars)
   } catch (error) {
-    console.error('Error fetching seminars:', error)
-    return NextResponse.json({ error: 'Failed to fetch seminars' }, { status: 500 })
+    console.error('Unexpected error in GET /api/admin/seminars:', error)
+    return apiError('Internal server error')
   }
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth()
-    
-    if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
-
     // 管理者権限チェック
-    const admin = await prisma.admin.findUnique({
-      where: { userId: userId }
-    })
-
-    if (!admin) {
-      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
-    }
+    const { error, userId, isAdmin } = await checkAdminAuth()
+    if (error) return error
 
     const data = await request.json()
 
     // バリデーション
     if (!data.title || !data.instructor || !data.startDate || !data.endDate) {
-      return NextResponse.json({ error: 'Required fields missing' }, { status: 400 })
+      return apiError('Required fields missing: title, instructor, startDate, endDate', 400)
     }
 
     if (new Date(data.startDate) >= new Date(data.endDate)) {
-      return NextResponse.json({ error: 'End date must be after start date' }, { status: 400 })
+      return apiError('End date must be after start date', 400)
     }
 
-    const seminar = await prisma.liveCourse.create({
-      data: {
-        title: data.title,
-        description: data.description,
-        instructor: data.instructor,
-        startDate: new Date(data.startDate),
-        endDate: new Date(data.endDate),
-        duration: data.duration,
-        price: data.price,
-        level: data.level,
-        category: data.category,
-        maxParticipants: data.maxParticipants,
-        zoomUrl: data.zoomUrl || null,
-        zoomId: data.zoomId || null,
-        zoomPassword: data.zoomPassword || null,
-        curriculum: data.curriculum || null,
-        tags: data.tags || null,
-        isPublished: data.isPublished || false,
-        isActive: true
-      }
-    })
+    // セミナー作成
+    try {
+      const seminar = await prisma.liveCourse.create({
+        data: {
+          title: data.title,
+          description: data.description,
+          instructor: data.instructor,
+          startDate: new Date(data.startDate),
+          endDate: new Date(data.endDate),
+          duration: data.duration,
+          price: data.price,
+          level: data.level,
+          category: data.category,
+          maxParticipants: data.maxParticipants,
+          currentParticipants: 0,
+          zoomUrl: data.zoomUrl || null,
+          zoomId: data.zoomId || null,
+          zoomPassword: data.zoomPassword || null,
+          curriculum: data.curriculum || null,
+          tags: data.tags || null,
+          isPublished: data.isPublished || false,
+          isActive: true
+        }
+      })
 
-    return NextResponse.json(seminar)
+      return apiSuccess(seminar)
+    } catch (dbError) {
+      return handleDatabaseError(dbError, 'create seminar')
+    }
   } catch (error) {
-    console.error('Error creating seminar:', error)
-    return NextResponse.json({ error: 'Failed to create seminar' }, { status: 500 })
+    console.error('Unexpected error in POST /api/admin/seminars:', error)
+    return apiError('Internal server error')
   }
 }
