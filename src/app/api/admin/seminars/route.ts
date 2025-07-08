@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { auth } from '@clerk/nextjs/server'
-import { prisma } from '@/lib/prisma'
-import { createAdminAuthChecker, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
+import { PrismaClient } from '@prisma/client'
+
+// 直接Prismaクライアントを作成
+const prisma = new PrismaClient()
+
+// 直接APIエラーヘルパーを定義
+function apiError(message: string, status: number = 500) {
+  return NextResponse.json({ error: message }, { status })
+}
+
+function apiSuccess(data: any) {
+  return NextResponse.json(data)
+}
 
 export async function GET() {
   console.log('🔍 GET /api/admin/seminars - Request started (v2 - Auth Fixed)')
