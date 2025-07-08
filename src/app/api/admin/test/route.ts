@@ -34,17 +34,19 @@ export async function GET() {
       
     } catch (dbError) {
       console.error('Database error:', dbError)
+      const errorMessage = dbError instanceof Error ? dbError.message : 'Unknown database error'
       return NextResponse.json({
         error: 'Database error',
-        details: dbError.message
+        details: errorMessage
       }, { status: 500 })
     }
     
   } catch (error) {
     console.error('Test endpoint error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error'
     return NextResponse.json({
       error: 'Internal error',
-      details: error.message
+      details: errorMessage
     }, { status: 500 })
   } finally {
     await prisma.$disconnect()
