@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma'
 import { createAdminAuthChecker, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
 
 export async function GET() {
-  console.log('🔍 GET /api/admin/seminars - Request started')
+  console.log('🔍 GET /api/admin/seminars - Request started (v2 - Auth Fixed)')
   
   try {
     // 詳細ログ: リクエスト情報
@@ -17,14 +17,25 @@ export async function GET() {
 
     // 管理者権限チェック
     console.log('🔐 Checking admin authentication...')
-    const checkAdminAuth = createAdminAuthChecker()
-    const { error, userId, isAdmin } = await checkAdminAuth(auth)
-    console.log('Auth result:', { error: !!error, userId, isAdmin })
     
-    if (error) {
-      console.error('❌ Auth failed:', error)
-      return error
+    // 直接認証チェック
+    const authResult = await auth()
+    if (!authResult?.userId) {
+      return apiError('Unauthorized - No user session', 401)
     }
+    
+    console.log('✅ Basic auth successful:', authResult.userId)
+    
+    // 管理者権限チェック
+    const admin = await prisma.admin.findUnique({
+      where: { userId: authResult.userId }
+    })
+    
+    if (!admin) {
+      return apiError('Forbidden - Admin access required', 403)
+    }
+    
+    console.log('✅ Admin access granted:', admin.role)
 
     // セミナー一覧取得
     console.log('📊 Fetching seminars from database...')
@@ -71,9 +82,18 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     // 管理者権限チェック
-    const checkAdminAuth = createAdminAuthChecker()
-    const { error, userId, isAdmin } = await checkAdminAuth(auth)
-    if (error) return error
+    const authResult = await auth()
+    if (!authResult?.userId) {
+      return apiError('Unauthorized - No user session', 401)
+    }
+    
+    const admin = await prisma.admin.findUnique({
+      where: { userId: authResult.userId }
+    })
+    
+    if (!admin) {
+      return apiError('Forbidden - Admin access required', 403)
+    }
 
     const data = await request.json()
 
