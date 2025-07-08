@@ -71,11 +71,16 @@ export async function GET() {
 
       return apiSuccess(seminarsWithParticipants)
     } catch (dbError) {
-      return handleDatabaseError(dbError, 'fetch seminars')
+      console.error('💥 Database error in seminar fetch:', dbError)
+      console.error('Full error details:', JSON.stringify(dbError, null, 2))
+      return apiError(`Database error: ${dbError.message || 'Unknown database error'}`, 500)
     }
   } catch (error) {
-    console.error('Unexpected error in GET /api/admin/seminars:', error)
-    return apiError('Internal server error')
+    console.error('💥 Unexpected error in GET /api/admin/seminars:', error)
+    console.error('Full error details:', JSON.stringify(error, null, 2))
+    return apiError(`Internal server error: ${error.message || 'Unknown error'}`, 500)
+  } finally {
+    await prisma.$disconnect()
   }
 }
 
@@ -133,10 +138,15 @@ export async function POST(request: NextRequest) {
 
       return apiSuccess(seminar)
     } catch (dbError) {
-      return handleDatabaseError(dbError, 'create seminar')
+      console.error('💥 Database error in seminar creation:', dbError)
+      console.error('Full error details:', JSON.stringify(dbError, null, 2))
+      return apiError(`Database error: ${dbError.message || 'Unknown database error'}`, 500)
     }
   } catch (error) {
-    console.error('Unexpected error in POST /api/admin/seminars:', error)
-    return apiError('Internal server error')
+    console.error('💥 Unexpected error in POST /api/admin/seminars:', error)
+    console.error('Full error details:', JSON.stringify(error, null, 2))
+    return apiError(`Internal server error: ${error.message || 'Unknown error'}`, 500)
+  } finally {
+    await prisma.$disconnect()
   }
 }
