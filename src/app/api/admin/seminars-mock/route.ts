@@ -29,7 +29,7 @@ const mockSeminars = [
     zoomUrl: 'https://zoom.us/j/example1',
     zoomId: '123456789',
     zoomPassword: 'ai2025',
-    curriculum: '1. ChatGPTとは\n2. 基本的な使い方\n3. 実践演習',
+    curriculum: null,
     registrations: [],
     createdAt: '2025-07-08T00:00:00.000Z',
     updatedAt: '2025-07-08T00:00:00.000Z'
@@ -53,7 +53,7 @@ const mockSeminars = [
     zoomUrl: 'https://zoom.us/j/example2',
     zoomId: '987654321',
     zoomPassword: 'notion2025',
-    curriculum: '1. Notion AI概要\n2. 文書作成自動化\n3. データベース活用',
+    curriculum: null,
     registrations: [],
     createdAt: '2025-07-08T01:00:00.000Z',
     updatedAt: '2025-07-08T01:00:00.000Z'
@@ -77,7 +77,7 @@ const mockSeminars = [
     zoomUrl: 'https://zoom.us/j/example3',
     zoomId: '555666777',
     zoomPassword: 'prompt2025',
-    curriculum: '1. プロンプト基礎\n2. 高度なテクニック\n3. 実践課題',
+    curriculum: null,
     registrations: [],
     createdAt: '2025-07-08T02:00:00.000Z',
     updatedAt: '2025-07-08T02:00:00.000Z'
