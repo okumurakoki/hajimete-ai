@@ -151,7 +151,7 @@ export default function AdminDashboard() {
           console.error('Course API error:', err)
           return null
         }),
-        fetch('/api/admin/seminars-bypass').catch(err => {
+        fetch('/api/admin/seminars-mock').catch(err => {
           console.error('Seminar API error:', err)
           return null
         })
@@ -339,7 +339,7 @@ export default function AdminDashboard() {
   // セミナー管理関数
   const handleCreateSeminar = async (formData: SeminarFormData) => {
     try {
-      const response = await fetch('/api/admin/seminars-bypass', {
+      const response = await fetch('/api/admin/seminars-mock', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
