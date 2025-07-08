@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
-import { checkAdminAuth, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
+import { createAdminAuthChecker, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
 
 // Next.js 15 compatible route handlers
 
@@ -10,7 +11,8 @@ export async function PATCH(
 ) {
   try {
     // 管理者権限チェック
-    const { error, userId, isAdmin } = await checkAdminAuth()
+    const checkAdminAuth = createAdminAuthChecker()
+    const { error, userId, isAdmin } = await checkAdminAuth(auth)
     if (error) return error
 
     const data = await request.json()
@@ -63,7 +65,8 @@ export async function DELETE(
 ) {
   try {
     // 管理者権限チェック
-    const { error, userId, isAdmin } = await checkAdminAuth()
+    const checkAdminAuth = createAdminAuthChecker()
+    const { error, userId, isAdmin } = await checkAdminAuth(auth)
     if (error) return error
 
     const params = await context.params

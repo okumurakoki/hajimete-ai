@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { auth } from '@clerk/nextjs/server'
 import { prisma } from '@/lib/prisma'
-import { checkAdminAuth, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
+import { createAdminAuthChecker, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
 
 export async function GET() {
   console.log('🔍 GET /api/admin/seminars - Request started')
@@ -16,7 +17,8 @@ export async function GET() {
 
     // 管理者権限チェック
     console.log('🔐 Checking admin authentication...')
-    const { error, userId, isAdmin } = await checkAdminAuth()
+    const checkAdminAuth = createAdminAuthChecker()
+    const { error, userId, isAdmin } = await checkAdminAuth(auth)
     console.log('Auth result:', { error: !!error, userId, isAdmin })
     
     if (error) {
@@ -69,7 +71,8 @@ export async function GET() {
 export async function POST(request: NextRequest) {
   try {
     // 管理者権限チェック
-    const { error, userId, isAdmin } = await checkAdminAuth()
+    const checkAdminAuth = createAdminAuthChecker()
+    const { error, userId, isAdmin } = await checkAdminAuth(auth)
     if (error) return error
 
     const data = await request.json()

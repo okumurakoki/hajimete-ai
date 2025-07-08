@@ -51,13 +51,16 @@ export default function CheckoutPage() {
       return
     }
 
+    // セミナーIDまたはコースIDsを取得
+    const seminarId = searchParams.get('seminarId')
     const courseIdsParam = searchParams.get('courses')
-    if (!courseIdsParam) {
-      router.push('/courses/live')
+    
+    if (!seminarId && !courseIdsParam) {
+      router.push('/seminars')
       return
     }
 
-    const courseIds = courseIdsParam.split(',')
+    const courseIds = seminarId ? [seminarId] : courseIdsParam!.split(',')
     createPaymentIntent(courseIds)
   }, [isLoaded, user, searchParams])
 
@@ -94,7 +97,12 @@ export default function CheckoutPage() {
   }
 
   const handleCancel = () => {
-    router.push('/courses/live')
+    const seminarId = searchParams.get('seminarId')
+    if (seminarId) {
+      router.push('/seminars')
+    } else {
+      router.push('/courses/live')
+    }
   }
 
   const calculateTotal = () => {
@@ -138,11 +146,14 @@ export default function CheckoutPage() {
             </p>
             <div className="flex gap-3">
               <button
-                onClick={() => router.push('/courses/live')}
+                onClick={() => {
+                  const seminarId = searchParams.get('seminarId')
+                  router.push(seminarId ? '/seminars' : '/courses/live')
+                }}
                 className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors flex items-center justify-center gap-2"
               >
                 <ArrowLeft className="w-4 h-4" />
-                講座一覧に戻る
+                {searchParams.get('seminarId') ? 'セミナー一覧' : '講座一覧'}に戻る
               </button>
               <button
                 onClick={() => window.location.reload()}
@@ -165,11 +176,14 @@ export default function CheckoutPage() {
             決済情報が見つかりませんでした。
           </p>
           <button
-            onClick={() => router.push('/courses/live')}
+            onClick={() => {
+              const seminarId = searchParams.get('seminarId')
+              router.push(seminarId ? '/seminars' : '/courses/live')
+            }}
             className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors flex items-center gap-2 mx-auto"
           >
             <ArrowLeft className="w-4 h-4" />
-            講座一覧に戻る
+            {searchParams.get('seminarId') ? 'セミナー一覧' : '講座一覧'}に戻る
           </button>
         </div>
       </DashboardLayout>
@@ -203,7 +217,7 @@ export default function CheckoutPage() {
             className="flex items-center gap-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
-            講座選択に戻る
+            {searchParams.get('seminarId') ? 'セミナー詳細' : '講座選択'}に戻る
           </button>
         </div>
 
