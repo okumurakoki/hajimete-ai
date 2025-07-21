@@ -38,15 +38,35 @@ function PlanSelectionContent({ loading, setLoading }: { loading: boolean, setLo
     )
   }
 
-  // 決済処理（一時的に無効化）
-  const handlePlanSelection = async (planType: string) => {
+  // Stripe決済処理
+  const handlePlanSelection = async (planType: 'basic' | 'premium') => {
     if (!user) return
     
     setLoading(true)
     
     try {
-      // 一時的にアラート表示（Stripe設定完了まで）
-      alert(`${planType}プランの選択ありがとうございます。\n決済機能は現在設定中です。\nしばらくお待ちください。`)
+      // Stripe Checkoutセッションを作成
+      const response = await fetch('/api/payments/create-subscription', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          planType,
+          userId: user.id,
+          userEmail: user.emailAddresses[0]?.emailAddress
+        })
+      })
+
+      const data = await response.json()
+
+      if (data.error) {
+        throw new Error(data.error)
+      }
+
+      // Stripe Checkoutページにリダイレクト
+      window.location.href = data.checkoutUrl
+      
     } catch (error) {
       console.error('Plan selection error:', error)
       alert('エラーが発生しました。しばらく時間をおいてからお試しください。')
@@ -130,7 +150,7 @@ function PlanSelectionContent({ loading, setLoading }: { loading: boolean, setLo
               </li>
             </ul>
             <button
-              onClick={() => handlePlanSelection('ベーシック')}
+              onClick={() => handlePlanSelection('basic')}
               disabled={loading}
               className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 px-6 rounded-lg font-medium transition-colors disabled:opacity-50"
             >
@@ -172,7 +192,7 @@ function PlanSelectionContent({ loading, setLoading }: { loading: boolean, setLo
               </li>
             </ul>
             <button
-              onClick={() => handlePlanSelection('プレミアム')}
+              onClick={() => handlePlanSelection('premium')}
               disabled={loading}
               className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 px-6 rounded-lg font-medium transition-colors disabled:opacity-50"
             >

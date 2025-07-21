@@ -28,6 +28,18 @@ export async function POST(req: NextRequest) {
     console.log('💳 Stripe webhook received:', event.type)
 
     switch (event.type) {
+      case 'checkout.session.completed':
+        await handleCheckoutSessionCompleted(event.data.object as Stripe.Checkout.Session)
+        break
+      case 'customer.subscription.created':
+        await handleSubscriptionCreated(event.data.object as Stripe.Subscription)
+        break
+      case 'customer.subscription.updated':
+        await handleSubscriptionUpdated(event.data.object as Stripe.Subscription)
+        break
+      case 'customer.subscription.deleted':
+        await handleSubscriptionDeleted(event.data.object as Stripe.Subscription)
+        break
       case 'payment_intent.succeeded':
         await handlePaymentSucceeded(event.data.object as Stripe.PaymentIntent)
         break
@@ -199,5 +211,125 @@ async function sendConfirmationEmail(userId: string, courseIds: string[], paymen
 
   } catch (error) {
     console.error('❌ Error in sendConfirmationEmail:', error)
+  }
+}
+
+// 新しいイベントハンドラーを追加
+async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) {
+  try {
+    console.log('✅ Checkout session completed:', session.id)
+    
+    if (session.metadata?.type === 'seminar') {
+      // セミナー参加登録
+      await handleSeminarRegistration(session)
+    } else {
+      // サブスクリプション処理
+      await handleSubscriptionCheckout(session)
+    }
+  } catch (error) {
+    console.error('❌ Error handling checkout session:', error)
+  }
+}
+
+async function handleSeminarRegistration(session: Stripe.Checkout.Session) {
+  const { userId, seminarId } = session.metadata || {}
+  
+  if (!userId || !seminarId) {
+    console.error('❌ Missing metadata for seminar registration')
+    return
+  }
+
+  try {
+    // セミナー参加記録を作成
+    const registration = await prisma.seminarRegistration.create({
+      data: {
+        userId,
+        seminarId,
+        status: 'confirmed',
+        paymentId: session.payment_intent as string,
+        stripeSessionId: session.id,
+        amount: session.amount_total || 0
+      }
+    })
+
+    console.log(`📅 Seminar registration created:`, registration.id)
+  } catch (error) {
+    console.error('❌ Error creating seminar registration:', error)
+  }
+}
+
+async function handleSubscriptionCheckout(session: Stripe.Checkout.Session) {
+  const { userId, planType } = session.metadata || {}
+  
+  if (!userId || !planType) {
+    console.error('❌ Missing metadata for subscription checkout')
+    return
+  }
+
+  console.log(`📋 Processing subscription checkout for user ${userId}, plan ${planType}`)
+}
+
+async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
+  const { userId, planType } = subscription.metadata || {}
+  
+  if (!userId || !planType) {
+    console.error('❌ Missing metadata for subscription creation')
+    return
+  }
+
+  try {
+    // ユーザーのプランを更新
+    await prisma.user.upsert({
+      where: { clerkId: userId },
+      create: {
+        clerkId: userId,
+        plan: planType,
+        stripeCustomerId: subscription.customer as string,
+        stripeSubscriptionId: subscription.id,
+        subscriptionStatus: subscription.status
+      },
+      update: {
+        plan: planType,
+        stripeCustomerId: subscription.customer as string,
+        stripeSubscriptionId: subscription.id,
+        subscriptionStatus: subscription.status
+      }
+    })
+
+    console.log(`✅ User plan updated: ${userId} -> ${planType}`)
+  } catch (error) {
+    console.error('❌ Error updating user plan:', error)
+  }
+}
+
+async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
+  try {
+    await prisma.user.updateMany({
+      where: { stripeSubscriptionId: subscription.id },
+      data: {
+        subscriptionStatus: subscription.status
+      }
+    })
+
+    console.log(`📝 Subscription status updated: ${subscription.id} -> ${subscription.status}`)
+  } catch (error) {
+    console.error('❌ Error updating subscription status:', error)
+  }
+}
+
+async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
+  try {
+    await prisma.user.updateMany({
+      where: { stripeSubscriptionId: subscription.id },
+      data: {
+        plan: 'free',
+        subscriptionStatus: 'canceled',
+        stripeSubscriptionId: null
+      }
+    })
+
+    console.log(`❌ Subscription canceled: ${subscription.id}`)
+  } catch (error) {
+    console.error('❌ Error handling subscription deletion:', error)
   }
 }
