@@ -50,3 +50,10 @@ export const getStripePriceId = (userPlan: string, amount: number): string | nul
 export const getPlanSubscriptionPriceId = (plan: 'basic' | 'premium'): string => {
   return plan === 'premium' ? STRIPE_PRICE_IDS.PREMIUM_PLAN : STRIPE_PRICE_IDS.BASIC_PLAN
 }
+
+// プラン価格設定（日本円）
+export const PLAN_PRICES = {
+  FREE: 0,
+  BASIC: 1650,  // ベーシックプラン: 1,650円/月
+  PREMIUM: 5500  // プレミアムプラン: 5,500円/月
+}

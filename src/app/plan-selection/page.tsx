@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useUser } from '@clerk/nextjs'
 import { useState, useEffect } from 'react'
 
@@ -104,7 +106,7 @@ function PlanSelectionContent({ loading, setLoading }: { loading: boolean, setLo
             </div>
             <h3 className="text-xl font-bold text-gray-900 mb-4">ベーシックプラン</h3>
             <div className="mb-6">
-              <span className="text-4xl font-bold text-gray-900">¥3,500</span>
+              <span className="text-4xl font-bold text-gray-900">¥1,650</span>
               <span className="text-gray-600 ml-2">/ 月</span>
             </div>
             <ul className="space-y-3 mb-8">

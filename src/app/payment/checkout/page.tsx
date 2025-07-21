@@ -1,5 +1,7 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { useUser } from '@clerk/nextjs'
@@ -69,21 +71,54 @@ export default function CheckoutPage() {
       setLoading(true)
       setError('')
 
-      const response = await fetch('/api/payment/create-intent', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ courseIds }),
-      })
+      const seminarId = searchParams.get('seminarId')
+      
+      if (seminarId) {
+        // セミナー決済の場合
+        const response = await fetch('/api/payment/seminar-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ seminarId }),
+        })
 
-      if (!response.ok) {
-        const errorData = await response.json()
-        throw new Error(errorData.error || 'Failed to create payment intent')
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to create seminar payment intent')
+        }
+
+        const data = await response.json()
+        // セミナーデータをコース形式に変換
+        setPaymentData({
+          clientSecret: data.clientSecret,
+          paymentId: data.paymentId,
+          amount: data.amount,
+          courses: [{
+            id: data.seminar.id,
+            title: data.seminar.title,
+            price: data.seminar.price,
+            startDate: new Date().toISOString()
+          }]
+        })
+      } else {
+        // 通常の講座決済の場合
+        const response = await fetch('/api/payment/create-intent', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ courseIds }),
+        })
+
+        if (!response.ok) {
+          const errorData = await response.json()
+          throw new Error(errorData.error || 'Failed to create payment intent')
+        }
+
+        const data = await response.json()
+        setPaymentData(data)
       }
-
-      const data = await response.json()
-      setPaymentData(data)
     } catch (err) {
       console.error('Error creating payment intent:', err)
       setError(err instanceof Error ? err.message : 'Unknown error occurred')
@@ -93,7 +128,12 @@ export default function CheckoutPage() {
   }
 
   const handlePaymentSuccess = () => {
-    router.push('/payment/success')
+    const seminarId = searchParams.get('seminarId')
+    if (seminarId) {
+      router.push('/payment/success-seminar')
+    } else {
+      router.push('/payment/success')
+    }
   }
 
   const handleCancel = () => {

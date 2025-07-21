@@ -144,9 +144,9 @@ export class EmailService {
   }
 
   /**
-   * Nodemailerでメール送信（開発環境用）
+   * Nodemailerでメール送信（開発環境用）- 外部からもアクセス可能
    */
-  private async sendWithNodemailer(
+  async sendWithNodemailer(
     to: string,
     subject: string,
     text: string,

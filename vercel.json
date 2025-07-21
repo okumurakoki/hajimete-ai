@@ -1,14 +1,16 @@
 {
-  "buildCommand": "npx prisma generate && npm run build",
+  "buildCommand": "npx prisma generate && next build",
   "outputDirectory": ".next",
   "framework": "nextjs",
   "installCommand": "npm install",
   "env": {
-    "NEXT_PUBLIC_APP_URL": "https://app.oku-ai.co.jp"
+    "NEXT_PUBLIC_APP_URL": "https://app.oku-ai.co.jp",
+    "NODE_ENV": "production"
   },
   "functions": {
     "app/api/**/*.ts": {
       "maxDuration": 30
     }
-  }
+  },
+  "regions": ["hnd1"]
 }

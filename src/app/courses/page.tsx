@@ -1,3 +1,7 @@
+'use client'
+
+export const dynamic = 'force-dynamic'
+
 import { DashboardLayout } from '@/components/layout/Layout'
 import { BookOpen, Clock, Users, Star, Filter, Search } from 'lucide-react'
 
@@ -287,7 +291,4 @@ export default function CoursesPage() {
   )
 }
 
-export const metadata = {
-  title: 'コース一覧 - はじめて.AI',
-  description: 'AIスキルを体系的に学べる豊富なコースをご用意しています。基礎から応用まで、あなたのレベルに合ったコースを見つけてください。'
-}
+// Note: metadata export removed because this is now a client component

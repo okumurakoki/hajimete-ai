@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from 'react'
 import { AlertTriangle, RefreshCw, Home } from 'lucide-react'
 import Link from 'next/link'
+import { handleReactError } from '@/lib/error-logger'
 
 interface ErrorBoundaryProps {
   children: React.ReactNode
@@ -40,7 +41,11 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
         error.stack?.includes('chrome-extension')) {
       return
     }
+    
     console.error('Application Error:', error, errorInfo)
+    
+    // エラーログに記録
+    handleReactError(error, errorInfo, undefined, 'ErrorBoundary')
   }
 
   render() {
@@ -125,7 +130,9 @@ function DefaultErrorFallback({ error, retry }: { error: Error; retry: () => voi
 // Hook for error handling in components
 export function useErrorHandler() {
   return (error: Error, errorInfo?: { componentStack: string }) => {
-    // Log to monitoring service
+    // エラーログに記録
+    handleReactError(error, errorInfo || { componentStack: '' }, undefined, 'useErrorHandler')
+    
     console.error('Component error:', error, errorInfo)
     
     // You can also trigger error boundary here if needed

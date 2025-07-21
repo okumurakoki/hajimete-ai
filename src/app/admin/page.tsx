@@ -1,7 +1,9 @@
 'use client'
 
+export const dynamic = 'force-dynamic'
+
 import { useState, useEffect } from 'react'
-import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play, Mail, Calendar } from 'lucide-react'
+import { Plus, BookOpen, Users, Video, BarChart3, Settings, Brain, Laptop, Code, Zap, Target, Trophy, Lightbulb, Rocket, Globe, Star, Crown, Diamond, Sparkles, Gift, Calculator, Camera, Music, Heart, Palette as PaletteIcon, Eye, EyeOff, Clock, Play, Mail, Calendar, AlertCircle } from 'lucide-react'
 import { AdminLayout } from '@/components/layout/Layout'
 import DepartmentForm from '@/components/admin/forms/DepartmentForm'
 import CourseForm from '@/components/admin/forms/CourseForm'
@@ -9,6 +11,8 @@ import SeminarForm from '@/components/admin/forms/SeminarForm'
 import CourseManagement from '@/components/admin/CourseManagement'
 import SeminarManagement from '@/components/admin/SeminarManagement'
 import AnalyticsDashboard from '@/components/admin/analytics/AnalyticsDashboard'
+import ErrorLogsDashboard from '@/components/admin/ErrorLogsDashboard'
+import EmailSchedulerDashboard from '@/components/admin/EmailSchedulerDashboard'
 import { Seminar, SeminarFormData, Department, Course } from '@/types'
 import toast, { Toaster } from 'react-hot-toast'
 
@@ -90,7 +94,7 @@ export default function AdminDashboard() {
   const [courses, setCourses] = useState<Course[]>([])
   const [seminars, setSeminars] = useState<Seminar[]>([])
   const [loading, setLoading] = useState(true)
-  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'departments' | 'courses' | 'seminars'>('overview')
+  const [activeTab, setActiveTab] = useState<'overview' | 'analytics' | 'departments' | 'courses' | 'seminars' | 'error-logs' | 'email-scheduler'>('overview')
   const [showDepartmentForm, setShowDepartmentForm] = useState(false)
   const [showCourseForm, setShowCourseForm] = useState(false)
   const [showSeminarForm, setShowSeminarForm] = useState(false)
@@ -447,7 +451,9 @@ export default function AdminDashboard() {
               { id: 'analytics', label: '統計分析', icon: BarChart3 },
               { id: 'departments', label: '学部管理', icon: BookOpen },
               { id: 'courses', label: '講義管理', icon: Video },
-              { id: 'seminars', label: 'セミナー管理', icon: Calendar }
+              { id: 'seminars', label: 'セミナー管理', icon: Calendar },
+              { id: 'error-logs', label: 'エラーログ', icon: AlertCircle },
+              { id: 'email-scheduler', label: 'メール管理', icon: Mail }
             ].map((tab) => (
               <button
                 key={tab.id}
@@ -645,6 +651,16 @@ export default function AdminDashboard() {
                 onDeleteSeminar={handleDeleteSeminar}
                 onToggleStatus={handleToggleSeminarStatus}
               />
+            )}
+
+            {/* エラーログタブ */}
+            {activeTab === 'error-logs' && (
+              <ErrorLogsDashboard />
+            )}
+
+            {/* メール管理タブ */}
+            {activeTab === 'email-scheduler' && (
+              <EmailSchedulerDashboard />
             )}
           </>
         )}
