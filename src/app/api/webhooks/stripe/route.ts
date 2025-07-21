@@ -240,15 +240,15 @@ async function handleSeminarRegistration(session: Stripe.Checkout.Session) {
   }
 
   try {
-    // セミナー参加記録を作成
-    const registration = await prisma.seminarRegistration.create({
+    // セミナー参加記録を作成（Registrationモデルを使用）
+    const registration = await prisma.registration.create({
       data: {
         userId,
-        seminarId,
-        status: 'confirmed',
-        paymentId: session.payment_intent as string,
-        stripeSessionId: session.id,
-        amount: session.amount_total || 0
+        courseId: seminarId, // LiveCourseとして扱う
+        status: 'CONFIRMED',
+        amount: session.amount_total || 0,
+        appliedDiscount: 0,
+        attendanceStatus: 'REGISTERED'
       }
     })
 
@@ -278,25 +278,28 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
   }
 
   try {
+    // プランタイプを適切にキャスト
+    const userPlan = planType.toUpperCase() as 'FREE' | 'BASIC' | 'PREMIUM'
+    
     // ユーザーのプランを更新
     await prisma.user.upsert({
       where: { clerkId: userId },
       create: {
         clerkId: userId,
-        plan: planType,
+        plan: userPlan,
         stripeCustomerId: subscription.customer as string,
-        stripeSubscriptionId: subscription.id,
-        subscriptionStatus: subscription.status
+        subscriptionId: subscription.id,
+        subscriptionStatus: 'ACTIVE'
       },
       update: {
-        plan: planType,
+        plan: userPlan,
         stripeCustomerId: subscription.customer as string,
-        stripeSubscriptionId: subscription.id,
-        subscriptionStatus: subscription.status
+        subscriptionId: subscription.id,
+        subscriptionStatus: 'ACTIVE'
       }
     })
 
-    console.log(`✅ User plan updated: ${userId} -> ${planType}`)
+    console.log(`✅ User plan updated: ${userId} -> ${userPlan}`)
   } catch (error) {
     console.error('❌ Error updating user plan:', error)
   }
@@ -304,14 +307,18 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
 
 async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
   try {
+    const status = subscription.status === 'active' ? 'ACTIVE' : 
+                  subscription.status === 'canceled' ? 'CANCELED' : 
+                  subscription.status === 'past_due' ? 'PAST_DUE' : 'INACTIVE'
+                  
     await prisma.user.updateMany({
-      where: { stripeSubscriptionId: subscription.id },
+      where: { subscriptionId: subscription.id },
       data: {
-        subscriptionStatus: subscription.status
+        subscriptionStatus: status
       }
     })
 
-    console.log(`📝 Subscription status updated: ${subscription.id} -> ${subscription.status}`)
+    console.log(`📝 Subscription status updated: ${subscription.id} -> ${status}`)
   } catch (error) {
     console.error('❌ Error updating subscription status:', error)
   }
@@ -320,11 +327,11 @@ async function handleSubscriptionUpdated(subscription: Stripe.Subscription) {
 async function handleSubscriptionDeleted(subscription: Stripe.Subscription) {
   try {
     await prisma.user.updateMany({
-      where: { stripeSubscriptionId: subscription.id },
+      where: { subscriptionId: subscription.id },
       data: {
-        plan: 'free',
-        subscriptionStatus: 'canceled',
-        stripeSubscriptionId: null
+        plan: 'FREE',
+        subscriptionStatus: 'CANCELED',
+        subscriptionId: null
       }
     })
 
