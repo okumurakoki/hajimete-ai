@@ -286,6 +286,7 @@ async function handleSubscriptionCreated(subscription: Stripe.Subscription) {
       where: { clerkId: userId },
       create: {
         clerkId: userId,
+        email: '', // Webhookでは取得できないため空文字列で作成
         plan: userPlan,
         stripeCustomerId: subscription.customer as string,
         subscriptionId: subscription.id,
