@@ -38,7 +38,7 @@ export default function SeminarDetail() {
   useEffect(() => {
     const fetchSeminar = async () => {
       try {
-        const response = await fetch(`/api/seminars-mock/${params.id}`)
+        const response = await fetch(`/api/seminars/${params.id}`)
         if (!response.ok) {
           throw new Error('セミナー詳細の取得に失敗しました')
         }

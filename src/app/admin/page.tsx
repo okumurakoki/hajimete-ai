@@ -155,7 +155,7 @@ export default function AdminDashboard() {
           console.error('Course API error:', err)
           return null
         }),
-        fetch('/api/admin/seminars-mock').catch(err => {
+        fetch('/api/admin/seminars').catch(err => {
           console.error('Seminar API error:', err)
           return null
         })
