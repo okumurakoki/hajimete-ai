@@ -1,28 +1,47 @@
 import { NextResponse, NextRequest } from 'next/server'
-import { mockCourses, addCourse } from '@/lib/mockData'
-
-// Mock data moved to shared module - see /src/lib/mockData.ts
+import { prisma } from '@/lib/prisma'
+import { createAdminAuthChecker, apiError, apiSuccess, handleDatabaseError } from '@/lib/api-helpers'
+import { auth } from '@clerk/nextjs/server'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log('🔍 現在のmockCourses件数:', mockCourses.length)
-    console.log('📋 mockCourses内容:', mockCourses.map(c => ({
-      id: c.id, 
-      title: c.title,
-      createdAt: c.createdAt
-    })))
+    // 管理者権限チェック
+    const checkAdminAuth = createAdminAuthChecker()
+    const { error } = await checkAdminAuth(auth)
+    if (error) return error
+
+    const courses = await prisma.course.findMany({
+      include: {
+        department: {
+          select: { name: true }
+        },
+        enrollments: {
+          select: { id: true }
+        },
+        lessons: {
+          select: { id: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    })
+
+    const formattedCourses = courses.map(course => ({
+      id: course.id,
+      title: course.title,
+      description: course.description,
+      departmentId: course.departmentId,
+      department: { name: course.department.name },
+      lessonsCount: course.lessons.length,
+      enrolledCount: course.enrollments.length,
+      level: course.level,
+      duration: course.duration,
+      isActive: course.isActive,
+      isFree: course.isFree,
+      createdAt: course.createdAt,
+      updatedAt: course.updatedAt
+    }))
     
-    // In the future, this will fetch from database:
-    // const courses = await prisma.course.findMany({
-    //   include: {
-    //     department: { select: { name: true } },
-    //     _count: {
-    //       select: { lessons: true }
-    //     }
-    //   }
-    // })
-    
-    return NextResponse.json(mockCourses)
+    return NextResponse.json(formattedCourses)
   } catch (error) {
     console.error('Courses API error:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
@@ -31,64 +50,55 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
+    // 管理者権限チェック
+    const checkAdminAuth = createAdminAuthChecker()
+    const { error } = await checkAdminAuth(auth)
+    if (error) return error
+
     const data = await request.json()
-    
-    console.log('📝 受信したデータ:', data)
     
     // バリデーション
     if (!data.title || !data.departmentId) {
-      console.error('❌ バリデーションエラー: タイトルまたは学部が不足')
-      return NextResponse.json(
-        { success: false, error: 'タイトルと学部は必須です' },
-        { status: 400 }
-      )
+      return apiError('タイトルと学部は必須です', 400)
     }
 
-    // 学部情報を取得
-    const mockDepartments = [
-      { id: '1', name: 'AI基礎学部' },
-      { id: '2', name: '業務効率化学部' },
-      { id: '3', name: '実践応用学部' }
-    ]
+    // 学部の存在確認
+    const department = await prisma.department.findUnique({
+      where: { id: data.departmentId }
+    })
     
-    const department = mockDepartments.find(d => d.id === data.departmentId)
-    console.log('🏢 見つかった学部:', department)
+    if (!department) {
+      return apiError('指定された学部が見つかりません', 404)
+    }
 
     // 新しい講義を作成
-    const newCourse = {
-      id: Date.now().toString(),
-      title: data.title,
-      description: data.description || '',
-      thumbnail: data.thumbnail || null,
-      thumbnailFile: data.thumbnailFile || null,
-      difficulty: data.difficulty || 'beginner',
-      duration: data.duration || 30,
-      videoUrl: data.videoUrl || null,
-      status: data.status || 'draft',
-      departmentId: data.departmentId,
-      department: { name: department?.name || 'Unknown Department' },
-      lessonsCount: 0,
-      enrolledCount: 0,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
-    }
+    const newCourse = await prisma.course.create({
+      data: {
+        title: data.title,
+        description: data.description || '',
+        departmentId: data.departmentId,
+        level: data.level || 'BEGINNER',
+        duration: data.duration || 30,
+        videoUrl: data.videoUrl || null,
+        thumbnail: data.thumbnail || null,
+        isActive: data.isActive ?? true,
+        isFree: data.isFree ?? false
+      },
+      include: {
+        department: {
+          select: { name: true }
+        }
+      }
+    })
 
-    console.log('🆕 作成された講義:', newCourse)
-
-    // 共有データストアに追加
-    addCourse(newCourse)
-
-    return NextResponse.json({
+    return apiSuccess({
       success: true,
       message: '講義が作成されました',
       course: newCourse
-    }, { status: 201 })
+    })
 
   } catch (error) {
-    console.error('💥 講義作成エラー:', error)
-    return NextResponse.json(
-      { success: false, error: '講義の作成に失敗しました' },
-      { status: 500 }
-    )
+    console.error('講義作成エラー:', error)
+    return handleDatabaseError(error, 'create course')
   }
 }
