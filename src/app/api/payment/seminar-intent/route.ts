@@ -36,7 +36,7 @@ const mockStripe = {
 
 // 実際のStripeクライアント
 const realStripe = process.env.STRIPE_SECRET_KEY ? new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2025-05-28.basil',
+  apiVersion: '2025-06-30.basil',
 }) : null
 
 const stripe = USE_MOCK_STRIPE ? mockStripe : realStripe
