@@ -87,9 +87,11 @@ export function createAdminAuthChecker() {
       return { error: null, userId, isAdmin: true }
     } catch (dbError) {
       console.error('💥 Database error during admin check:', dbError)
-      // DBエラーの場合は、一時的にアクセスを許可（本番環境の初期設定用）
-      console.log('⚠️ DB error - temporarily allowing access for setup')
-      return { error: null, userId, isAdmin: true }
+      return { 
+        error: apiError('Database error during admin verification', 500), 
+        userId, 
+        isAdmin: false 
+      }
     }
   }
 }

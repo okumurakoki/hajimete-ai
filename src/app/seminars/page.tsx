@@ -65,7 +65,7 @@ export default function SeminarsPage() {
 
   const fetchCourses = async () => {
     try {
-      const response = await fetch('/api/courses/live')
+      const response = await fetch('/api/seminars')
       if (response.ok) {
         const data = await response.json()
         setCourses(data.map((course: any) => ({
