@@ -1,13 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { auth } from '@clerk/nextjs/server'
+import { getAuthUserId, isAdminUser } from '@/lib/auth-helpers'
 import { emailScheduler } from '@/lib/email-scheduler'
 
 export async function GET(req: NextRequest) {
   try {
-    const { userId } = await auth()
+    const userId = await getAuthUserId(req)
     
     if (!userId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    const isAdmin = await isAdminUser(userId)
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
     }
 
     const { searchParams } = new URL(req.url)
@@ -50,11 +55,15 @@ export async function POST(req: NextRequest) {
     if (authHeader?.startsWith('Bearer ')) {
       userId = authHeader.replace('Bearer ', '')
     } else {
-      const authResult = await auth()
-      userId = authResult.userId
+      userId = await getAuthUserId(req)
       
       if (!userId) {
         return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      }
+      
+      const isAdmin = await isAdminUser(userId)
+      if (!isAdmin) {
+        return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
       }
     }
 
