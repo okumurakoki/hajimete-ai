@@ -604,7 +604,7 @@ function DashboardContent() {
                   </span>
                 </div>
                 <h4 className="font-medium text-gray-900 dark:text-gray-100 mb-2">ベーシックプラン</h4>
-                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">¥3,500</p>
+                <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">¥1,650</p>
                 <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">月額</p>
                 <ul className="text-sm text-gray-600 dark:text-gray-400 space-y-1 mb-4">
                   <li>• 全学部アクセス</li>
