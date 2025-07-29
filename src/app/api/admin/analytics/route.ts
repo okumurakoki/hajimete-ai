@@ -1,8 +1,7 @@
 import { NextResponse, NextRequest } from 'next/server'
 import { format, subDays, subMonths } from 'date-fns'
 import { prisma } from '@/lib/prisma'
-import { createAdminAuthChecker } from '@/lib/api-helpers'
-import { auth } from '@clerk/nextjs/server'
+import { getAuthUserId, isAdminUser } from '@/lib/auth-helpers'
 
 // 統計データ生成用の補助関数
 function generateTimeSeriesData(days: number) {
@@ -21,9 +20,16 @@ function generateTimeSeriesData(days: number) {
 export async function GET(request: NextRequest) {
   try {
     // 管理者権限チェック
-    const checkAdminAuth = createAdminAuthChecker()
-    const { error } = await checkAdminAuth(auth)
-    if (error) return error
+    const userId = await getAuthUserId(request)
+    
+    if (!userId) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
+    
+    const isAdmin = await isAdminUser(userId)
+    if (!isAdmin) {
+      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
+    }
 
     const { searchParams } = new URL(request.url)
     const type = searchParams.get('type') || 'overview'
