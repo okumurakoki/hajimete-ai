@@ -16,7 +16,15 @@ const isProtectedRoute = createRouteMatcher([
   '/videos(.*)',
   '/seminars(.*)',
   '/live(.*)',
-  '/api/protected(.*)'
+  '/api/protected(.*)',
+  '/api/admin(.*)', // 管理者APIルート
+  '/api/user(.*)', // ユーザーAPIルート
+  '/api/registrations(.*)', // 登録APIルート
+  '/api/payment(.*)', // 決済APIルート
+  '/api/courses(.*)', // コース管理APIルート
+  '/api/email(.*)', // メール送信APIルート
+  '/api/upload(.*)', // アップロードAPIルート
+  '/api/videos(.*)', // ビデオAPIルート
 ])
 
 // パブリックルートを定義
@@ -32,7 +40,10 @@ const isPublicRoute = createRouteMatcher([
   '/test(.*)',
   '/debug(.*)',
   '/api/public(.*)',
-  '/api/webhooks(.*)'
+  '/api/webhooks(.*)',
+  '/api/seminars', // パブリックセミナー一覧
+  '/api/departments', // 学部一覧
+  '/api/search' // 検索API
 ])
 
 export default clerkMiddleware(async (auth, req) => {

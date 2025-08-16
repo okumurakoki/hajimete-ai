@@ -1,12 +1,37 @@
-import { auth } from '@clerk/nextjs/server'
+import { auth, currentUser } from '@clerk/nextjs/server'
 import { NextRequest } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
 export async function getAuthUserId(request?: NextRequest) {
   try {
-    const { userId } = await auth()
-    console.log('Auth result:', { userId })
-    return userId || null
+    // 複数の方法で認証を試みる
+    console.log('🔐 Attempting authentication...')
+    
+    // 方法1: auth()を使用
+    const authResult = await auth()
+    console.log('Auth() result:', { 
+      userId: authResult?.userId,
+      sessionId: authResult?.sessionId,
+      hasAuth: !!authResult 
+    })
+    
+    if (authResult?.userId) {
+      return authResult.userId
+    }
+    
+    // 方法2: currentUser()を使用（フォールバック）
+    const user = await currentUser()
+    console.log('CurrentUser() result:', { 
+      userId: user?.id,
+      hasUser: !!user 
+    })
+    
+    if (user?.id) {
+      return user.id
+    }
+    
+    console.error('❌ No authentication found')
+    return null
   } catch (error) {
     console.error('Auth error:', error)
     return null

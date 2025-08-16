@@ -3,16 +3,29 @@ import { getAuthUserId, isAdminUser } from '@/lib/auth-helpers'
 import { prisma } from '@/lib/prisma'
 
 export async function GET(request: NextRequest) {
+  console.log('🔍 GET /api/admin/seminars - Start')
+  
   try {
     const userId = await getAuthUserId(request)
+    console.log('👤 Auth check result:', { userId })
     
     if (!userId) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+      console.error('❌ No userId found in auth')
+      return NextResponse.json({ 
+        error: 'Unauthorized',
+        debug: process.env.NODE_ENV === 'development' ? 'No user ID found in authentication' : undefined
+      }, { status: 401 })
     }
     
     const isAdmin = await isAdminUser(userId)
+    console.log('👑 Admin check result:', { userId, isAdmin })
+    
     if (!isAdmin) {
-      return NextResponse.json({ error: 'Admin access required' }, { status: 403 })
+      console.error('❌ User is not admin:', userId)
+      return NextResponse.json({ 
+        error: 'Admin access required',
+        debug: process.env.NODE_ENV === 'development' ? `User ${userId} is not an admin` : undefined
+      }, { status: 403 })
     }
 
     // セミナーデータの取得
